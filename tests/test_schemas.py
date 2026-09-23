@@ -71,5 +71,5 @@ def test_privacy_fields_carry_source_and_checked_at(repo_root: Path) -> None:
 
 def test_compatibility_status_enum(repo_root: Path) -> None:
     schema = _load(repo_root, "plan.schema.json")
-    allowed = {"full", "partial", "unofficial", "unsupported", "unknown", None}
+    allowed = {"full", "officially_supported", "partial", "unofficial", "unsupported", "unknown", None}
     assert set(schema["$defs"]["compatValue"]["enum"]) == allowed

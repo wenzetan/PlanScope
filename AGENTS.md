@@ -33,8 +33,11 @@
 - **Provider-centric**：一个 Provider ≈ 一个目录 `data/providers/<id>/`；文件系统即注册表，不要恢复 `config/providers.yaml` 之类第二份索引。
 - **1 plan = 1 文件**；`id` 只需同 Provider 内唯一；**文件名 = `id`，是稳定标识符，不因展示名变化而重命名**。
 - **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），避免跨区域 / 跨人群 / 跨代系错误合并。
-- **老套餐 `status: legacy`**（新购关闭、存量可续费/套餐内升级 + `new_purchase: false` + `existing_subscription_renewal: true`），区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
-- **估算值不冒充硬配额**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`，绝不存进 `requests`；官方年付折合月价存 `pricing.annual_effective_monthly`，年总价只在展示层 ×12 派生并标注 derived。
+- **老套餐 `status: legacy`** + `availability: {new_purchase, existing_subscription_use, existing_subscription_renewal, legacy_upgrade_path}`，区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
+- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin: official|derived` —— 官方折合月价存 `annual.effective_monthly`（official），`annual.amount` 若是 ×12 算出来的就标 `origin: derived`，两者永不混淆。
+- **模型上限 ≠ 套餐生效上下文**：`context_window` 是模型上限；套餐封顶写 `availability[].effective_context_window`（如 K3 支持 1M，Moderato 只解锁 256K）。相对额度消耗用 `quota_relative_cost: {reference_model, approximate_ratio}`。
+- **兼容六态**：`full / officially_supported / partial / unofficial / unsupported / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`full` 保留给经核验的完全兼容。
+- **记录缺口要显式**：用 `missing_fields: [...]` 列出未核实项，用 `confidence: high|medium|low` 标注整体置信度，防止被当作数据已完整。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。
@@ -42,7 +45,7 @@
 - **关键数据必须带来源与时间**：`sources` / `source_refs`（引用本 Provider `sources.yaml`）+ `checked_at`（ISO 8601）；隐私字段逐条带 `source` + `checked_at`，value 非 null 时 source 必须是直接证据 URL。
 - **社区信息是信号不是事实**：`community/` 必须标 `confidence: high|medium|low`，不能写进 plan / models / privacy 的事实字段。
 - **模型按 Provider 记录**：`models.yaml` 是该 Provider 实际暴露能力的事实源；`data/models/` canonical 索引不得覆盖它；不存在全局 `model_id` 唯一能力表。
-- **兼容 ≠ 完全兼容**：`full / partial / unofficial / unsupported / unknown` 五态 + 备注差异。
+- **兼容 ≠ 完全兼容**：`full / officially_supported / partial / unofficial / unsupported / unknown` 六态 + 备注差异。
 - **不做主观总分**：不新增 `best_plan` / `winner` / 综合评分；报告只基于可计算的客观维度。
 - **无 affiliate / referral / sponsored 内容**。
 

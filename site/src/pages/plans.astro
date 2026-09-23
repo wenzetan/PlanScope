@@ -148,7 +148,8 @@ const rows = data.plans.map((plan) => {
   {rows.length === 0 && <div class="empty">暂无 Plan 数据（先运行 planscope export-site-data）。</div>}
 
   <p class="note small">
-    兼容状态取值：full / partial / unofficial / unsupported / unknown —— “兼容 OpenAI API” 不等于 “完全兼容”。
+    兼容状态取值：full / officially_supported / partial / unofficial / unsupported / unknown ——
+    “兼容 OpenAI API” 不等于 “完全兼容”；officially_supported = 官方文档明确支持并给出接入方法（未做全量核验）。
     无法诚实换算为单价的套餐会标记 <span class="mono">not directly comparable</span>，不强行估算。
   </p>
 

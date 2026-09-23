@@ -153,7 +153,7 @@ td.wrap-cell { white-space: normal; min-width: 220px; }
   background: var(--card);
   color: var(--muted);
 }
-.badge.active, .badge.measured, .badge.official, .badge.full, .badge.high { color: var(--ok); border-color: currentColor; }
+.badge.active, .badge.measured, .badge.official, .badge.full, .badge.officially_supported, .badge.high { color: var(--ok); border-color: currentColor; }
 .badge.beta, .badge.partial, .badge.medium, .badge.estimated, .badge.legacy { color: var(--warn); border-color: currentColor; }
 .badge.deprecated, .badge.discontinued, .badge.unsupported, .badge.low { color: var(--bad); border-color: currentColor; }
 .badge.unknown, .badge.unofficial, .badge.community_reported, .badge.added { color: var(--muted); }

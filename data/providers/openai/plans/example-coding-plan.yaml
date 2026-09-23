@@ -72,7 +72,7 @@ token_rules:
 models: []                  # 本 Plan 可用的 provider 级 model_id
 
 compatibility:
-  opencode: unknown         # full / partial / unofficial / unsupported / unknown
+  opencode: unknown         # full / officially_supported / partial / unofficial / unsupported / unknown
   claude_code: unknown
   codex: unknown
   pi: unknown

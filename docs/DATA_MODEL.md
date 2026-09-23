@@ -66,8 +66,12 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 否则会把「中国老套餐」「海外套餐」「中国新体系」错误合并成同一个 Plan。
 文件名/`id` 一旦确定即为稳定标识，不因展示名或体系更替而重命名。
 
-首批实例：`data/providers/kimi/plans/cn-personal-andante-legacy.yaml`
-（Kimi 中国大陆个人版 Andante 老套餐，`status: legacy`、`new_purchase: false`、存量可续费）。
+首批实例：
+- `data/providers/kimi/plans/cn-personal-andante-legacy.yaml`
+  （Kimi 中国大陆个人版 Andante 老套餐：`status: legacy`、`availability.new_purchase: false`、存量可续费）
+- `data/providers/kimi/plans/cn-personal-moderato-legacy.yaml`
+  （Moderato：月付 ¥99 official、年付 948 derived（官方折合 79/月 official）、
+  获得 k3/k3-256k、`benefits` 权益原文、`missing_fields` 缺口、`confidence: high`）
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -156,21 +160,36 @@ region: null                 # cn / global —— 区域变体拆独立记录（
 market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
 audience: null               # personal / team / enterprise —— 人群变体拆独立记录
 plan_family: null            # membership / payg / credits —— 订阅性质（"subscription" 记这里，不占 type）
-new_purchase: null           # 是否仍可新购（legacy 通常 false）
-existing_subscription_renewal: null  # 存量订阅者是否可续费/套餐内升级
+availability:                # 老套餐身份的关键部分
+  new_purchase: null         # 是否仍可新购（legacy 通常 false）
+  existing_subscription_use: null       # 存量订阅者是否可继续使用
+  existing_subscription_renewal: null   # 存量订阅者是否可续费
+  legacy_upgrade_path: null             # 是否可在老套餐体系内部升级
 coding: null                 # {included, product, personal_use_only, enterprise_use_allowed}
 endpoints: null              # {openai_compatible: URL, anthropic_compatible: URL}
 api_keys: null               # {membership_api_key, max_keys, shared_quota_across_keys, shared_quota_across_devices}
-extra_usage: null            # {supported, currency, minimum_topup, balance_expires, pricing_basis, bypass_subscription_quota_when_active}
+extra_usage: null            # {supported, subscribers_only, currency, minimum_topup, balance_expires,
+                             #  pricing_basis, bypass_subscription_quota_when_active, shared_with_web, enterprise_supported}
+benefits: null               # 官方权益原文（approximate_* = 厂商估算，不是硬配额）
+confidence: null             # high / medium / low —— 本记录整体研究置信度
+missing_fields: null         # 明确列出未核实的字段缺口，如 exact_weekly_kimi_code_quota
 
 pricing:
   currency: null             # 原始结算币种（如 USD）；CNY 是派生值，绝不写这里
-  monthly: null              # 原始价格；促销写 promotion，绝不覆盖
-  annual: null
-  annual_effective_monthly: null  # 官方年付折合月价（raw）；年总价未官方给出时 annual 保持 null，展示层 ×12 派生
-  first_purchase: null
+  monthly:                   # 每个周期都带 origin：official=厂商公布 / derived=本项目计算
+    amount: null
+    origin: null
+    billing_period: null     # month / year
+  annual:
+    amount: null             # 若为 effective_monthly × 12 算出 → origin 必须是 derived
+    origin: null
+    billing_period: null
+    effective_monthly: null          # 该周期折合月价（官方年付折合价是 raw fact）
+    effective_monthly_origin: null   # official / derived
+    note: null
+  first_purchase: null       # 同样接受 {amount, origin, ...} 结构或 null
   renewal: null
-  promotion: null
+  promotion: null            # 临时促销单独记录，绝不覆盖标准价
   regional_differences: null
   tax_note: null
   auto_renew: null
@@ -220,7 +239,8 @@ token_rules:
 models: []                   # 本 Plan 可用的 provider 级 model_id
 
 compatibility:               # 兼容 ≠ 完全兼容；任意 surface 键都可扩展
-  opencode: unknown          # full / partial / unofficial / unsupported / unknown
+  opencode: unknown          # full / officially_supported / partial / unofficial / unsupported / unknown
+                             # full=经核验完全兼容；officially_supported=官方文档明确支持并给出接入方法
   claude_code: unknown
   codex: unknown
   pi: unknown
@@ -257,7 +277,11 @@ effective_until: null        # 下线时设 status: deprecated/discontinued + ef
 ### 原始值优先（Raw facts first）
 
 - 原始价格 + 币种永不被覆盖；**人民币只在展示层由 `config/exchange_rate.yaml` 派生**，不写入 YAML。
-- 促销价写 `pricing.promotion`，不覆盖 `pricing.monthly`。
+- **官方数字与本项目计算的数字永不混存**：每个价格周期带 `origin: official | derived`
+  （官方折合月价 vs ×12 算出的年总价）；估算类权益用 `approximate_*` / `agent_tasks_approx`。
+- 促销价写 `pricing.promotion`，不覆盖 `pricing.monthly.amount`。
+- 订阅额度用尽是 hard limit 时记 `quota.limit_type: hard`，同时用 `extra_usage`
+  表达 paid overage —— 不要只写一个孤立的 `hard_limit: true`。
 - 无法换算单价 → `directly_comparable: false`，报告中显示 `not directly comparable`。
 
 ## Models（`models.yaml`，Provider-specific）
@@ -270,13 +294,20 @@ notes: null
 checked_at: "..."
 models:
   - model_id: mimo-7b        # 该 Provider 实际暴露的标识符（可能是 alias）
+    underlying_model: null   # alias 当前实际指向的底层模型/版本（如 kimi-for-coding → K2.8 Preview）
+    speed_tier: null         # standard / highspeed（词表统一）
+    quota_relative_cost:     # 相对额度消耗（如 k3-256k ≈ k3 的 0.5×）
+      reference_model: null
+      approximate_ratio: null
+      note: null
     display_name: null
     model_family: null
-    context_window: null     # 该 Provider 下的值，不假设与其他 Provider 相同
+    context_window: null     # **模型上限**（model_max）；套餐实际封顶写 availability.effective_context_window
     max_output: null
     input_modalities: null   # text / image / audio / video
     output_modalities: null  # text / image / audio
     reasoning: null
+    reasoning_effort: null   # 如 [low, high, max]；存在取值即代表支持 reasoning
     tool_calling: null
     function_calling: null
     vision: null
@@ -294,10 +325,16 @@ models:
     availability:
       - plan: mimo-token-plan
         available: null
+        effective_context_window: null   # 该 Plan 下实际生效的上下文（≠ 模型上限）
+        note: null
     rate_limits: null
     notes: null
     checked_at: "..."
 ```
+
+**模型上限 ≠ 套餐生效上下文**：`context_window` 是模型能到的最大值；
+套餐封顶（如 K3 支持 1M、Moderato 只解锁 256K）必须写在
+`availability[].effective_context_window`，两者分开存、不互相覆盖。
 
 `data/models/` 仅作为未来可选的 canonical index，**不能覆盖** Provider 暴露的实际能力。
 

@@ -35,36 +35,65 @@ def test_cny_conversion_uses_config_rate(tmp_path: Path, repo_root: Path) -> Non
 
     rate = 6.5
     view = plan_price_view(
-        {"pricing": {"currency": "USD", "monthly": 20, "annual": 200}}, rate
+        {
+            "pricing": {
+                "currency": "USD",
+                "monthly": {"amount": 20, "origin": "official"},
+                "annual": {"amount": 200, "origin": "official"},
+            }
+        },
+        rate,
     )
     assert view["monthly_cny"] == 130.0
     assert view["annual_cny"] == 1300.0
     # original values untouched
     assert view["monthly"] == 20 and view["currency"] == "USD"
+    assert view["monthly_origin"] == "official" and view["annual_origin"] == "official"
+    assert view["annual_derived"] is False
     # unknown currency: no conversion
-    assert plan_price_view({"pricing": {"currency": "XYZ", "monthly": 10}}, rate)["monthly_cny"] is None
+    assert plan_price_view({"pricing": {"currency": "XYZ", "monthly": {"amount": 10}}}, rate)["monthly_cny"] is None
 
 
-def test_annual_total_is_derived_from_official_effective_monthly() -> None:
-    """Kimi Andante：官方只给年付折合 ¥39/月 → annual 保持 null，468=39×12 为派生值。"""
+def test_official_and_derived_price_numbers_never_mix() -> None:
+    """Kimi Moderato：官方只公布年付折合 ¥79/月 → 948=79×12 存为 origin: derived。"""
     from planscope.site_export import plan_price_view
 
     view = plan_price_view(
-        {"pricing": {"currency": "CNY", "monthly": 49, "annual": None, "annual_effective_monthly": 39}},
+        {
+            "pricing": {
+                "currency": "CNY",
+                "monthly": {"amount": 99, "origin": "official", "billing_period": "month"},
+                "annual": {
+                    "amount": 948,
+                    "origin": "derived",
+                    "effective_monthly": 79,
+                    "effective_monthly_origin": "official",
+                },
+            }
+        },
         rate=7.0,
     )
-    assert view["annual"] is None                 # 原始字段不冒充官方年总价
-    assert view["annual_shown"] == 468            # 派生展示值
+    assert view["monthly"] == 99 and view["monthly_origin"] == "official"
+    assert view["annual"] == 948              # 派生值也入库，但带 origin 标注
+    assert view["annual_origin"] == "derived"
     assert view["annual_derived"] is True
-    assert view["annual_cny"] == 468              # CNY 直接使用
-    assert view["monthly_cny"] == 49
+    assert view["annual_effective_monthly"] == 79   # 官方原始数字
+    assert view["annual_shown"] == 948
+    assert view["monthly_cny"] == 99 and view["annual_cny"] == 948  # CNY 直接使用
 
-    # 官方直接给出年总价时不算派生
+    # 官方直接公布年总价：不标派生
     official = plan_price_view(
-        {"pricing": {"currency": "CNY", "annual": 500, "annual_effective_monthly": 40}}, rate=7.0
+        {"pricing": {"currency": "CNY", "annual": {"amount": 500, "origin": "official"}}}, rate=7.0
     )
     assert official["annual_shown"] == 500
     assert official["annual_derived"] is False
+
+    # amount 缺失但有官方折合月价：展示层 ×12 派生兜底
+    fallback = plan_price_view(
+        {"pricing": {"currency": "CNY", "annual": {"amount": None, "effective_monthly": 39}}}, rate=7.0
+    )
+    assert fallback["annual_shown"] == 468
+    assert fallback["annual_derived"] is True
 
 
 def test_quota_view_keeps_approximate_agent_tasks() -> None:

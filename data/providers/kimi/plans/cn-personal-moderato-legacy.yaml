@@ -1,0 +1,180 @@
+# Kimi 中国大陆个人版 Moderato（老套餐体系）
+# id 编码 region(cn) + audience(personal) + generation(legacy)；与 Andante、
+# 新体系 Go/Plus/Pro/Max/Ultra、海外套餐均为独立记录。
+id: cn-personal-moderato-legacy
+name: Moderato
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: legacy
+plan_family: membership
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: false
+  existing_subscription_use: true
+  existing_subscription_renewal: true
+  legacy_upgrade_path: true
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 99               # 官方月付价
+    origin: official
+    billing_period: month
+  annual:
+    amount: 948              # 派生：79×12（不冒充官方直接报价）
+    origin: derived
+    billing_period: year
+    effective_monthly: 79    # 官方 K2.7 Code 页面公布连续包年折合 ¥79/月
+    effective_monthly_origin: official
+    note: 官方 Kimi K2.7 Code 页面公布连续包年折合 ¥79/月，因此年费按 79×12=¥948 记录
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                     # 月度共享池精确 token 数官方未公开，不伪造
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: 60          # 「约 60 个 Agent 用量」= 官方估算，不是 60 requests
+  coding_tasks: null
+  shared_pool_enabled: true       # 会员功能共享额度池
+  shared_pool_refresh: monthly
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  rolling_windows:
+    - 5 hours                     # Kimi Code 5 小时滚动频率窗口
+    - 7 days                      # Kimi Code 每 7 天刷新额度
+  daily: null
+  weekly: null                    # 窗口存在，精确周限额未公开
+  monthly: null                   # 池存在，精确月 token 数未公开
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: 2                  # 官方权益：2 个 Agent 并行任务
+  usage_policy: null
+  limit_type: hard                # 订阅额度为硬限制（用尽即停）
+  actual_limit_known: false
+  note: >-
+    官方公开资料确认存在每 7 天刷新额度与 5 小时滚动频率窗口，但未公开 Moderato
+    的精确 token/request 数。订阅额度用尽为 hard limit，但存在 paid overage
+    （见 extra_usage），可按量继续扣费，因此不是「无超量能力的硬停」。
+    benefits.agent.approximate_uses（约 60）与本字段 agent_tasks_approx 同源（官方估算）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null         # 相对消耗见 models.yaml 的 quota_relative_cost
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - k3                             # Moderato 开始获得 K3（相对 Andante 的关键差异）
+  - k3-256k
+  - kimi-for-coding                # highspeed 不可用，见 models.yaml availability
+
+benefits:                          # 官方权益原文记录；approximate_* 是估算，不是硬配额
+  agent:
+    approximate_uses: 60
+    parallel_tasks: 2
+  agent_swarm:
+    available: true
+    approximate_uses: 25
+    parallel_subtasks: 2
+  dream_memory: true
+  self_evolving_skills: true
+  scheduled_tasks:
+    max_tasks: 10
+  widget_tasks:
+    max_tasks: 10
+  professional_database_calls:
+    approximate_calls: 2000
+  kimi_code:
+    included: true
+
+compatibility:
+  kimi_code_cli: officially_supported
+  kimi_code_vscode: officially_supported
+  claude_code: officially_supported      # 官方文档给出配置方法（工具支持，非模型记录）
+  opencode: officially_supported
+  codex: officially_supported
+  roo_code: officially_supported
+  hermes: officially_supported           # 有官方接入文档
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true
+  shared_quota_across_devices: true
+
+extra_usage:
+  supported: true
+  subscribers_only: true
+  currency: CNY
+  minimum_topup: 25
+  balance_expires: false
+  shared_with_web: true                  # 加油包余额与 Kimi Web 共享
+  pricing_basis: approximately_kimi_api_payg   # 近似参照开放平台 API 费率（估算口径）
+  bypass_subscription_quota_when_active: true
+  enterprise_supported: false
+
+confidence: high
+missing_fields:                          # 明确的未知缺口，防止被当作数据完整
+  - exact_monthly_credit_amount
+  - exact_weekly_kimi_code_quota
+  - exact_5h_rate_limit
+  - overseas_equivalent_plan
+  - exact_privacy_retention_period
+
+source_refs: []                          # sources.yaml 待补官方 URL 后建立引用
+sources: []
+
+notes: >-
+  ① ¥948/年 为派生值（origin: derived），官方原始数字是年付折合 ¥79/月
+  （effective_monthly_origin: official），两者分开存、不混淆。
+  ② 与 Andante 的关键差异：Moderato 获得 k3 / k3-256k 权限，但 K3 的 1M context
+  仅 Allegretto 及以上解锁 —— 模型上限与套餐生效上下文分开记录（见 models.yaml
+  availability.effective_context_window = 262144）。
+  ③ k3-256k 在 256K 范围内与 k3 效果相同；k3 的 1M 版本额度消耗约为 k3-256k 的 2 倍
+  （见 models.yaml quota_relative_cost）。
+  ④ 定时任务 10、小组件任务 10、数据库调用约 2000、Agent 集群约 25 等权益
+  原文存于 benefits，不折算成 request 配额。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null                   # 老套餐停售/被替代的具体时间未知，不猜

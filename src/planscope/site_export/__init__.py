@@ -70,20 +70,28 @@ def _record_id(record: dict) -> str:
 def plan_price_view(plan: dict, rate: float) -> dict:
     """Derived CNY figures computed from the original currency via config rate.
 
-    Raw facts first: `annual` stays null when the vendor never published a
-    yearly total; the official effective monthly price is kept as-is and the
-    yearly total is derived (×12) for display only, flagged as derived.
+    Raw facts first + provenance separation: each price period carries its own
+    `origin` (official vs derived), so PlanScope-computed numbers never get
+    mistaken for vendor-published numbers.
     """
     pricing = plan.get("pricing") if isinstance(plan.get("pricing"), dict) else {}
+
+    def block(key: str) -> dict:
+        value = pricing.get(key)
+        return value if isinstance(value, dict) else {}
 
     def is_num(value) -> bool:
         return isinstance(value, (int, float)) and not isinstance(value, bool)
 
     currency = pricing.get("currency")
-    annual = pricing.get("annual")
-    effective_monthly = pricing.get("annual_effective_monthly")
-    if is_num(annual):
-        annual_shown, annual_derived = annual, False
+    monthly = block("monthly")
+    annual = block("annual")
+
+    annual_amount = annual.get("amount")
+    effective_monthly = annual.get("effective_monthly")
+    if is_num(annual_amount):
+        annual_shown = annual_amount
+        annual_derived = annual.get("origin") == "derived"
     elif is_num(effective_monthly):
         annual_shown, annual_derived = effective_monthly * 12, True
     else:
@@ -91,9 +99,11 @@ def plan_price_view(plan: dict, rate: float) -> dict:
 
     return {
         "currency": currency,
-        "monthly": pricing.get("monthly"),
-        "monthly_cny": to_cny(pricing.get("monthly"), currency, rate),
-        "annual": annual,
+        "monthly": monthly.get("amount"),
+        "monthly_origin": monthly.get("origin"),
+        "monthly_cny": to_cny(monthly.get("amount"), currency, rate),
+        "annual": annual_amount,
+        "annual_origin": annual.get("origin"),
         "annual_effective_monthly": effective_monthly,
         "annual_shown": annual_shown,
         "annual_derived": annual_derived,

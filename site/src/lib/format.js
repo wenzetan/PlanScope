@@ -22,7 +22,8 @@ export function when(value) {
 }
 
 export function statusBadge(status) {
-  const known = ["active", "beta", "invite_only", "legacy", "deprecated", "discontinued", "unknown"];
+  const known = ["active", "beta", "invite_only", "legacy", "deprecated", "discontinued", "unknown",
+    "full", "officially_supported", "partial", "unofficial", "unsupported"];
   const cls = known.includes(status) ? status : "unknown";
   return { cls, label: (status || "unknown").replace(/_/g, " ") };
 }

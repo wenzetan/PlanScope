@@ -1,5 +1,7 @@
 # Kimi（中国大陆）实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
-# 不存在全局 model_id 能力表；alias 当前指向的底层版本用 underlying_model 记录。
+# context_window = 模型上限（model_max）；套餐实际生效上下文写在
+# availability[].effective_context_window（plan_effective），两者绝不混存。
+# speed_tier 统一词表：standard / highspeed（输入材料中的 regular 已归一为 standard）。
 provider: kimi
 notes: 来源（官方模型矩阵）URL 待补。
 checked_at: "2026-09-23T00:00:00+08:00"
@@ -9,7 +11,7 @@ models:
     model_family: K2
     underlying_model: K2.8 Preview      # 该 ID 已就地升级为 K2.8 Preview
     speed_tier: standard
-    context_window: 1048576             # 1,048,576 tokens
+    context_window: 1048576             # 模型上限 1,048,576 tokens
     max_output: null
     input_modalities:
       - text
@@ -23,7 +25,7 @@ models:
       - max
     tool_calling: null                  # 未核实，不猜
     function_calling: null
-    vision: true                        # 输入支持 image
+    vision: true
     image_generation: null
     audio: null
     coding: true
@@ -36,72 +38,102 @@ models:
     availability:
       - plan: cn-personal-andante-legacy
         available: true
+        effective_context_window: 1048576
+      - plan: cn-personal-moderato-legacy
+        available: true
+        effective_context_window: 1048576
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
 
   - model_id: k3
     display_name: null
-    model_family: null
+    model_family: K3
     underlying_model: null
-    speed_tier: null
-    context_window: null
+    speed_tier: standard
+    context_window: 1048576             # 模型上限 1M —— 但旧套餐仅 Allegretto+ 解锁
     max_output: null
-    input_modalities: null
+    input_modalities:
+      - text
+      - image
+      - video
     output_modalities: null
-    reasoning: null
+    reasoning: true
+    reasoning_effort:
+      - low
+      - high
+      - max
     tool_calling: null
     function_calling: null
-    vision: null
+    vision: true
     image_generation: null
     audio: null
-    coding: null
+    coding: true
     agent_suitability: null
     cache_support: null
     structured_output: null
-    status: unknown
+    status: active
     aliases: null
     multipliers: null
     availability:
       - plan: cn-personal-andante-legacy
         available: false                # Andante 不具备 k3 权限
+        effective_context_window: null
+      - plan: cn-personal-moderato-legacy
+        available: true
+        effective_context_window: 262144
+        note: 1M context 仅 Allegretto 及以上，Moderato 下限制为 262,144
     rate_limits: null
-    notes: null
+    notes: 模型上限 1M；各 Plan 生效上下文见 availability。
     checked_at: "2026-09-23T00:00:00+08:00"
 
   - model_id: k3-256k
     display_name: null
-    model_family: null
+    model_family: K3
     underlying_model: null
-    speed_tier: null
-    context_window: null
+    speed_tier: standard
+    context_window: 262144              # 模型上限 256K
     max_output: null
-    input_modalities: null
+    input_modalities:
+      - text
+      - image
     output_modalities: null
-    reasoning: null
+    reasoning: true
+    reasoning_effort:
+      - low
+      - high
+      - max
     tool_calling: null
     function_calling: null
-    vision: null
+    vision: true
     image_generation: null
     audio: null
-    coding: null
+    coding: true
     agent_suitability: null
     cache_support: null
     structured_output: null
-    status: unknown
+    status: active
     aliases: null
     multipliers: null
+    quota_relative_cost:
+      reference_model: k3               # 相对 k3（1M 版本）的额度消耗
+      approximate_ratio: 0.5            # k3 1M 消耗约为 k3-256k 的 2 倍
+      note: 官方说明 256K 范围内 k3-256k 与 k3 效果相同
     availability:
       - plan: cn-personal-andante-legacy
         available: false
+        effective_context_window: null
+      - plan: cn-personal-moderato-legacy
+        available: true
+        effective_context_window: 262144
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
 
   - model_id: kimi-for-coding-highspeed
     display_name: null
-    model_family: null
-    underlying_model: null
+    model_family: K2
+    underlying_model: K2.7 Code HighSpeed
     speed_tier: highspeed
     context_window: null
     max_output: null
@@ -117,12 +149,16 @@ models:
     agent_suitability: null
     cache_support: null
     structured_output: null
-    status: unknown
+    status: active
     aliases: null
     multipliers: null
     availability:
       - plan: cn-personal-andante-legacy
         available: false                # Andante 不具备 HighSpeed 权限
+        effective_context_window: null
+      - plan: cn-personal-moderato-legacy
+        available: false                # Moderato 同样不具备
+        effective_context_window: null
     rate_limits: null
-    notes: null
+    notes: 官方模型矩阵列出；当前已录两个套餐均无权限，上下文上限未核实。
     checked_at: "2026-09-23T00:00:00+08:00"

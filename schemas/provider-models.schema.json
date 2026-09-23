@@ -100,8 +100,24 @@
             "properties": {
               "plan": { "type": "string", "description": "plan id within this provider." },
               "available": { "type": ["boolean", "null"] },
+              "effective_context_window": {
+                "type": ["integer", "null"],
+                "minimum": 0,
+                "description": "该 Plan 下**实际生效**的上下文窗口。model 级 context_window 是模型上限；套餐可能封顶（如 K3 支持 1M，Moderato 只解锁 256K）。两者必须分开存。"
+              },
               "note": { "type": ["string", "null"] }
             }
+          }
+        },
+        "quota_relative_cost": {
+          "type": ["object", "null"],
+          "required": ["reference_model"],
+          "additionalProperties": false,
+          "description": "相对额度消耗（相对 reference_model 的近似倍率），用于 Token 成本估算。",
+          "properties": {
+            "reference_model": { "type": "string" },
+            "approximate_ratio": { "type": ["number", "null"], "minimum": 0 },
+            "note": { "type": ["string", "null"] }
           }
         },
         "rate_limits": { "type": ["string", "null"] },
