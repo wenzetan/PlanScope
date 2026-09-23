@@ -38,6 +38,8 @@
 - **模型上限 ≠ 套餐生效上下文**：`context_window` 是模型上限；套餐封顶写 `availability[].effective_context_window`（如 K3 支持 1M，Moderato 只解锁 256K）。相对额度消耗用 `quota_relative_cost: {reference_model, approximate_ratio}`。
 - **兼容六态**：`full / officially_supported / partial / unofficial / unsupported / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`full` 保留给经核验的完全兼容。
 - **记录缺口要显式**：用 `missing_fields: [...]` 列出未核实项，用 `confidence: high|medium|low` 标注整体置信度，防止被当作数据已完整。
+- **官方没给的价就不推算**：即使能由月价反推，年价官方未公布 → `annual: {amount: null, origin: unknown, note: ...}`，不写 ×12 结果（只有官方给了折合月价才允许派生）。
+- **后台消耗单独记录**：`background_consumption: [{resource, rate, unit, condition}]` —— 不要假定额度消耗都来自主动请求（如 Kimi Claw 云主机驻留 ~0.6%/天）。速度/消耗倍率进 `models.yaml` 的 `speed_multiplier` / `quota_usage_multiplier`，不留备注。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。

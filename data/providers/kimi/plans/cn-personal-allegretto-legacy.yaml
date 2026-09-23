@@ -1,0 +1,199 @@
+# Kimi 中国大陆个人版 Allegretto（老套餐体系）
+# 相对 Moderato 的关键升级：解锁 K3 1M context、HighSpeed 自此档起可用。
+id: cn-personal-allegretto-legacy
+name: Allegretto
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: legacy
+plan_family: membership
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: false
+  existing_subscription_use: true
+  existing_subscription_renewal: true
+  legacy_upgrade_path: true        # 例如 ¥199 档可在旧体系内升级到 ¥699 档
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 199              # 官方月付价
+    origin: official
+    billing_period: month
+  annual:
+    amount: null             # 官方未给出明确年价 —— 不推算（即使可由月价反推）
+    origin: unknown
+    billing_period: year
+    note: >-
+      官方确认支持连续包年且年付更优惠，但当前公开帮助中心未给出 Allegretto
+      的明确年付总价，因此不推算。
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                     # 精确 token 数官方未公开，不伪造
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: 150         # 「约 150 个 Agent 用量」= 官方估算，不是 request 配额
+  coding_tasks: null
+  shared_pool_enabled: true       # 会员功能共享额度池（按实际 token 消耗）
+  shared_pool_refresh: billing_cycle   # 按计费周期刷新（本档官方表述）
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  weekly_applies_to_legacy_plans: true  # 官方文档：7 日额度只适用于 Andante/Moderato/Allegretto/Allegro
+  rolling_windows:
+    - 5 hours                     # Kimi Code 5 小时滚动频率窗口
+    - 7 days                      # Kimi Code 每 7 天刷新额度（旧套餐专属）
+  daily: null
+  weekly: null                    # 窗口存在，精确周限额未公开
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: 2                  # 官方权益：2 个 Agent 并行任务
+  usage_policy: null
+  limit_type: unknown             # 本档未给出订阅额度硬/软结论，不沿用 Moderato 的推断
+  actual_limit_known: false
+  note: >-
+    三维度并存：共享月度（计费周期）额度池 + Kimi Code 7 日额度 + 5 小时滚动窗口；
+    精确 token/request 上限官方均未公开。7 日额度按官方文档仅适用旧套餐。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null         # HighSpeed 3× 消耗记录在 models.yaml 的 quota_usage_multiplier
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - k3                             # 解锁 1,048,576 tokens（Allegretto 起）
+  - k3-256k
+  - kimi-for-coding                # K2.8 Preview, 1M
+  - kimi-for-coding-highspeed      # Allegretto 起可用
+
+benefits:                          # 官方权益原文；approximate_* 是估算，不是硬配额
+  agent:
+    approximate_uses: 150
+    parallel_tasks: 2
+    priority_generation_queue_multiplier: 4
+  agent_swarm:
+    available: true
+    approximate_uses: 50
+    parallel_subtasks: 4
+  goal_mode: true
+  kimi_claw:
+    included: true
+    deployment_modes:
+      - cloud
+      - android_local
+      - desktop
+    group_chats: 10
+  dream_memory: true
+  self_evolving_skills: true
+  scheduled_tasks:
+    max_tasks: 15
+  widget_tasks:
+    max_tasks: 15
+  projects:
+    max_projects: 20
+    storage_gb: 20
+  professional_database_calls:
+    approximate_calls: 5000
+  website_with_database: true
+  kimi_code:
+    included: true
+
+background_consumption:            # 后台/驻留消耗 —— 不假定消耗都来自主动请求
+  - resource: kimi_claw_cloud_host
+    rate: 0.6
+    unit: percent_of_membership_quota_per_day
+    condition: 实例保留即计费，即使没有主动执行任务
+    note: 官方帮助中心披露的 Claw 云主机驻留消耗
+  - resource: agent_website_cloud
+    rate: 0.08
+    unit: percent_of_membership_quota_per_day
+    condition: 已发布的 Agent Website 云服务驻留
+    note: null
+
+compatibility:
+  kimi_code_cli: officially_supported
+  kimi_code_vscode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  codex: officially_supported
+  roo_code: officially_supported
+  hermes: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true
+  shared_quota_across_devices: true
+
+extra_usage:
+  supported: true
+  subscribers_only: true
+  currency: CNY
+  minimum_topup: 25
+  balance_expires: false
+  bypass_subscription_quota_when_active: true
+
+confidence: high
+missing_fields:
+  - exact_annual_price
+  - exact_monthly_token_pool
+  - exact_weekly_kimi_code_quota
+  - exact_5h_rate_limit
+
+source_refs: []                    # sources.yaml 待补官方 URL 后建立引用
+sources: []
+
+notes: >-
+  ① 年价官方未给 → annual.amount: null + origin: unknown，**不按 199×12 反推**
+  （区别于 Andante/Moderato：那两档官方给了年付折合价）。
+  ② 旧套餐体系内可升级（¥199 → ¥699 等），2026-07-20 官方公告区分新旧体系。
+  ③ HighSpeed 自本档起可用：约 5–6× 输出速度、3× 额度消耗 —— 见 models.yaml
+  speed_multiplier / quota_usage_multiplier。
+  ④ Kimi Claw 云主机驻留约 0.6%/天、Agent Website 约 0.08%/天的额度消耗
+  记录于 background_consumption。
+  ⑤ 各来源 URL 待补（pricing / 公告 / 模型矩阵 / Claw 成本 / 接入文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

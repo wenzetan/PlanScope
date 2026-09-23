@@ -127,6 +127,22 @@
         "type": ["string", "number", "boolean", "object", "array", "null"]
       }
     },
+    "background_consumption": {
+      "type": ["array", "null"],
+      "description": "非主动请求产生的额度消耗（驻留/后台资源）。不要假定所有额度消耗都来自主动请求。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resource"],
+        "properties": {
+          "resource": { "type": "string", "minLength": 1, "description": "e.g. kimi_claw_cloud_host / agent_website_cloud." },
+          "rate": { "type": ["number", "null"], "minimum": 0 },
+          "unit": { "type": ["string", "null"], "description": "e.g. percent_of_membership_quota_per_day." },
+          "condition": { "type": ["string", "null"], "description": "计费条件（如实例保留即使空闲）。" },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
     "confidence": {
       "type": ["string", "null"],
       "enum": ["high", "medium", "low", null],
@@ -253,6 +269,10 @@
         "shared_pool_refresh": { "type": ["string", "null"], "description": "e.g. monthly / weekly / daily." },
         "shared_pool_rollover": { "type": ["boolean", "null"], "description": "未用完额度是否结转。" },
         "accounting_basis": { "type": ["string", "null"], "description": "e.g. token_usage / requests." },
+        "weekly_applies_to_legacy_plans": {
+          "type": ["boolean", "null"],
+          "description": "周期性额度是否仅适用于旧套餐（如 Kimi 官方文档：7 日额度只适用于 Andante/Moderato/Allegretto/Allegro）。"
+        },
         "rolling_windows": {
           "type": ["array", "null"],
           "items": { "type": "string" },

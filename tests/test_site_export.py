@@ -95,6 +95,21 @@ def test_official_and_derived_price_numbers_never_mix() -> None:
     assert fallback["annual_shown"] == 468
     assert fallback["annual_derived"] is True
 
+    # 官方没给年价：amount null + origin unknown → 不推算（Kimi Allegretto 规则）
+    no_price = plan_price_view(
+        {
+            "pricing": {
+                "currency": "CNY",
+                "monthly": {"amount": 199, "origin": "official"},
+                "annual": {"amount": None, "origin": "unknown", "note": "官方未给年价"},
+            }
+        },
+        rate=7.0,
+    )
+    assert no_price["annual_shown"] is None      # 即使 199×12 算术可行也不推算
+    assert no_price["annual_cny"] is None
+    assert no_price["monthly"] == 199
+
 
 def test_quota_view_keeps_approximate_agent_tasks() -> None:
     """「约 30 个 Agent 用量」存 agent_tasks_approx，requests 保持 null。"""

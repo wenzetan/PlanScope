@@ -48,6 +48,16 @@
           "type": ["string", "null"],
           "description": "e.g. standard / highspeed（同一模型不同速度档位可能是不同 model_id）。"
         },
+        "speed_multiplier": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "相对标准档的近似输出速度倍率（如 HighSpeed 官方描述约 5–6×，记录 approximate 值）。"
+        },
+        "quota_usage_multiplier": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "该模型的额度消耗倍率（如 HighSpeed 3× quota usage）。"
+        },
         "reasoning_effort": {
           "type": ["array", "null"],
           "items": { "type": "string", "minLength": 1 },

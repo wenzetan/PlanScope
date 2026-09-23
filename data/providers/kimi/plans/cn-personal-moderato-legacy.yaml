@@ -58,6 +58,7 @@ quota:
   shared_pool_refresh: monthly
   shared_pool_rollover: false
   accounting_basis: token_usage
+  weekly_applies_to_legacy_plans: true   # 官方文档：7 日额度只适用于旧套餐
   rolling_windows:
     - 5 hours                     # Kimi Code 5 小时滚动频率窗口
     - 7 days                      # Kimi Code 每 7 天刷新额度

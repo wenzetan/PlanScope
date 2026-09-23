@@ -42,6 +42,9 @@ models:
       - plan: cn-personal-moderato-legacy
         available: true
         effective_context_window: 1048576
+      - plan: cn-personal-allegretto-legacy
+        available: true
+        effective_context_window: 1048576
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -83,6 +86,9 @@ models:
         available: true
         effective_context_window: 262144
         note: 1M context 仅 Allegretto 及以上，Moderato 下限制为 262,144
+      - plan: cn-personal-allegretto-legacy
+        available: true
+        effective_context_window: 1048576   # Allegretto 起解锁 1M
     rate_limits: null
     notes: 模型上限 1M；各 Plan 生效上下文见 availability。
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -126,6 +132,9 @@ models:
       - plan: cn-personal-moderato-legacy
         available: true
         effective_context_window: 262144
+      - plan: cn-personal-allegretto-legacy
+        available: true
+        effective_context_window: 262144
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -135,17 +144,22 @@ models:
     model_family: K2
     underlying_model: K2.7 Code HighSpeed
     speed_tier: highspeed
-    context_window: null
+    speed_multiplier: 5.5               # 官方描述约 5–6× 输出速度（approximate）
+    quota_usage_multiplier: 3           # 模型配置页：3× quota usage
+    context_window: 262144              # 本档上下文 262,144（官方矩阵）
     max_output: null
-    input_modalities: null
+    input_modalities:
+      - text
+      - image
+      - video
     output_modalities: null
     reasoning: null
     tool_calling: null
     function_calling: null
-    vision: null
+    vision: true
     image_generation: null
     audio: null
-    coding: null
+    coding: true
     agent_suitability: null
     cache_support: null
     structured_output: null
@@ -159,6 +173,9 @@ models:
       - plan: cn-personal-moderato-legacy
         available: false                # Moderato 同样不具备
         effective_context_window: null
+      - plan: cn-personal-allegretto-legacy
+        available: true                 # Allegretto 起可用
+        effective_context_window: 262144
     rate_limits: null
-    notes: 官方模型矩阵列出；当前已录两个套餐均无权限，上下文上限未核实。
+    notes: 额度消耗 3×、约 5–6× 输出速度；消耗/速度倍率见 speed_multiplier / quota_usage_multiplier。
     checked_at: "2026-09-23T00:00:00+08:00"
