@@ -20,45 +20,54 @@ const benchmarks = data.benchmarks.filter((entry) => entry.provider === provider
 const community = data.community.filter((entry) => entry.provider === provider.id);
 
 const POLICY_FIELDS = [
-  ["prompt_retention", "Prompt retention"],
-  ["output_retention", "Output retention"],
-  ["used_for_training", "Training usage"],
-  ["training_default_opt_in", "Training default"],
-  ["opt_out_supported", "Opt-out"],
-  ["zero_data_retention", "Zero Data Retention"],
-  ["business_consumer_policy_differs", "Business vs consumer"],
-  ["subprocessors", "Subprocessors"],
-  ["data_region", "Data region"],
-  ["cross_border_transfer", "Cross-border"],
-  ["automated_agent_allowed", "Automated agents"],
-  ["coding_agent_tools_restricted", "Coding-agent restrictions"],
+  ["prompt_retention", "Prompt 保留", "Prompt retention"],
+  ["output_retention", "Output 保留", "Output retention"],
+  ["used_for_training", "用于训练", "Training usage"],
+  ["training_default_opt_in", "训练默认策略", "Training default"],
+  ["opt_out_supported", "Opt-out", "Opt-out"],
+  ["zero_data_retention", "Zero Data Retention", "Zero Data Retention"],
+  ["business_consumer_policy_differs", "企业 vs 个人政策差异", "Business vs consumer"],
+  ["subprocessors", "子处理方", "Subprocessors"],
+  ["data_region", "数据地区", "Data region"],
+  ["cross_border_transfer", "跨境传输", "Cross-border"],
+  ["automated_agent_allowed", "自动化 Agent", "Automated agents"],
+  ["coding_agent_tools_restricted", "Coding-agent 工具限制", "Coding-agent restrictions"],
 ];
 ---
 
 <Base title={provider.name} current="providers/">
-  <p class="small"><a href={href("providers/")}>← Providers</a></p>
+  <p class="small"><a href={href("providers/")}><span class="i18n-zh" lang="zh-CN">← 服务商</span><span class="i18n-en" lang="en">← Providers</span></a></p>
   <h1>{display(provider.name)}</h1>
   <p class="lead mono">{provider.id}</p>
 
   <dl class="kv">
-    <dt>Status</dt>
+    <dt><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></dt>
     <dd><span class={`badge ${statusBadge(provider.status).cls}`}>{statusBadge(provider.status).label}</span></dd>
-    <dt>Official website</dt>
+    <dt><span class="i18n-zh" lang="zh-CN">官方网站</span><span class="i18n-en" lang="en">Official website</span></dt>
     <dd>{provider.website ? <a href={provider.website} rel="noopener">{provider.website}</a> : "—"}</dd>
-    <dt>Docs</dt>
+    <dt><span class="i18n-zh" lang="zh-CN">文档</span><span class="i18n-en" lang="en">Docs</span></dt>
     <dd>{provider.docs ? <a href={provider.docs} rel="noopener">{provider.docs}</a> : "—"}</dd>
-    <dt>Notes</dt>
+    <dt><span class="i18n-zh" lang="zh-CN">备注</span><span class="i18n-en" lang="en">Notes</span></dt>
     <dd>{display(provider.notes)}</dd>
-    <dt>Last checked</dt>
+    <dt><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></dt>
     <dd class="mono">{when(provider.checked_at)}</dd>
   </dl>
 
-  <h2>Plans</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plans</span></h2>
   {plans.length ? (
     <div class="table-scroll">
       <table>
         <thead>
-          <tr><th>Plan</th><th>Type</th><th>Region</th><th>Audience</th><th>Status</th><th>Monthly</th><th>CNY</th><th>Last checked</th></tr>
+          <tr>
+            <th><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plan</span></th>
+            <th><span class="i18n-zh" lang="zh-CN">类型</span><span class="i18n-en" lang="en">Type</span></th>
+            <th><span class="i18n-zh" lang="zh-CN">区域</span><span class="i18n-en" lang="en">Region</span></th>
+            <th><span class="i18n-zh" lang="zh-CN">人群</span><span class="i18n-en" lang="en">Audience</span></th>
+            <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+            <th><span class="i18n-zh" lang="zh-CN">月价</span><span class="i18n-en" lang="en">Monthly</span></th>
+            <th>CNY</th>
+            <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+          </tr>
         </thead>
         <tbody>
           {plans.map((plan) => (
@@ -76,14 +85,17 @@ const POLICY_FIELDS = [
         </tbody>
       </table>
     </div>
-  ) : <div class="empty">尚无套餐记录。</div>}
+  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无套餐记录。</span><span class="i18n-en" lang="en">No plans recorded yet.</span></div>}
 
-  <h2>API / Coding / Agent compatibility</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">API / Coding / Agent 兼容性</span><span class="i18n-en" lang="en">API / Coding / Agent compatibility</span></h2>
   {plans.length ? plans.map((plan) => (
     <h3>{display(plan.name)}</h3>
     <div class="table-scroll">
       <table>
-        <thead><tr><th>Surface</th><th>Status</th></tr></thead>
+        <thead><tr>
+          <th><span class="i18n-zh" lang="zh-CN">接入面</span><span class="i18n-en" lang="en">Surface</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+        </tr></thead>
         <tbody>
           {Object.entries(plan.compatibility || {}).map(([surface, status]) => (
             <tr>
@@ -94,13 +106,20 @@ const POLICY_FIELDS = [
         </tbody>
       </table>
     </div>
-  )) : <div class="empty">尚无兼容性记录。</div>}
+  )) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无兼容性记录。</span><span class="i18n-en" lang="en">No compatibility records yet.</span></div>}
 
-  <h2>Models</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">模型</span><span class="i18n-en" lang="en">Models</span></h2>
   {models.length ? (
     <div class="table-scroll">
       <table>
-        <thead><tr><th>model_id</th><th>Context</th><th>Max output</th><th>Reasoning</th><th>Tool calling</th><th>Status</th></tr></thead>
+        <thead><tr>
+          <th>model_id</th>
+          <th><span class="i18n-zh" lang="zh-CN">上下文</span><span class="i18n-en" lang="en">Context</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">最大输出</span><span class="i18n-en" lang="en">Max output</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">推理</span><span class="i18n-en" lang="en">Reasoning</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">工具调用</span><span class="i18n-en" lang="en">Tool calling</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+        </tr></thead>
         <tbody>
           {models.map((model) => (
             <tr>
@@ -115,9 +134,9 @@ const POLICY_FIELDS = [
         </tbody>
       </table>
     </div>
-  ) : <div class="empty">尚无模型记录。</div>}
+  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无模型记录。</span><span class="i18n-en" lang="en">No model records yet.</span></div>}
 
-  <h2>Privacy policy</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">隐私政策</span><span class="i18n-en" lang="en">Privacy policy</span></h2>
   {privacyRecords.length ? (
     privacyRecords.map((privacy) => (
       <>
@@ -127,21 +146,26 @@ const POLICY_FIELDS = [
         </h3>
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Field</th><th>Value</th><th>Evidence</th><th>Checked</th></tr></thead>
+            <thead><tr>
+              <th><span class="i18n-zh" lang="zh-CN">字段</span><span class="i18n-en" lang="en">Field</span></th>
+              <th><span class="i18n-zh" lang="zh-CN">值</span><span class="i18n-en" lang="en">Value</span></th>
+              <th><span class="i18n-zh" lang="zh-CN">证据</span><span class="i18n-en" lang="en">Evidence</span></th>
+              <th><span class="i18n-zh" lang="zh-CN">核查时间</span><span class="i18n-en" lang="en">Checked</span></th>
+            </tr></thead>
             <tbody>
-              {POLICY_FIELDS.map(([field, label]) => {
+              {POLICY_FIELDS.map(([field, zh, en]) => {
                 const entry = privacy[field];
                 const value = entry && entry.value !== undefined ? entry.value : null;
                 const isOfficial = entry && entry.source && entry.value !== null;
                 return (
                   <tr>
-                    <td>{label}</td>
+                    <td><span class="i18n-zh" lang="zh-CN">{zh}</span><span class="i18n-en" lang="en">{en}</span></td>
                     <td>
                       {value === null || value === undefined
                         ? <span class="badge unknown">unknown</span>
-                        : <span>{display(value)} {isOfficial && <span class="badge official">official fact</span>}</span>}
+                        : <span>{display(value)} {isOfficial && <span class="badge official"><span class="i18n-zh" lang="zh-CN">官方事实</span><span class="i18n-en" lang="en">official fact</span></span>}</span>}
                     </td>
-                    <td>{entry && entry.source ? <a href={entry.source} rel="noopener">source</a> : "—"}</td>
+                    <td>{entry && entry.source ? <a href={entry.source} rel="noopener"><span class="i18n-zh" lang="zh-CN">来源</span><span class="i18n-en" lang="en">source</span></a> : "—"}</td>
                     <td class="mono">{entry ? when(entry.checked_at) : "—"}</td>
                   </tr>
                 );
@@ -151,28 +175,33 @@ const POLICY_FIELDS = [
         </div>
       </>
     ))
-  ) : <div class="empty">尚无隐私政策记录。</div>}
+  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无隐私政策记录。</span><span class="i18n-en" lang="en">No privacy policy records yet.</span></div>}
   <p class="small muted">
-    同一 Provider 可按 scope 拆多份记录（consumer / business / api …）；
-    没有直接证据（source）的字段一律不以二手信息填充。
+    <span class="i18n-zh" lang="zh-CN">
+      同一 Provider 可按 scope 拆多份记录（consumer / business / api …）；
+      没有直接证据（source）的字段一律不以二手信息填充。
+    </span><span class="i18n-en" lang="en">
+      One Provider may be split into several records by scope (consumer / business / api …);
+      fields without direct evidence (source) are never filled from second-hand information.
+    </span>
   </p>
 
-  <h2>Reliability signals</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">可靠性信号</span><span class="i18n-en" lang="en">Reliability signals</span></h2>
   <p class="small">
     Benchmarks: {benchmarks.length} · Community reports: {community.length}
-    （详见 <a href={href("reliability/")}>Reliability</a>）
+    <span class="i18n-zh" lang="zh-CN">（详见 </span><span class="i18n-en" lang="en"> (see </span><a href={href("reliability/")}>Reliability</a><span class="i18n-zh" lang="zh-CN">）</span><span class="i18n-en" lang="en">)</span>
   </p>
 
-  <h2>Data sources</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">数据来源</span><span class="i18n-en" lang="en">Data sources</span></h2>
   {sources.length ? (
     <ul class="plain">
       {sources.map((entry) => (
         <li>
           <span class="badge">{display(entry.type)}</span>{" "}
           {entry.url ? <a href={entry.url} rel="noopener">{display(entry.id)}</a> : display(entry.id)}
-          <span class="muted small"> — {display(entry.used_for)} · checked {when(entry.checked_at)}</span>
+          <span class="muted small"> — {display(entry.used_for)}<span class="i18n-zh" lang="zh-CN"> · 核查 </span><span class="i18n-en" lang="en"> · checked </span>{when(entry.checked_at)}</span>
         </li>
       ))}
     </ul>
-  ) : <div class="empty">尚无来源记录。</div>}
+  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无来源记录。</span><span class="i18n-en" lang="en">No source records yet.</span></div>}
 </Base>

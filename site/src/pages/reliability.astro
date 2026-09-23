@@ -16,13 +16,13 @@ function provenance(record) {
 
 <Base title="Reliability" current="reliability/">
   <h1>Reliability</h1>
-  <p class="lead">性能、429、超时、账号限制与响应异常。数据来源严格区分，绝不混合：</p>
+  <p class="lead"><span class="i18n-zh" lang="zh-CN">性能、429、超时、账号限制与响应异常。数据来源严格区分，绝不混合：</span><span class="i18n-en" lang="en">Performance, 429s, timeouts, account limits and response anomalies. Provenance is strictly separated and never blended:</span></p>
 
   <ul class="plain small">
-    <li><span class="badge measured">measured</span> — PlanScope 自己的实测</li>
-    <li><span class="badge official">official</span> — 厂商官方公布</li>
-    <li><span class="badge community_reported">community reported</span> — 社区反馈（信号，不是权威事实）</li>
-    <li><span class="badge estimated">estimated</span> — 估算值</li>
+    <li><span class="badge measured">measured</span> — <span class="i18n-zh" lang="zh-CN">PlanScope 自己的实测</span><span class="i18n-en" lang="en">PlanScope's own measurements</span></li>
+    <li><span class="badge official">official</span> — <span class="i18n-zh" lang="zh-CN">厂商官方公布</span><span class="i18n-en" lang="en">published by the vendor</span></li>
+    <li><span class="badge community_reported">community reported</span> — <span class="i18n-zh" lang="zh-CN">社区反馈（信号，不是权威事实）</span><span class="i18n-en" lang="en">community reports (signals, not authoritative facts)</span></li>
+    <li><span class="badge estimated">estimated</span> — <span class="i18n-zh" lang="zh-CN">估算值</span><span class="i18n-en" lang="en">estimated values</span></li>
   </ul>
 
   <h2>Benchmarks</h2>
@@ -30,8 +30,14 @@ function provenance(record) {
     <table>
       <thead>
         <tr>
-          <th>Provider</th><th>Plan</th><th>Model</th><th>Metric</th><th>Value</th><th>Unit</th>
-          <th>Provenance</th><th>Confidence</th><th>Status</th><th>Last checked</th>
+          <th>Provider</th><th>Plan</th><th>Model</th>
+          <th><span class="i18n-zh" lang="zh-CN">指标</span><span class="i18n-en" lang="en">Metric</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">数值</span><span class="i18n-en" lang="en">Value</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">单位</span><span class="i18n-en" lang="en">Unit</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">来源类型</span><span class="i18n-en" lang="en">Provenance</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">置信度</span><span class="i18n-en" lang="en">Confidence</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
         </tr>
       </thead>
       <tbody>
@@ -52,15 +58,21 @@ function provenance(record) {
       </tbody>
     </table>
   </div>
-  {data.benchmarks.length === 0 && <div class="empty">暂无 benchmark 数据。</div>}
+  {data.benchmarks.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无 benchmark 数据。</span><span class="i18n-en" lang="en">No benchmark data yet.</span></div>}
 
-  <h2>429 / Rate limit / Account &amp; response issues（community reports）</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">429 / 速率限制 / 账号与响应异常（社区反馈）</span><span class="i18n-en" lang="en">429 / Rate limit / Account &amp; response issues (community reports)</span></h2>
   <div class="table-scroll">
     <table>
       <thead>
         <tr>
-          <th>Date</th><th>Provider</th><th>Risk</th><th>Summary</th>
-          <th>Source type</th><th>Confidence</th><th>Reproduced</th><th>Link</th>
+          <th><span class="i18n-zh" lang="zh-CN">日期</span><span class="i18n-en" lang="en">Date</span></th>
+          <th>Provider</th>
+          <th><span class="i18n-zh" lang="zh-CN">风险</span><span class="i18n-en" lang="en">Risk</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">摘要</span><span class="i18n-en" lang="en">Summary</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">来源类型</span><span class="i18n-en" lang="en">Source type</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">置信度</span><span class="i18n-en" lang="en">Confidence</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">可复现</span><span class="i18n-en" lang="en">Reproduced</span></th>
+          <th><span class="i18n-zh" lang="zh-CN">链接</span><span class="i18n-en" lang="en">Link</span></th>
         </tr>
       </thead>
       <tbody>
@@ -73,13 +85,13 @@ function provenance(record) {
             <td><span class={`badge ${provenance({ source_type: record.source_type })}`}>{display(record.source_type)}</span></td>
             <td><span class={`badge ${display(record.confidence, "unknown")}`}>{display(record.confidence)}</span></td>
             <td>{display(record.reproduced)}</td>
-            <td>{record.url ? <a href={record.url} rel="noopener">source</a> : "—"}</td>
+            <td>{record.url ? <a href={record.url} rel="noopener"><span class="i18n-zh" lang="zh-CN">来源</span><span class="i18n-en" lang="en">source</span></a> : "—"}</td>
           </tr>
         ))}
       </tbody>
     </table>
   </div>
-  {data.community.length === 0 && <div class="empty">暂无社区反馈记录。</div>}
+  {data.community.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无社区反馈记录。</span><span class="i18n-en" lang="en">No community reports yet.</span></div>}
 
-  <p class="note small">社区报告不会自动升级为事实；每条都标注 confidence（high / medium / low）。</p>
+  <p class="note small"><span class="i18n-zh" lang="zh-CN">社区报告不会自动升级为事实；每条都标注 confidence（high / medium / low）。</span><span class="i18n-en" lang="en">Community reports never become facts automatically; each one carries a confidence (high / medium / low).</span></p>
 </Base>

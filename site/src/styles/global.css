@@ -25,7 +25,14 @@ body {
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-.wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+/* Full-width layout: markdown tables here carry many columns, so the page
+   uses the whole viewport instead of a centered 1100px column. */
+.wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(12px, 1.6vw, 32px);
+}
 
 header.site {
   border-bottom: 1px solid var(--line);
@@ -157,6 +164,35 @@ td.wrap-cell { white-space: normal; min-width: 220px; }
 .badge.beta, .badge.partial, .badge.medium, .badge.estimated, .badge.legacy { color: var(--warn); border-color: currentColor; }
 .badge.deprecated, .badge.discontinued, .badge.unsupported, .badge.low { color: var(--bad); border-color: currentColor; }
 .badge.unknown, .badge.unofficial, .badge.unsupported_by_plan, .badge.community_reported, .badge.added { color: var(--muted); }
+
+/* ---------- i18n: Chinese is the default and ships in the markup;
+       English is hidden until <html data-lang="en"> is set. ---------- */
+.i18n-en { display: none; }
+html[data-lang="en"] .i18n-zh { display: none; }
+html[data-lang="en"] .i18n-en { display: inline; }
+
+.lang-switch {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.lang-switch button {
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--muted);
+  cursor: pointer;
+}
+.lang-switch button:hover { color: var(--accent); border-color: var(--accent); }
+.lang-switch button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
 
 .muted { color: var(--muted); }
 .mono { font-family: var(--mono); font-size: 0.85em; }

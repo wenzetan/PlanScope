@@ -8,26 +8,26 @@ const stats = data.stats;
 const recentChanges = data.changes.slice(0, 3);
 
 const NAV = [
-  ["providers/", "Providers", "每个 Provider 的官方信息、套餐与来源"],
-  ["plans/", "Plans", "核心页面：筛选 / 搜索 / 排序所有套餐"],
-  ["models/", "Models", "模型在哪些 Provider / Plan 可用"],
-  ["pricing/", "Pricing", "原始价格、人民币换算与 Token 成本"],
-  ["privacy/", "Privacy", "Prompt 保留、训练使用、ZDR、自动化限制"],
-  ["reliability/", "Reliability", "429、超时、社区反馈（Measured / Official / Community）"],
-  ["changes/", "Changes", "价格、额度、模型与政策的历史变化"],
-  ["sources/", "Sources", "每个数字的出处与核查时间"],
-  ["methodology/", "Methodology", "数据处理与汇率计算方法"],
+  ["providers/", "Providers", "每个 Provider 的官方信息、套餐与来源", "Official info, plans and sources for each provider"],
+  ["plans/", "Plans", "核心页面：筛选 / 搜索 / 排序所有套餐", "Main page: filter, search and sort every plan"],
+  ["models/", "Models", "模型在哪些 Provider / Plan 可用", "Which Provider / Plan unlocks which model"],
+  ["pricing/", "Pricing", "原始价格、人民币换算与 Token 成本", "Original prices, CNY conversion and token cost"],
+  ["privacy/", "Privacy", "Prompt 保留、训练使用、ZDR、自动化限制", "Prompt retention, training use, ZDR, automation limits"],
+  ["reliability/", "Reliability", "429、超时、社区反馈（Measured / Official / Community）", "429s, timeouts and community signals (Measured / Official / Community)"],
+  ["changes/", "Changes", "价格、额度、模型与政策的历史变化", "History of price, quota, model and policy changes"],
+  ["sources/", "Sources", "每个数字的出处与核查时间", "Where every number came from, and when it was checked"],
+  ["methodology/", "Methodology", "数据处理与汇率计算方法", "Data handling and exchange-rate methodology"],
 ];
 ---
 
 <Base title="Overview">
   <h1>{data.site.title}</h1>
-  <p class="lead">{data.site.tagline_zh} · {data.site.tagline_en}</p>
+  <p class="lead"><span class="i18n-zh" lang="zh-CN">{data.site.tagline_zh}</span><span class="i18n-en" lang="en">{data.site.tagline_en}</span></p>
 
   <div class="cards">
     <div class="card">
       <div class="num">{display(stats.generated_at ? stats.generated_at.slice(0, 16).replace("T", " ") : null)}</div>
-      <div class="label">最近成功更新（Asia/Shanghai）</div>
+      <div class="label"><span class="i18n-zh" lang="zh-CN">最近成功更新（Asia/Shanghai）</span><span class="i18n-en" lang="en">Last successful update (Asia/Shanghai)</span></div>
     </div>
     <div class="card">
       <div class="num">{stats.providers}</div>
@@ -43,23 +43,34 @@ const NAV = [
     </div>
     <div class="card">
       <div class="num">{data.exchange_rate.usd_cny !== null ? data.exchange_rate.usd_cny : "—"}</div>
-      <div class="label">USD/CNY 7 日均值（D-7 ~ D-1）</div>
+      <div class="label"><span class="i18n-zh" lang="zh-CN">USD/CNY 7 日均值（D-7 ~ D-1）</span><span class="i18n-en" lang="en">USD/CNY 7-day average (D-7 ~ D-1)</span></div>
     </div>
   </div>
 
   <div class="note">
-    汇率由每日 CI 计算最近 7 个完整自然日的有效日值均值（不补周末、不插值、不取当日），
-    写入 <span class="mono">config/exchange_rate.yaml</span>；人民币价格均为派生值，原始币种价格始终保留。
-    完整方法见 <a href={href("methodology/")}>Methodology</a>。
+    <span class="i18n-zh" lang="zh-CN">
+      汇率由每日 CI 计算最近 7 个完整自然日的有效日值均值（不补周末、不插值、不取当日），
+      写入 <span class="mono">config/exchange_rate.yaml</span>；人民币价格均为派生值，原始币种价格始终保留。
+      完整方法见 <a href={href("methodology/")}>方法论</a>。
+    </span><span class="i18n-en" lang="en">
+      The rate is the daily CI average of the last 7 complete calendar days (no weekend backfill,
+      no interpolation, never today's value), written to <span class="mono">config/exchange_rate.yaml</span>.
+      CNY prices are always derived; original currency prices are never overwritten.
+      Full method in <a href={href("methodology/")}>Methodology</a>.
+    </span>
   </div>
 
   {recentChanges.length > 0 && (
     <>
-      <h2>最近变化</h2>
+      <h2><span class="i18n-zh" lang="zh-CN">最近变化</span><span class="i18n-en" lang="en">Recent changes</span></h2>
       <div class="table-scroll">
         <table>
           <thead>
-            <tr><th>Date</th><th>Provider</th><th>Change</th></tr>
+            <tr>
+              <th><span class="i18n-zh" lang="zh-CN">日期</span><span class="i18n-en" lang="en">Date</span></th>
+              <th>Provider</th>
+              <th><span class="i18n-zh" lang="zh-CN">变化</span><span class="i18n-en" lang="en">Change</span></th>
+            </tr>
           </thead>
           <tbody>
             {recentChanges.flatMap((change) =>
@@ -74,22 +85,27 @@ const NAV = [
           </tbody>
         </table>
       </div>
-      <p class="small"><a href={href("changes/")}>查看全部变化 →</a></p>
+      <p class="small"><a href={href("changes/")}><span class="i18n-zh" lang="zh-CN">查看全部变化 →</span><span class="i18n-en" lang="en">View all changes →</span></a></p>
     </>
   )}
 
-  <h2>浏览</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">浏览</span><span class="i18n-en" lang="en">Browse</span></h2>
   <div class="grid-nav">
-    {NAV.map(([path, label, desc]) => (
+    {NAV.map(([path, label, zh, en]) => (
       <a href={href(path)}>
         <strong>{label}</strong>
-        <div class="desc">{desc}</div>
+        <div class="desc"><span class="i18n-zh" lang="zh-CN">{zh}</span><span class="i18n-en" lang="en">{en}</span></div>
       </a>
     ))}
   </div>
 
   <p class="small muted" style="margin-top:24px">
-    当前为初始化阶段的示例 / 模板数据（未填入任何已核实价格、额度或政策）。
-    CNY 示例：{cny(140)}（仅示意换算格式）。
+    <span class="i18n-zh" lang="zh-CN">
+      当前为初始化阶段的示例 / 模板数据（未填入任何已核实价格、额度或政策）。
+      CNY 示例：{cny(140)}（仅示意换算格式）。
+    </span><span class="i18n-en" lang="en">
+      Content is still template / sample data for the initial phase (no verified price, quota or policy yet).
+      CNY example: {cny(140)} (conversion format only).
+    </span>
   </p>
 </Base>

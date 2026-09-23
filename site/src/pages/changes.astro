@@ -9,9 +9,9 @@ const byDate = new Map(dates.map((d) => [d, data.changes.filter((c) => (c.date |
 
 <Base title="Changes" current="changes/">
   <h1>Changes</h1>
-  <p class="lead">价格、额度、模型与政策的历史变化。数据来源于结构化历史数据或 snapshot diff —— 不解析 Git commit message。</p>
+  <p class="lead"><span class="i18n-zh" lang="zh-CN">价格、额度、模型与政策的历史变化。数据来源于结构化历史数据或 snapshot diff —— 不解析 Git commit message。</span><span class="i18n-en" lang="en">History of price, quota, model and policy changes. Entries come from structured history or snapshot diffs — Git commit messages are never parsed.</span></p>
 
-  {data.changes.length === 0 && <div class="empty">暂无变化记录（data/changes/）。</div>}
+  {data.changes.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无变化记录（data/changes/）。</span><span class="i18n-en" lang="en">No change records yet (data/changes/).</span></div>}
 
   {[...byDate.entries()].map(([date, changes]) => (
     <section class="changes-day">
@@ -32,7 +32,7 @@ const byDate = new Map(dates.map((d) => [d, data.changes.filter((c) => (c.date |
               </div>
             )}
             <div class="small muted">
-              {display(change.notes)} · checked {when(entry.checked_at)}
+              {display(change.notes)}<span class="i18n-zh" lang="zh-CN"> · 核查 </span><span class="i18n-en" lang="en"> · checked </span>{when(entry.checked_at)}
             </div>
           </div>
         ))

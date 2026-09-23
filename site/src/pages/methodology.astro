@@ -5,83 +5,83 @@ import { data } from "../lib/data.js";
 
 <Base title="Methodology" current="methodology/">
   <h1>Methodology</h1>
-  <p class="lead">数据来源优先级、unknown 处理、冲突解决、汇率与 Token 成本计算、时间戳规则。README 只做入口，方法细节都在这里。</p>
+  <p class="lead"><span class="i18n-zh" lang="zh-CN">数据来源优先级、unknown 处理、冲突解决、汇率与 Token 成本计算、时间戳规则。README 只做入口，方法细节都在这里。</span><span class="i18n-en" lang="en">Source priority, handling of unknowns, conflict resolution, exchange-rate and token-cost math, timestamp rules. The README is just the entry point; the method lives here.</span></p>
 
-  <h2>1. 数据来源优先级</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">1. 数据来源优先级</span><span class="i18n-en" lang="en">1. Source priority</span></h2>
   <ol>
-    <li><strong>Official</strong>（最高）：官方价格页、产品文档、API 文档、服务条款、隐私政策、模型文档、FAQ、公告、官方 GitHub。</li>
-    <li><strong>Measured</strong>：PlanScope 自己的实测（TTFT、TPS、Decode TPS、Latency、429、Error rate、Token 消耗、真实额度行为），必须与官方声明分开记录。</li>
-    <li><strong>Community</strong>（辅助）：GitHub Issues、Reddit、Discord、Telegram、论坛、博客、用户实际报告 —— <em>Community reports are signals, not authoritative facts</em>。</li>
+    <li><span class="i18n-zh" lang="zh-CN"><strong>Official</strong>（最高）：官方价格页、产品文档、API 文档、服务条款、隐私政策、模型文档、FAQ、公告、官方 GitHub。</span><span class="i18n-en" lang="en"><strong>Official</strong> (highest): pricing pages, product docs, API docs, terms of service, privacy policy, model docs, FAQ, announcements, official GitHub.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN"><strong>Measured</strong>：PlanScope 自己的实测（TTFT、TPS、Decode TPS、Latency、429、Error rate、Token 消耗、真实额度行为），必须与官方声明分开记录。</span><span class="i18n-en" lang="en"><strong>Measured</strong>: PlanScope's own measurements (TTFT, TPS, decode TPS, latency, 429s, error rate, token usage, real quota behaviour), always recorded separately from vendor claims.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN"><strong>Community</strong>（辅助）：GitHub Issues、Reddit、Discord、Telegram、论坛、博客、用户实际报告 —— <em>Community reports are signals, not authoritative facts</em>。</span><span class="i18n-en" lang="en"><strong>Community</strong> (supporting): GitHub Issues, Reddit, Discord, Telegram, forums, blogs, user reports — <em>community reports are signals, not authoritative facts</em>.</span></li>
   </ol>
-  <p>厂商营销口径不作为唯一事实依据。</p>
+  <p><span class="i18n-zh" lang="zh-CN">厂商营销口径不作为唯一事实依据。</span><span class="i18n-en" lang="en">Vendor marketing copy is never treated as the sole factual basis.</span></p>
 
-  <h2>2. Unknown 如何处理</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">2. Unknown 如何处理</span><span class="i18n-en" lang="en">2. How unknowns are handled</span></h2>
   <ul>
-    <li>未查证 → <span class="mono">value: null</span> 或 <span class="mono">status: unknown</span>，绝不编造。</li>
-    <li>厂商模糊表述（Unlimited / High Usage / Fair Use / Reasonable Usage）原样记录，并设 <span class="mono">actual_limit_known: false</span>。</li>
-    <li>校验器只拒绝错误结构与非法格式，不会因为信息缺失而失败。</li>
+    <li><span class="i18n-zh" lang="zh-CN">未查证 → </span><span class="i18n-en" lang="en">Not verified → </span><span class="mono">value: null</span><span class="i18n-zh" lang="zh-CN"> 或 </span><span class="i18n-en" lang="en"> or </span><span class="mono">status: unknown</span><span class="i18n-zh" lang="zh-CN">，绝不编造。</span><span class="i18n-en" lang="en">. Nothing is ever invented.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">厂商模糊表述（Unlimited / High Usage / Fair Use / Reasonable Usage）原样记录，并设 </span><span class="i18n-en" lang="en">Vague vendor wording (Unlimited / High Usage / Fair Use / Reasonable Usage) is recorded verbatim with </span><span class="mono">actual_limit_known: false</span><span class="i18n-zh" lang="zh-CN">。</span><span class="i18n-en" lang="en">.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">校验器只拒绝错误结构与非法格式，不会因为信息缺失而失败。</span><span class="i18n-en" lang="en">The validator rejects only broken structures and illegal formats — missing information never fails it.</span></li>
   </ul>
 
-  <h2>3. 冲突来源如何处理</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">3. 冲突来源如何处理</span><span class="i18n-en" lang="en">3. Conflicting sources</span></h2>
   <ul>
-    <li>官方文档 &gt; 官方公告 &gt; 实测 &gt; 社区。</li>
-    <li>冲突时保留双方记录与各自 <span class="mono">checked_at</span>，以更高优先级来源作为事实值，不静默覆盖历史。</li>
-    <li>无法判定时字段保持 unknown，并在 note 中记录冲突。</li>
+    <li><span class="i18n-zh" lang="zh-CN">官方文档 &gt; 官方公告 &gt; 实测 &gt; 社区。</span><span class="i18n-en" lang="en">Official docs &gt; official announcements &gt; measurements &gt; community.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">冲突时保留双方记录与各自 </span><span class="i18n-en" lang="en">Both sides of a conflict are kept with their own </span><span class="mono">checked_at</span><span class="i18n-zh" lang="zh-CN">，以更高优先级来源作为事实值，不静默覆盖历史。</span><span class="i18n-en" lang="en">; the higher-priority source becomes the factual value and history is never silently overwritten.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">无法判定时字段保持 unknown，并在 note 中记录冲突。</span><span class="i18n-en" lang="en">When it cannot be resolved, the field stays unknown and the conflict is recorded in the note.</span></li>
   </ul>
 
-  <h2>4. 汇率计算方法</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">4. 汇率计算方法</span><span class="i18n-en" lang="en">4. Exchange-rate method</span></h2>
   <ul>
-    <li>每日 CI 计算 <strong>D-7 ~ D-1</strong>（Asia/Shanghai，最近 7 个完整自然日）的有效 USD/CNY 日值均值：</li>
+    <li><span class="i18n-zh" lang="zh-CN">每日 CI 计算 <strong>D-7 ~ D-1</strong>（Asia/Shanghai，最近 7 个完整自然日）的有效 USD/CNY 日值均值：</span><span class="i18n-en" lang="en">The daily CI averages the valid USD/CNY daily values over <strong>D-7 ~ D-1</strong> (Asia/Shanghai, the last 7 complete calendar days):</span></li>
   </ul>
   <p class="mono">weekly_average = sum(valid observations) / number of valid observations</p>
   <ul>
-    <li>只使用数据源在窗口内实际提供的有效日值：<strong>不补周末、不插值、不取当天、无 fallback、无 retry</strong>；当日无有效值 → CI 失败，等待第二天。</li>
-    <li>结果写入 <span class="mono">config/exchange_rate.yaml</span>，文件只含 <span class="mono">usd_cny</span> 一个键。</li>
-    <li>该文件是全项目 USD → CNY 的唯一配置来源：代码不硬编码、不在多处定义、不实时联网取汇率。</li>
-    <li>这是用于横向比较的近似值，不是实时支付金额、财务结算、银行或信用卡汇率。</li>
-    <li>当前初始值：<span class="mono">usd_cny = {data.exchange_rate.usd_cny ?? "—"}</span>。</li>
+    <li><span class="i18n-zh" lang="zh-CN">只使用数据源在窗口内实际提供的有效日值：<strong>不补周末、不插值、不取当天、无 fallback、无 retry</strong>；当日无有效值 → CI 失败，等待第二天。</span><span class="i18n-en" lang="en">Only daily values the source actually published inside the window are used: <strong>no weekend backfill, no interpolation, no same-day value, no fallback, no retry</strong>; if today has no valid value the CI fails and waits for the next day.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">结果写入 </span><span class="i18n-en" lang="en">The result is written to </span><span class="mono">config/exchange_rate.yaml</span><span class="i18n-zh" lang="zh-CN">，文件只含 </span><span class="i18n-en" lang="en">, which holds only the single key </span><span class="mono">usd_cny</span><span class="i18n-zh" lang="zh-CN"> 一个键。</span><span class="i18n-en" lang="en">.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">该文件是全项目 USD → CNY 的唯一配置来源：代码不硬编码、不在多处定义、不实时联网取汇率。</span><span class="i18n-en" lang="en">That file is the single USD → CNY source for the whole project: nothing is hardcoded, defined twice, or fetched from the network at runtime.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">这是用于横向比较的近似值，不是实时支付金额、财务结算、银行或信用卡汇率。</span><span class="i18n-en" lang="en">It is an approximation for cross-plan comparison, not a live payment, financial settlement, bank or card rate.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">当前初始值：</span><span class="i18n-en" lang="en">Current value: </span><span class="mono">usd_cny = {data.exchange_rate.usd_cny ?? "—"}</span><span class="i18n-zh" lang="zh-CN">。</span><span class="i18n-en" lang="en">.</span></li>
   </ul>
 
-  <h2>5. 人民币成本如何计算</h2>
-  <p class="mono">CNY price = original price × usd_cny（仅当原始币种为 USD；CNY 直接使用；其他币种不强行换算）</p>
+  <h2><span class="i18n-zh" lang="zh-CN">5. 人民币成本如何计算</span><span class="i18n-en" lang="en">5. How CNY cost is computed</span></h2>
+  <p class="mono">CNY price = original price × usd_cny<span class="i18n-zh" lang="zh-CN">（仅当原始币种为 USD；CNY 直接使用；其他币种不强行换算）</span><span class="i18n-en" lang="en"> (only when the original currency is USD; CNY is used as-is; other currencies are never force-converted)</span></p>
   <ul>
-    <li>原始价格与币种永远保留；CNY 是派生值，只在展示层生成。</li>
-    <li>促销价单独记录，绝不覆盖标准价。</li>
+    <li><span class="i18n-zh" lang="zh-CN">原始价格与币种永远保留；CNY 是派生值，只在展示层生成。</span><span class="i18n-en" lang="en">Original price and currency are always kept; CNY is derived and exists only in the presentation layer.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">促销价单独记录，绝不覆盖标准价。</span><span class="i18n-en" lang="en">Promotional prices are recorded separately and never overwrite the standard price.</span></li>
   </ul>
 
-  <h2>6. Token Cost 如何计算</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">6. Token Cost 如何计算</span><span class="i18n-en" lang="en">6. How token cost is computed</span></h2>
   <ul>
-    <li>先保存原始事实：原始价格、币种、Token 额度、模型倍率。</li>
-    <li>再计算：<span class="mono">Effective RMB / 1M input tokens</span>、<span class="mono">/ 1M output tokens</span>、<span class="mono">/ 1M weighted tokens</span>。</li>
-    <li>额度或倍率不明确时标记 <span class="mono">not directly comparable</span>，不强行估算。</li>
-    <li>不输出主观“最好”评分；所有排序均为客观字段。</li>
+    <li><span class="i18n-zh" lang="zh-CN">先保存原始事实：原始价格、币种、Token 额度、模型倍率。</span><span class="i18n-en" lang="en">Source facts are stored first: original price, currency, token quota, model multipliers.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">再计算：</span><span class="i18n-en" lang="en">Then compute: </span><span class="mono">Effective RMB / 1M input tokens</span><span class="i18n-zh" lang="zh-CN">、</span><span class="i18n-en" lang="en">, </span><span class="mono">/ 1M output tokens</span><span class="i18n-zh" lang="zh-CN">、</span><span class="i18n-en" lang="en">, </span><span class="mono">/ 1M weighted tokens</span><span class="i18n-zh" lang="zh-CN">。</span><span class="i18n-en" lang="en">.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">额度或倍率不明确时标记 </span><span class="i18n-en" lang="en">When quota or multipliers are unclear, mark </span><span class="mono">not directly comparable</span><span class="i18n-zh" lang="zh-CN">，不强行估算。</span><span class="i18n-en" lang="en"> instead of force-estimating.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">不输出主观“最好”评分；所有排序均为客观字段。</span><span class="i18n-en" lang="en">No subjective “best” score is ever emitted; every sort is on an objective field.</span></li>
   </ul>
 
-  <h2>7. Community Report 如何处理</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">7. Community Report 如何处理</span><span class="i18n-en" lang="en">7. How community reports are handled</span></h2>
   <ul>
-    <li>写入 <span class="mono">data/providers/&lt;provider&gt;/community/</span>，必须标注 <span class="mono">source_type</span> 与 <span class="mono">confidence</span>（high / medium / low）。</li>
-    <li>不能直接进入 privacy / plan / model 的事实字段。</li>
+    <li><span class="i18n-zh" lang="zh-CN">写入 </span><span class="i18n-en" lang="en">Written to </span><span class="mono">data/providers/&lt;provider&gt;/community/</span><span class="i18n-zh" lang="zh-CN">，必须标注 </span><span class="i18n-en" lang="en">, and must carry </span><span class="mono">source_type</span><span class="i18n-zh" lang="zh-CN"> 与 </span><span class="i18n-en" lang="en"> and </span><span class="mono">confidence</span><span class="i18n-zh" lang="zh-CN">（high / medium / low）。</span><span class="i18n-en" lang="en"> (high / medium / low).</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">不能直接进入 privacy / plan / model 的事实字段。</span><span class="i18n-en" lang="en">They never enter the factual fields of privacy / plan / model records.</span></li>
   </ul>
 
-  <h2>8. Benchmark 数据如何分类</h2>
-  <p><span class="mono">official</span> / <span class="mono">measured</span> / <span class="mono">community_reported</span> / <span class="mono">estimated</span> —— 每条记录独立标注，绝不混合成一个数字。</p>
+  <h2><span class="i18n-zh" lang="zh-CN">8. Benchmark 数据如何分类</span><span class="i18n-en" lang="en">8. How benchmark data is classified</span></h2>
+  <p><span class="mono">official</span> / <span class="mono">measured</span> / <span class="mono">community_reported</span> / <span class="mono">estimated</span> <span class="i18n-zh" lang="zh-CN">—— 每条记录独立标注，绝不混合成一个数字。</span><span class="i18n-en" lang="en"> — every record is labelled individually and never blended into a single number.</span></p>
 
-  <h2>9. 时间戳与历史规则</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">9. 时间戳与历史规则</span><span class="i18n-en" lang="en">9. Timestamps and history rules</span></h2>
   <ul>
-    <li>统一 ISO 8601：<span class="mono">2026-09-23T10:30:00+08:00</span>；每条动态记录至少有 <span class="mono">checked_at</span> 字段。</li>
-    <li>变更用 <span class="mono">effective_from</span> / <span class="mono">effective_until</span> 表达，历史不静默覆盖。</li>
-    <li>下线套餐设 <span class="mono">status: deprecated/discontinued</span> 并保留文件，只有错误录入才删除。</li>
-    <li>审计记录 = Git history；变更展示 = <span class="mono">data/changes/</span>（结构化数据，不解析 commit message）。</li>
+    <li><span class="i18n-zh" lang="zh-CN">统一 ISO 8601：</span><span class="i18n-en" lang="en">ISO 8601 throughout: </span><span class="mono">2026-09-23T10:30:00+08:00</span><span class="i18n-zh" lang="zh-CN">；每条动态记录至少有 </span><span class="i18n-en" lang="en">. Every dynamic record carries at least </span><span class="mono">checked_at</span><span class="i18n-zh" lang="zh-CN"> 字段。</span><span class="i18n-en" lang="en">.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">变更用 </span><span class="i18n-en" lang="en">Changes are expressed with </span><span class="mono">effective_from</span><span class="i18n-zh" lang="zh-CN"> / </span><span class="i18n-en" lang="en"> / </span><span class="mono">effective_until</span><span class="i18n-zh" lang="zh-CN"> 表达，历史不静默覆盖。</span><span class="i18n-en" lang="en">; history is never silently overwritten.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">下线套餐设 </span><span class="i18n-en" lang="en">Retired plans get </span><span class="mono">status: deprecated/discontinued</span><span class="i18n-zh" lang="zh-CN"> 并保留文件，只有错误录入才删除。</span><span class="i18n-en" lang="en"> and keep their file; only mistaken entries are deleted.</span></li>
+    <li><span class="i18n-zh" lang="zh-CN">审计记录 = Git history；变更展示 = </span><span class="i18n-en" lang="en">Audit trail = Git history; change display = </span><span class="mono">data/changes/</span><span class="i18n-zh" lang="zh-CN">（结构化数据，不解析 commit message）。</span><span class="i18n-en" lang="en"> (structured data; commit messages are not parsed).</span></li>
   </ul>
 
-  <h2>10. 架构原则</h2>
+  <h2><span class="i18n-zh" lang="zh-CN">10. 架构原则</span><span class="i18n-en" lang="en">10. Architecture principles</span></h2>
   <div class="note">
     <span class="mono">data/**/*.yaml = canonical research data</span> ·
-    <span class="mono">config/exchange_rate.yaml = 计算配置</span> ·
-    <span class="mono">Git history = 审计 / 历史</span> ·
-    <span class="mono">generated JSON = 派生构建数据</span> ·
-    <span class="mono">Pages = 展示层</span> ·
-    <span class="mono">README = 项目介绍</span><br />
-    没有数据库：无 PostgreSQL / Redis / API server / 登录 / CMS。数据维护只能通过 Git 提交进入。
+    <span class="mono">config/exchange_rate.yaml = <span class="i18n-zh" lang="zh-CN">计算配置</span><span class="i18n-en" lang="en">calculation config</span></span> ·
+    <span class="mono">Git history = <span class="i18n-zh" lang="zh-CN">审计 / 历史</span><span class="i18n-en" lang="en">audit / history</span></span> ·
+    <span class="mono">generated JSON = <span class="i18n-zh" lang="zh-CN">派生构建数据</span><span class="i18n-en" lang="en">derived build data</span></span> ·
+    <span class="mono">Pages = <span class="i18n-zh" lang="zh-CN">展示层</span><span class="i18n-en" lang="en">presentation layer</span></span> ·
+    <span class="mono">README = <span class="i18n-zh" lang="zh-CN">项目介绍</span><span class="i18n-en" lang="en">project intro</span></span><br />
+    <span class="i18n-zh" lang="zh-CN">没有数据库：无 PostgreSQL / Redis / API server / 登录 / CMS。数据维护只能通过 Git 提交进入。</span><span class="i18n-en" lang="en">No database: no PostgreSQL / Redis / API server / login / CMS. Data can only be maintained through Git commits.</span>
   </div>
 </Base>
