@@ -1,7 +1,7 @@
 {
   "pricing.h1": "价格",
   "pricing.lead": "成本比较视图：原始价格 → 折算币种等价 → 年度成本 → 有效 Token 成本。",
-  "pricing.rateNote": "换算规则：<span class=\"mono\">CNY = USD × {rate}</span>，系数来自 <span class=\"mono\">config/exchange_rate.yaml</span>（每日 D-7 ~ D-1 七日均值，代码中从不硬编码）。这是用于横向比较的近似值，不是实时支付 / 结算汇率。",
+  "pricing.rateNote": "换算规则：<span class=\"mono\">CNY = USD × {rate}</span>，系数来自 <span class=\"mono\">config/exchange_rate.yaml</span>（<span class=\"mono\">planscope fetch-rate</span> 计算的 D-7 ~ D-1 七日均值，代码中从不硬编码）。这是用于横向比较的近似值，不是实时支付 / 结算汇率。",
   "pricing.col.original": "原始价格",
   "pricing.col.converted.cny": "人民币等价",
   "pricing.col.converted.usd": "美元等价",

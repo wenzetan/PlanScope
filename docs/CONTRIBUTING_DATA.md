@@ -1,7 +1,7 @@
 # Contributing Data
 
 这是**个人自用仓库**，不接受外部商业合作、推广或返利内容。
-本文档描述自己（或 Agent / Daily CI）向仓库写入 / 更新数据时的规范。
+本文档描述自己（或 Agent）向仓库写入 / 更新数据时的规范。
 
 ## 基本流程
 
@@ -95,8 +95,8 @@ Git blame 与历史因此保持可读。
 
 ### 9. 汇率只有一个来源
 
-- 每日 CI（`planscope fetch-rate`）负责更新 `config/exchange_rate.yaml`；手工一般不要改
-- 不硬编码、不多处定义、不联网取实时汇率（fetch 只发生在专用 CLI / CI 步骤）
+- `planscope fetch-rate` 负责更新 `config/exchange_rate.yaml`（需要时手动运行）；手工一般不要改
+- 不硬编码、不多处定义、不联网取实时汇率（fetch 只发生在专用 CLI 步骤）
 
 ### 10. Deprecated 不删除
 

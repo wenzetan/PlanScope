@@ -546,7 +546,7 @@ notes: null
 usd_cny: 6.70154
 ```
 
-- 每日 CI 计算 D-7 ~ D-1（Asia/Shanghai）有效日值均值写入；不补周末、不插值、不取当天、无 retry/fallback。
+- `planscope fetch-rate` 计算 D-7 ~ D-1（Asia/Shanghai）有效日值均值写入（需要时手动运行）；不补周末、不插值、不取当天、无 retry/fallback。
 - 全项目 USD → CNY 的唯一配置来源；代码不硬编码、不多处定义、不实时联网。
 - 它是计算配置，不是动态研究数据：不需要 `checked_at` / `sources`，不建复杂 Schema（校验：恰好只有 `usd_cny` 且为正数）。
 

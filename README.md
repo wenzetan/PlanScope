@@ -29,7 +29,7 @@ Structured YAML = source of truth   （Git repository = data store，没有数�
 Python          = collection / normalization / validation / analysis
 Static site     = presentation      （GitHub Pages = 主要界面）
 README          = 仓库介绍          （入口，不是数据库也不是仪表盘）
-GitHub Actions  = daily orchestration
+GitHub Actions  = validation + push-triggered deploy
 ```
 
 数据流：
@@ -88,25 +88,25 @@ GitHub Issues、Reddit、Discord、Telegram、论坛、博客、用户实际报�
 - **未知不编造**：未查证写 `null` / `unknown`；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录；无法换算单价标记 `not directly comparable`，不强行估算。
 - **来源与时间**：关键数据带 `sources` 与 `checked_at`（ISO 8601）；隐私字段逐条带 `source` + `checked_at`；历史用 `effective_from` / `effective_until`，不静默覆盖。
 - **模型按 Provider 记录**：同一 `model_id` 在不同 Provider 下的上下文、倍率、可用性互不覆盖。
-- **汇率唯一来源**：每日 CI 计算 `D-7 ~ D-1`（Asia/Shanghai，最近 7 个完整自然日）有效日值均值，写入 `config/exchange_rate.yaml`（只含 `usd_cny`）。不补周末、不插值、不取当天、无 retry / fallback；代码不硬编码、不实时联网取汇率。人民币值用于横向比较，不是支付 / 结算汇率。
+- **汇率唯一来源**：由 `planscope fetch-rate` 计算 `D-7 ~ D-1`（Asia/Shanghai，最近 7 个完整自然日）有效日值均值，写入 `config/exchange_rate.yaml`（只含 `usd_cny`）；需要时手动运行。不补周末、不插值、不取当天、无 retry / fallback；代码不硬编码、不实时联网取汇率。人民币值用于横向比较，不是支付 / 结算汇率。
 - **不做主观总分**：站点只展示客观字段，不输出 `best_plan` / `winner` / 综合评分。
 
 ---
 
 ## 更新机制
 
-GitHub Actions 每日运行一次：
+**没有定时任务。** 数据由人工（或 Agent）调研后提交；GitHub Actions 只做两件事：
 
 ```text
-Daily Research / Refresh → Validate → Test → Build site → Commit data → Deploy Pages
+push / PR       → Validate → Test → Build site（不部署）
+push to main    → Validate → Test → Build → Deploy GitHub Pages
+workflow_dispatch（手动）→ 同上，立即部署
 ```
 
-- 唯一 schedule：`cron: "17 2 * * *"`（UTC 02:17 ≈ 北京时间 10:17），无第二次自动执行。
-- **任意关键步骤失败 = workflow 失败**：不 retry、不 fallback、不部署半成品、不推送失败构建；当天失败就等第二天。
-- 成功后才部署 GitHub Pages；数据变更以 `chore(data): daily PlanScope refresh` 提交（无变更则不产生空 commit）。
-- **README 是人工维护的项目文档，不随每日数据变化重写。**
-
-见 [.github/workflows/daily-refresh.yml](.github/workflows/daily-refresh.yml)。
+- 部署工作流：[.github/workflows/deploy.yml](.github/workflows/deploy.yml)，`on: push`（仅 `data/**`、`site/**`、`config/**`、`schemas/**`）+ `workflow_dispatch`。
+- `validate.yml` 只校验与构建，**不部署**，所以普通 push 不会让线上半成品上线。
+- **任意关键步骤失败 = workflow 失败**：不 retry、不 fallback、不部署半成品。
+- **README 是人工维护的项目文档，不随数据变化自动重写。**
 
 ---
 
@@ -118,7 +118,7 @@ PlanScope/
 ├── AGENTS.md                  # Agent / 协作者规则 + 交接状态（先读这份）
 ├── skills/                    # 通用规范 skills（SKILL.md）：planscope-data / planscope-ops
 ├── config/
-│   └── exchange_rate.yaml     # 唯一汇率配置：usd_cny（每日 CI 更新）
+│   └── exchange_rate.yaml     # 唯一汇率配置：usd_cny（`planscope fetch-rate` 更新）
 ├── data/                      # ← source of truth（无数据库）
 │   ├── providers/<provider>/
 │   │   ├── provider.yaml      # Provider 元数据 + quota_policies（按代系）
@@ -136,7 +136,7 @@ PlanScope/
 ├── tests/                     # pytest
 ├── snapshots/                 # 页面快照（Phase 3）
 ├── docs/                      # DATA_MODEL / SOURCES / CONTRIBUTING_DATA / ROADMAP
-└── .github/workflows/         # validate.yml + daily-refresh.yml
+└── .github/workflows/         # validate.yml + deploy.yml
 ```
 
 **Agent / 自动化协作者请先读 [AGENTS.md](AGENTS.md)**（绝对规则、数据规则、修改流程与当前交接状态），
@@ -154,7 +154,7 @@ pip install -e ".[dev]"
 planscope validate              # 按 Schema 校验 data/ 与汇率配置
 planscope list providers
 planscope list plans
-planscope fetch-rate            # D-7 ~ D-1 USD/CNY 均值（CI 使用；失败即退出非 0）
+planscope fetch-rate            # D-7 ~ D-1 USD/CNY 均值（手动运行；失败即退出非 0）
 planscope export-site-data      # 从 YAML 导出站点数据
 pytest
 

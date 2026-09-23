@@ -1,7 +1,7 @@
 {
   "pricing.h1": "Pricing",
   "pricing.lead": "Cost comparison: original price → converted equivalent → annual cost → effective token cost.",
-  "pricing.rateNote": "Conversion rule: <span class=\"mono\">CNY = USD × {rate}</span>, with the factor from <span class=\"mono\">config/exchange_rate.yaml</span> (daily D-7 ~ D-1 seven-day average, never hardcoded). It is an approximation for cross-plan comparison, not a live payment / settlement rate.",
+  "pricing.rateNote": "Conversion rule: <span class=\"mono\">CNY = USD × {rate}</span>, with the factor from <span class=\"mono\">config/exchange_rate.yaml</span> (a D-7 ~ D-1 seven-day average computed by <span class=\"mono\">planscope fetch-rate</span>, never hardcoded). It is an approximation for cross-plan comparison, not a live payment / settlement rate.",
   "pricing.col.original": "Original price",
   "pricing.col.converted.cny": "CNY equivalent",
   "pricing.col.converted.usd": "USD equivalent",

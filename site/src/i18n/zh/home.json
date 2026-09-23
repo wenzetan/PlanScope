@@ -4,7 +4,7 @@
   "home.card.plans": "套餐",
   "home.card.models": "模型",
   "home.card.rate": "USD/CNY 7 日均值（D-7 ~ D-1）",
-  "home.rateNote": "汇率由每日 CI 计算最近 7 个完整自然日的有效日值均值（不补周末、不插值、不取当日），写入 <span class=\"mono\">config/exchange_rate.yaml</span>；人民币价格均为派生值，原始币种价格始终保留。完整方法见 <a href=\"{methodology}\">方法论</a>。",
+  "home.rateNote": "汇率由 <span class=\"mono\">planscope fetch-rate</span> 计算最近 7 个完整自然日的有效日值均值（需要时手动运行；不补周末、不插值、不取当日），写入 <span class=\"mono\">config/exchange_rate.yaml</span>；人民币价格均为派生值，原始币种价格始终保留。完整方法见 <a href=\"{methodology}\">方法论</a>。",
   "home.recentChanges": "最近变化",
   "home.viewAllChanges": "查看全部变化 →",
   "home.browse": "浏览",

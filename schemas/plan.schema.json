@@ -59,7 +59,7 @@
     "priority": {
       "type": ["string", "null"],
       "enum": ["p0", "p1", "p2", "p3", null],
-      "description": "调研优先级（Daily CI 跟踪顺序）。"
+      "description": "调研优先级（后续核验跟踪顺序）。"
     },
     "research_status": {
       "type": ["string", "null"],
@@ -377,7 +377,7 @@
     },
     "evidence_conflicts": {
       "type": ["array", "null"],
-      "description": "官方资料互相冲突时记录双方与裁决理由 —— 防止每日 CI 被旧页面改回旧值（如 Kimi 2 席 vs 5 席起购）。",
+      "description": "官方资料互相冲突时记录双方与裁决理由 —— 防止后续核验被旧页面改回旧值（如 Kimi 2 席 vs 5 席起购）。",
       "items": {
         "type": "object",
         "additionalProperties": false,

@@ -21,7 +21,7 @@
   "methodology.conflict.priority": "官方文档 &gt; 官方公告 &gt; 实测 &gt; 社区。",
   "methodology.conflict.keepBoth": "冲突时保留双方记录与各自 <span class=\"mono\">checked_at</span>，以更高优先级来源作为事实值，不静默覆盖历史。",
   "methodology.conflict.unresolved": "无法判定时字段保持 unknown，并在 note 中记录冲突。",
-  "methodology.exchange.avg": "每日 CI 计算 <strong>D-7 ~ D-1</strong>（Asia/Shanghai，最近 7 个完整自然日）的有效 USD/CNY 日值均值：",
+  "methodology.exchange.avg": "<span class=\"mono\">planscope fetch-rate</span> 计算 <strong>D-7 ~ D-1</strong>（Asia/Shanghai，最近 7 个完整自然日）的有效 USD/CNY 日值均值：",
   "methodology.exchange.validOnly": "只使用数据源在窗口内实际提供的有效日值：<strong>不补周末、不插值、不取当天、无 fallback、无 retry</strong>；当日无有效值 → CI 失败，等待第二天。",
   "methodology.exchange.writeFile": "结果写入 <span class=\"mono\">config/exchange_rate.yaml</span>，文件只含 <span class=\"mono\">usd_cny</span> 一个键。",
   "methodology.exchange.singleSource": "该文件是全项目 USD → CNY 的唯一配置来源：代码不硬编码、不在多处定义、不实时联网取汇率。",

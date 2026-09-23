@@ -34,7 +34,7 @@
 - **1 plan = 1 文件**；`id` 只需同 Provider 内唯一；**文件名 = `id`，是稳定标识符，不因展示名变化而重命名**。
 - **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），并有显式字段 `generation: legacy | current` 与 id 后缀对应，避免跨区域 / 跨人群 / 跨代系错误合并。**同价不同代 = 两个 Plan**（如旧 Andante 与新 Go 同为 ¥49，但 Go 无 Kimi Code，绝不改名合并）。
 - **老套餐 `status: legacy`** + `availability: {new_purchase, existing_subscription_use, existing_subscription_renewal, legacy_upgrade_path}`，区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
-- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin`：`official`（官方页面直出）/ `verified_public_report`（官方页暂缺、多份近期报道交叉核验，**待 CI 抓到官方页后只升级 origin、不改数值**）/ `derived`（×12 等计算）/ `unknown`。权益表内部相对倍率（如 Kimi 新版 `quota_multiplier: 2/4/14`）只存相对值，**不可反推绝对额度**。
+- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin`：`official`（官方页面直出）/ `verified_public_report`（官方页暂缺、多份近期报道交叉核验，**待抓到官方页后只升级 origin、不改数值**）/ `derived`（×12 等计算）/ `unknown`。权益表内部相对倍率（如 Kimi 新版 `quota_multiplier: 2/4/14`）只存相对值，**不可反推绝对额度**。
 - **字段级证据 `evidence`**：同一记录不同字段权威度不同时逐字段标 `authority: official|verified_public_report|community_reported|estimated|unknown` + `checked_at`，不要只写记录级 confidence。跨 Plan 的通用额度机制放 Provider 级 `quota_policies`（按 `generation: legacy/current` 维护，如旧体系有 7 日额度、新体系取消），Plan 自身 `quota` 块只写具体值（`weekly_quota_enabled: legacy→true / current→false`）。
 - **模型上限 ≠ 套餐生效上下文**：`context_window` 是模型上限；套餐封顶写 `availability[].effective_context_window`（如 K3 支持 1M，Moderato 只解锁 256K）。相对额度消耗用 `quota_relative_cost: {reference_model, approximate_ratio}`。**产品权益 ≠ 模型能力**：`benefits.long_conversation.million_token_support`（百万 Token 长对话权益）绝不写成模型 `context_window`。
 - **兼容七态**：`full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`unsupported_by_plan` = 平台支持但本套餐不含该能力（如 Go 无 Kimi Code）；`full` 保留给经核验的完全兼容。
@@ -42,7 +42,7 @@
 - **官方没给的价就不推算**：即使能由月价反推，年价官方未公布 → `annual: {amount: null, origin: unknown, note: ...}`，不写 ×12 结果（只有官方给了折合月价才允许派生）。
 - **后台消耗单独记录**：`background_consumption: [{resource, rate, unit, condition}]` —— 不要假定额度消耗都来自主动请求（如 Kimi Claw 云主机驻留 ~0.6%/天）。速度/消耗倍率进 `models.yaml` 的 `speed_multiplier` / `quota_usage_multiplier`，不留备注。
 - **seat 是数量不是档位**：按席位计价用 `pricing.billing_model: per_seat` + `pricing.seats {minimum / maximum_per_purchase / minimum_order}` + `additional_seats`（prorate 规则）；**单一 Plan × N seats**，绝不为不同席位数或虚构档位建文件（`cn-business-2-seat` 禁止）。不同产品线分开调研（Kimi Business ≠ Kimi API Enterprise，后者单独建 plan）。**billing 与额度刷新分开**：`pricing` 按年 ≠ `quota.refresh_period` 按月发额度，页面必须分别显示。
-- **官方冲突留档 `evidence_conflicts`**：官方文档互相矛盾时记录 `selected_value/selected_source` vs `conflicting_value/conflicting_source` + `resolution.reason`（如专页 2 席 vs API 概览旧文案 5 席，专页优先），防止每日 CI 被旧页面回改。
+- **官方冲突留档 `evidence_conflicts`**：官方文档互相矛盾时记录 `selected_value/selected_source` vs `conflicting_value/conflicting_source` + `resolution.reason`（如专页 2 席 vs API 概览旧文案 5 席，专页优先），防止后续核验被旧页面回改。
 - **不训练 ≠ ZDR**：企业「不用于模型训练」承诺不能推导 `ZDR = true` 或保留期 —— 逐字段保持 `unknown`（见 `privacy/business.yaml`）。隐私按 scope 拆文件：`privacy/consumer.yaml` / `privacy/business.yaml`，绝不合并。
 - **可用性三值**：`models: []` = 明确无可用模型（如 Go 无 Kimi Code）；`models: null` = 矩阵未公开；第三方 agent / API Key 未核实时 compat **显式写 `unknown`**，不继承个人版的 `officially_supported`。
 - **`record_kind` 区分语义**：`subscription` / `legacy_subscription` = 真订阅套餐；`payg_baseline` = 比较基线（Kimi 官方明确开放平台**无订阅制 API Plan**）；`enterprise_contract` = 合同型 Offer；另有 `prepaid_package / token_plan / credits_plan`。**账户 tier（API Tier 1/2/3）、seat 数量、地区报价都不是 Plan**，分别放 `rate_limits` / `pricing.seats` / 独立 region 文件。**短期体验不入统计、不建 Plan 记录**。Pages 按 record_kind 分组（Plans 默认只显示订阅类）。
@@ -52,7 +52,7 @@
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。
-- **汇率唯一来源** `config/exchange_rate.yaml`（仅 `usd_cny`）：不在代码里硬编码、不多处定义、不实时联网（只有 `planscope fetch-rate` / Daily CI 抓取）。
+- **汇率唯一来源** `config/exchange_rate.yaml`（仅 `usd_cny`）：不在代码里硬编码、不多处定义、不实时联网（只有 `planscope fetch-rate` 抓取）。
 - **关键数据必须带来源与时间**：`sources` / `source_refs`（引用本 Provider `sources.yaml`）+ `checked_at`（ISO 8601）；隐私字段逐条带 `source` + `checked_at`，value 非 null 时 source 必须是直接证据 URL。
 - **社区信息是信号不是事实**：`community/` 必须标 `confidence: high|medium|low`，不能写进 plan / models / privacy 的事实字段。
 - **模型按 Provider 记录**：`models.yaml` 是该 Provider 实际暴露能力的事实源；`data/models/` canonical 索引不得覆盖它；不存在全局 `model_id` 唯一能力表。
@@ -81,7 +81,7 @@ planscope export-site-data && cd site && npm ci && npm run build   # 涉及展�
 pip install -e ".[dev]"
 planscope validate              # schema + 目录/文件名一致性 + 引用完整性 + Anthropic 模型拦截 + 汇率配置
 planscope list providers|plans
-planscope fetch-rate            # D-7 ~ D-1 USD/CNY 七日均值（CI 用；失败即非 0，无 retry）
+planscope fetch-rate            # D-7 ~ D-1 USD/CNY 七日均值（手动运行；失败即非 0，无 retry）
 planscope export-site-data      # data/**/*.yaml -> site/src/generated/site_data.json（派生数据）
 pytest
 ```
@@ -122,13 +122,14 @@ pytest
   1. 补官方 URL → 各 Provider `sources.yaml`（**目前全部为注释空表**）+ 隐私字段 source（official 徽标）
   2. 等数据段：Kimi 海外个人 4 条 draft；BytePlus 精确 quota；LongCat Token Pack 规格与价格；
      Alibaba 个人 Token 现价；OpenCode 模型官方 id；`moonshot/` 空模板去留
-  3. Daily CI 持续把 unknown → official（各档精确额度 / 并发与 TPM / 合同折扣 / retention & ZDR /
+  3. 后续核验持续把 unknown → official（各档精确额度 / 并发与 TPM / 合同折扣 / retention & ZDR /
      各国本地售价 / GLM 大陆个人低价结算周期）
-  4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
-     站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
-     `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
+  4. **GitHub Pages 部署**：Source = GitHub Actions；部署由 `.github/workflows/deploy.yml` 负责 ——
+     push 到 main（限 `data/**`、`site/**`、`config/**`、`schemas/**`）自动部署，或 `gh workflow run deploy.yml`
+     手动触发。**没有定时 cron 部署**；`validate.yml` 只校验/构建不部署。站点：
+     **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）
   5. **audience 类目待统一（搁置，最后一起做）**：现网存在 `team`（GLM 团队版）、`business`（Kimi/OpenAI/Google）、
      `enterprise`、`api`；AGENTS 词汇表只列 `personal/team/enterprise`。等后续 Provider 调研完再整体收敛，
      **在此之前不单独改任何一条**。
-- **下一步**：本轮 16 Provider 首批数据已足够跑 Pages / Schema / 每日 Diff；继续按 Provider 补 URL 与 unknown，
+- **下一步**：本轮 16 Provider 首批数据已足够跑 Pages / Schema / Diff；继续按 Provider 补 URL 与 unknown，
   不追求 `research_status: complete`（统一保持 `verified_initial`，逐字段升级 origin）。

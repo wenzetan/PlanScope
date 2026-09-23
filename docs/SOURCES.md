@@ -78,10 +78,10 @@ used_for_training:
 
 ## 例外：`config/exchange_rate.yaml`
 
-汇率是项目内部计算假设，由每日 CI 计算 D-7 ~ D-1 有效日值均值写入：
+汇率是项目内部计算假设，由 `planscope fetch-rate` 计算 D-7 ~ D-1 有效日值均值写入（需要时手动运行）：
 
 - 文件**只含** `usd_cny` 一个键 —— 不保存 `source` / `checked_at` / 历史值 / URL
-- 来源与计算方法记录在 Methodology 页与 `daily-refresh.yml`（`planscope fetch-rate`）
+- 来源与计算方法记录在 Methodology 页与 `planscope fetch-rate`
 - 展示层的人民币值是派生值，可随时由原始币种价格 + 该系数重新计算
 
 ## 反模式

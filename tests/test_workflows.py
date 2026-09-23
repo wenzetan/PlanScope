@@ -1,17 +1,15 @@
 """Workflow files must parse as YAML and honor the CI design rules.
 
-daily-refresh.yml once shipped an unquoted ``run: echo "Phase 2: ..."`` —
-a colon+space inside a plain scalar is invalid YAML, GitHub could not parse
-the file, and the schedule would silently never fire (a 0-job placeholder
-failed run was created on push instead). These tests prevent that class of
-regression and lock in the trigger discipline.
+There are no scheduled jobs: deployment is push-triggered (``deploy.yml``) or
+manual ``workflow_dispatch``; ``validate.yml`` only validates/builds. These
+tests lock that in and guard the invalid plain-scalar colon regression.
 """
 
 from pathlib import Path
 
 import yaml
 
-WORKFLOWS = ("validate.yml", "daily-refresh.yml")
+WORKFLOWS = ("validate.yml", "deploy.yml")
 
 
 def _load(repo_root: Path, name: str) -> dict:
@@ -33,26 +31,31 @@ def test_validate_triggers_on_push_and_pr(repo_root: Path) -> None:
     assert "push" in trigger and "pull_request" in trigger
 
 
-def test_daily_refresh_has_exactly_one_schedule_and_no_extras(repo_root: Path) -> None:
-    """每日仅一个 schedule；不许 workflow_dispatch / retry / 多次自动触发。"""
-    data = _load(repo_root, "daily-refresh.yml")
+def test_deploy_triggers_on_push_to_main_and_manual_dispatch(repo_root: Path) -> None:
+    """部署只由 push（限路径）或手动 dispatch 触发。"""
+    data = _load(repo_root, "deploy.yml")
     trigger = data.get("on", data.get(True))
-    assert set(trigger) == {"schedule"}, f"daily-refresh 触发器必须只有 schedule，实际: {set(trigger)}"
-    schedules = trigger["schedule"]
-    assert len(schedules) == 1, "只允许一个 cron"
-    assert schedules[0]["cron"] == "17 2 * * *"
+    assert set(trigger) == {"push", "workflow_dispatch"}, set(trigger)
+    assert trigger["push"]["branches"] == ["main"]
+    paths = set(trigger["push"]["paths"])
+    assert {"data/**", "site/**", "config/**", "schemas/**"} <= paths
 
 
-def test_daily_refresh_never_retries(repo_root: Path) -> None:
-    """禁止 retry workflow / backoff / 手动触发 —— 只扫描实际 YAML 内容，忽略注释。"""
-    lines = (repo_root / ".github" / "workflows" / "daily-refresh.yml").read_text(
-        encoding="utf-8"
-    ).splitlines()
-    content = "\n".join(
-        line for line in lines if not line.strip().startswith("#")
-    ).lower()
-    for banned in ("retry:", "workflow_dispatch", "backoff", "max-attempt"):
-        assert banned not in content, f"daily-refresh 不允许出现: {banned}"
+def test_no_scheduled_workflows(repo_root: Path) -> None:
+    """本项目没有 cron：部署由 push / workflow_dispatch 触发，不自动定时执行。"""
+    for path in (repo_root / ".github" / "workflows").glob("*.yml"):
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        trigger = data.get("on", data.get(True)) or {}
+        assert "schedule" not in trigger, f"{path.name} 不应有 schedule"
+
+
+def test_workflows_never_retry(repo_root: Path) -> None:
+    """禁止 retry workflow / backoff —— 只扫描实际 YAML 内容，忽略注释。"""
+    for name in WORKFLOWS:
+        lines = (repo_root / ".github" / "workflows" / name).read_text(encoding="utf-8").splitlines()
+        content = "\n".join(line for line in lines if not line.strip().startswith("#")).lower()
+        for banned in ("retry:", "backoff", "max-attempt"):
+            assert banned not in content, f"{name} 不允许出现: {banned}"
 
 
 def test_no_colon_inside_plain_run_scalars(repo_root: Path) -> None:

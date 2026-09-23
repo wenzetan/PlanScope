@@ -4,7 +4,7 @@
   "home.card.plans": "Plans",
   "home.card.models": "Models",
   "home.card.rate": "USD/CNY 7-day average (D-7 ~ D-1)",
-  "home.rateNote": "The rate is the daily CI average of the last 7 complete calendar days (no weekend backfill, no interpolation, never today's value), written to <span class=\"mono\">config/exchange_rate.yaml</span>. CNY prices are always derived; original currency prices are never overwritten. Full method in <a href=\"{methodology}\">Methodology</a>.",
+  "home.rateNote": "The rate is computed by <span class=\"mono\">planscope fetch-rate</span> as the average of the last 7 complete calendar days (run manually when needed; no weekend backfill, no interpolation, never today's value), written to <span class=\"mono\">config/exchange_rate.yaml</span>. CNY prices are always derived; original currency prices are never overwritten. Full method in <a href=\"{methodology}\">Methodology</a>.",
   "home.recentChanges": "Recent changes",
   "home.viewAllChanges": "View all changes →",
   "home.browse": "Browse",

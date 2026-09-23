@@ -29,7 +29,7 @@ Structured YAML = source of truth   (Git repository = data store, no database)
 Python          = collection / normalization / validation / analysis
 Static site     = presentation      (GitHub Pages = primary interface)
 README          = repository intro  (entry point — neither database nor dashboard)
-GitHub Actions  = daily orchestration
+GitHub Actions  = validation + push-triggered deploy
 ```
 
 Data flow:
@@ -88,25 +88,25 @@ See [docs/SOURCES.md](docs/SOURCES.md) and the site's Methodology page.
 - **Unknown stays unknown**: unverified → `null` / `unknown`; vague vendor wording (`Unlimited`, `Fair Use`, …) recorded verbatim; plans that cannot be converted to a unit price are marked `not directly comparable` — never force an estimate.
 - **Sources & time**: key data carries `sources` and `checked_at` (ISO 8601); every privacy field carries its own `source` + `checked_at`; history uses `effective_from` / `effective_until` and is never silently overwritten.
 - **Models are provider-scoped**: the same `model_id` may differ across providers in context, multipliers, and availability — those never get merged into one global definition.
-- **Single exchange-rate source**: daily CI computes the average of valid daily values over `D-7 ~ D-1` (Asia/Shanghai, the last 7 complete calendar days) and writes `config/exchange_rate.yaml` (only `usd_cny`). No weekend filling, no interpolation, no current-day value, no retry/fallback; code never hardcodes the rate and never fetches live rates. CNY figures are for comparison — not payment or settlement rates.
+- **Single exchange-rate source**: `planscope fetch-rate` computes the average of valid daily values over `D-7 ~ D-1` (Asia/Shanghai, the last 7 complete calendar days) and writes `config/exchange_rate.yaml` (only `usd_cny`); run it manually when needed. No weekend filling, no interpolation, no current-day value, no retry/fallback; code never hardcodes the rate and never fetches live rates. CNY figures are for comparison — not payment or settlement rates.
 - **No subjective rankings**: only objective fields are shown; no `best_plan` / `winner` / composite score.
 
 ---
 
 ## Update mechanism
 
-GitHub Actions runs once per day:
+**There is no scheduled job.** Data is researched and committed by hand (or by an agent); GitHub Actions only does two things:
 
 ```text
-Daily Research / Refresh → Validate → Test → Build site → Commit data → Deploy Pages
+push / PR    → Validate → Test → Build site (no deploy)
+push to main → Validate → Test → Build → Deploy GitHub Pages
+workflow_dispatch (manual) → same as above, deploy immediately
 ```
 
-- A single schedule: `cron: "17 2 * * *"` (02:17 UTC ≈ 10:17 Asia/Shanghai). No second automatic run.
-- **Any failed step fails the workflow**: no retry, no fallback, no half-deployed site, no half-updated data, no failed-build push; a failed day simply waits for the next.
-- GitHub Pages deploys only after refresh + validate + tests + build succeed; data changes are committed as `chore(data): daily PlanScope refresh` (no empty commits).
-- **The README is manually maintained project documentation — it is not regenerated daily.**
-
-See [.github/workflows/daily-refresh.yml](.github/workflows/daily-refresh.yml).
+- Deploy workflow: [.github/workflows/deploy.yml](.github/workflows/deploy.yml), `on: push` (only `data/**`, `site/**`, `config/**`, `schemas/**`) + `workflow_dispatch`.
+- `validate.yml` validates and builds but never deploys, so an ordinary push cannot ship a half-built site.
+- **Any failed step fails the workflow**: no retry, no fallback, no half-deployed site.
+- **The README is manually maintained project documentation — it is not regenerated automatically.**
 
 ---
 
@@ -118,7 +118,7 @@ PlanScope/
 ├── AGENTS.md                  # agent / collaborator rules + handover status (read first)
 ├── skills/                    # vendor-neutral skills (SKILL.md): planscope-data / planscope-ops
 ├── config/
-│   └── exchange_rate.yaml     # single FX config: usd_cny (updated by daily CI)
+│   └── exchange_rate.yaml     # single FX config: usd_cny (updated by `planscope fetch-rate`)
 ├── data/                      # ← source of truth (no database)
 │   ├── providers/<provider>/
 │   │   ├── provider.yaml      # provider metadata + quota_policies (per generation)
@@ -136,7 +136,7 @@ PlanScope/
 ├── tests/                     # pytest
 ├── snapshots/                 # page snapshots (Phase 3)
 ├── docs/                      # DATA_MODEL / SOURCES / CONTRIBUTING_DATA / ROADMAP
-└── .github/workflows/         # validate.yml + daily-refresh.yml
+└── .github/workflows/         # validate.yml + deploy.yml
 ```
 
 **Agents / collaborators: read [AGENTS.md](AGENTS.md) first** (absolute rules, data rules, change workflow, and current handover status); field-level details in [docs/DATA_MODEL.md](docs/DATA_MODEL.md).
@@ -153,7 +153,7 @@ pip install -e ".[dev]"
 planscope validate              # validate data/ and the FX config against schemas
 planscope list providers
 planscope list plans
-planscope fetch-rate            # D-7 ~ D-1 USD/CNY average (used by CI; fails with non-zero exit)
+planscope fetch-rate            # D-7 ~ D-1 USD/CNY average (run manually; fails with non-zero exit)
 planscope export-site-data      # export YAML -> site data JSON
 pytest
 

@@ -21,7 +21,7 @@
   "methodology.conflict.priority": "Official docs &gt; official announcements &gt; measurements &gt; community.",
   "methodology.conflict.keepBoth": "Both sides of a conflict are kept with their own <span class=\"mono\">checked_at</span>; the higher-priority source becomes the factual value and history is never silently overwritten.",
   "methodology.conflict.unresolved": "When it cannot be resolved, the field stays unknown and the conflict is recorded in the note.",
-  "methodology.exchange.avg": "The daily CI averages the valid USD/CNY daily values over <strong>D-7 ~ D-1</strong> (Asia/Shanghai, the last 7 complete calendar days):",
+  "methodology.exchange.avg": "<span class=\"mono\">planscope fetch-rate</span> averages the valid USD/CNY daily values over <strong>D-7 ~ D-1</strong> (Asia/Shanghai, the last 7 complete calendar days):",
   "methodology.exchange.validOnly": "Only daily values the source actually published inside the window are used: <strong>no weekend backfill, no interpolation, no same-day value, no fallback, no retry</strong>; if today has no valid value the CI fails and waits for the next day.",
   "methodology.exchange.writeFile": "The result is written to <span class=\"mono\">config/exchange_rate.yaml</span>, which holds only the single key <span class=\"mono\">usd_cny</span>.",
   "methodology.exchange.singleSource": "That file is the single USD → CNY source for the whole project: nothing is hardcoded, defined twice, or fetched from the network at runtime.",
