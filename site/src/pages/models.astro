@@ -1,5 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import { t } from "../i18n/index.js";
 import { href } from "../lib/base.js";
 import { data } from "../lib/data.js";
 import { display, statusBadge, when } from "../lib/format.js";
@@ -15,16 +17,16 @@ for (const model of data.models) {
 const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
-<Base title="Models" current="models/">
-  <h1>Models</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">回答“哪些 Plan 可以使用某个模型”。同一 model_id 在不同 Provider 下的能力、上下文、倍率与可用性分别记录，互不覆盖。</span><span class="i18n-en" lang="en">Answers “which plans unlock this model”. The same model_id is recorded separately per Provider — capabilities, context, multipliers and availability never overwrite each other.</span></p>
+<Base titleKey="models" current="models/">
+  <h1><T k="models.h1" /></h1>
+  <p class="lead"><T k="models.lead" /></p>
 
   <div class="toolbar">
-    <input id="q" type="search" placeholder="搜索 model / provider…" data-en-placeholder="Search model / provider…" aria-label="搜索模型" data-en-aria-label="Search models" />
-    <span class="count" id="count"><span class="i18n-zh" lang="zh-CN">{data.models.length} / {data.models.length} 个模型组</span><span class="i18n-en" lang="en">{data.models.length} / {data.models.length} model groups</span></span>
+    <input id="q" type="search" placeholder={t("zh", "models.searchPlaceholder")} data-i18n-attr="placeholder:models.searchPlaceholder,aria-label:models.searchAria" aria-label={t("zh", "models.searchAria")} />
+    <span class="count" id="count"><T k="models.count" vars={{ visible: data.models.length, total: data.models.length }} /></span>
   </div>
 
-  {groups.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无模型数据（先运行 planscope export-site-data）。</span><span class="i18n-en" lang="en">No model data yet (run planscope export-site-data first).</span></div>}
+  {groups.length === 0 && <div class="empty"><T k="models.empty" /></div>}
 
   {groups.map(([modelId, entries]) => (
     <section class="model-group" data-search={`${modelId} ${entries.map((e) => `${e.provider} ${e.display_name || ""}`).join(" ")}`.toLowerCase()}>
@@ -33,17 +35,17 @@ const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]))
         <table>
           <thead>
             <tr>
-              <th>Provider</th>
-              <th><span class="i18n-zh" lang="zh-CN">可用套餐</span><span class="i18n-en" lang="en">Available from</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">上下文</span><span class="i18n-en" lang="en">Context</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">最大输出</span><span class="i18n-en" lang="en">Max output</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">多模态</span><span class="i18n-en" lang="en">Multimodal</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">推理</span><span class="i18n-en" lang="en">Reasoning</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">工具调用</span><span class="i18n-en" lang="en">Tool calling</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">倍率</span><span class="i18n-en" lang="en">Multiplier</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">额度行为</span><span class="i18n-en" lang="en">Quota behavior</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+              <th><T k="col.provider" /></th>
+              <th><T k="models.colAvailable" /></th>
+              <th><T k="models.colContext" /></th>
+              <th><T k="models.colMaxOutput" /></th>
+              <th><T k="models.colMultimodal" /></th>
+              <th><T k="models.colReasoning" /></th>
+              <th><T k="models.colToolCalling" /></th>
+              <th><T k="models.colMultiplier" /></th>
+              <th><T k="models.colQuotaBehavior" /></th>
+              <th><T k="col.status" /></th>
+              <th><T k="col.checked" /></th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +83,8 @@ const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]))
   ))}
 
   <script>
+    import { t } from "../i18n/index.js";
+
     const q = document.getElementById("q");
     const groups = Array.from(document.querySelectorAll(".model-group"));
     const count = document.getElementById("count");
@@ -93,8 +97,8 @@ const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]))
         group.style.display = ok ? "" : "none";
         if (ok) visible += 1;
       }
-      const suffix = document.documentElement.dataset.lang === "en" ? "model groups" : "个模型组";
-      if (count) count.textContent = `${visible} / ${total} ${suffix}`;
+      const lang = document.documentElement.dataset.lang === "en" ? "en" : "zh";
+      if (count) count.textContent = t(lang, "models.count", { visible, total });
     }
     if (q) q.addEventListener("input", apply);
     document.addEventListener("planscope:langchange", apply);

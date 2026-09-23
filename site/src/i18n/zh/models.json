@@ -1,0 +1,16 @@
+{
+  "models.h1": "模型",
+  "models.lead": "回答“哪些 Plan 可以使用某个模型”。同一 model_id 在不同 Provider 下的能力、上下文、倍率与可用性分别记录，互不覆盖。",
+  "models.searchPlaceholder": "搜索 model / provider…",
+  "models.searchAria": "搜索模型",
+  "models.count": "{visible} / {total} 个模型组",
+  "models.empty": "暂无模型数据（先运行 planscope export-site-data）。",
+  "models.colAvailable": "可用套餐",
+  "models.colContext": "上下文",
+  "models.colMaxOutput": "最大输出",
+  "models.colMultimodal": "多模态",
+  "models.colReasoning": "推理",
+  "models.colToolCalling": "工具调用",
+  "models.colMultiplier": "倍率",
+  "models.colQuotaBehavior": "额度行为"
+}

@@ -1,0 +1,12 @@
+---
+// Currency-dependent label. Dictionary keys are `<k>.cny` / `<k>.usd`,
+// each defined in both languages, so all four (language × currency)
+// combinations stay consistent. Visibility is driven purely by CSS
+// (`html[data-currency]`), no client-side text rewriting.
+import { t } from "../i18n/index.js";
+
+const { k, vars } = Astro.props;
+const span = (lang, cur) =>
+  `<span class="i18n-${lang}" lang="${lang === "zh" ? "zh-CN" : "en"}">${t(lang, `${k}.${cur}`, vars)}</span>`;
+---
+<span class="cur-cny" set:html={span("zh", "cny") + span("en", "cny")}></span><span class="cur-usd" set:html={span("zh", "usd") + span("en", "usd")}></span>

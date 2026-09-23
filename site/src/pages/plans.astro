@@ -1,8 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import Cur from "../components/Cur.astro";
+import Money from "../components/Money.astro";
+import { t } from "../i18n/index.js";
 import { data } from "../lib/data.js";
-import { display, money, cny, statusBadge, when } from "../lib/format.js";
+import { display, money, statusBadge, when } from "../lib/format.js";
 
+const rate = data.exchange_rate.usd_cny;
 const providerOptions = [...new Set(data.plans.map((p) => p.provider))].sort();
 const typeOptions = [...new Set(data.plans.flatMap((p) => p.type || []))].sort();
 const regionOptions = [...new Set(data.plans.map((p) => p.region).filter(Boolean))].sort();
@@ -55,65 +60,65 @@ const rows = data.plans.map((plan) => {
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
-  return { plan, search, compatSummary, kind };
+  return { plan, search, compatSummary, kind, perSeat };
 });
 ---
 
-<Base title="Plans" current="plans/">
-  <h1>Plans</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">核心对比页。价格保留原始币种；CNY 为派生值；额度中的厂商原话（Unlimited / Fair Use 等）原样展示。</span><span class="i18n-en" lang="en">The main comparison page. Prices keep their original currency; CNY is derived; vendor wording (Unlimited / Fair Use, etc.) is quoted verbatim.</span></p>
+<Base titleKey="plans" current="plans/">
+  <h1><T k="plans.h1" /></h1>
+  <p class="lead"><T k="plans.lead" /></p>
 
   <div class="toolbar">
-    <input id="q" type="search" placeholder="搜索 plan / provider / 兼容性…" data-en-placeholder="Search plan / provider / compatibility…" aria-label="搜索套餐" data-en-aria-label="Search plans" />
-    <select id="f-kind" aria-label="按记录类型筛选" data-en-aria-label="Filter by record kind">
-      <option value="plans" selected data-en-text="Plans (subscription + legacy)">套餐（subscription + legacy）</option>
-      <option value="all" data-en-text="All records">全部记录</option>
+    <input id="q" type="search" placeholder={t("zh", "plans.searchPlaceholder")} aria-label={t("zh", "plans.searchAria")} data-i18n-attr="placeholder:plans.searchPlaceholder,aria-label:plans.searchAria" />
+    <select id="f-kind" aria-label={t("zh", "plans.filterKindAria")} data-i18n-attr="aria-label:plans.filterKindAria">
+      <option value="plans" selected data-i18n="plans.kindPlans">{t("zh", "plans.kindPlans")}</option>
+      <option value="all" data-i18n="plans.kindAll">{t("zh", "plans.kindAll")}</option>
       {kindOptions.map((k) => <option value={k}>{k}</option>)}
     </select>
-    <select id="f-provider" aria-label="按 Provider 筛选" data-en-aria-label="Filter by provider">
-      <option value="" data-en-text="All providers">全部 Provider</option>
+    <select id="f-provider" aria-label={t("zh", "plans.filterProviderAria")} data-i18n-attr="aria-label:plans.filterProviderAria">
+      <option value="" data-i18n="plans.allProviders">{t("zh", "plans.allProviders")}</option>
       {providerOptions.map((id) => <option value={id}>{id}</option>)}
     </select>
-    <select id="f-type" aria-label="按套餐类型筛选" data-en-aria-label="Filter by plan type">
-      <option value="" data-en-text="All types">全部类型</option>
+    <select id="f-type" aria-label={t("zh", "plans.filterTypeAria")} data-i18n-attr="aria-label:plans.filterTypeAria">
+      <option value="" data-i18n="plans.allTypes">{t("zh", "plans.allTypes")}</option>
       {typeOptions.map((type) => <option value={type}>{type}</option>)}
     </select>
-    <select id="f-status" aria-label="按状态筛选" data-en-aria-label="Filter by status">
-      <option value="" data-en-text="All statuses">全部状态</option>
+    <select id="f-status" aria-label={t("zh", "plans.filterStatusAria")} data-i18n-attr="aria-label:plans.filterStatusAria">
+      <option value="" data-i18n="plans.allStatuses">{t("zh", "plans.allStatuses")}</option>
       {[...new Set(data.plans.map((p) => p.status))].sort().map((s) => <option value={s}>{s}</option>)}
     </select>
-    <select id="f-region" aria-label="按区域筛选" data-en-aria-label="Filter by region">
-      <option value="" data-en-text="All regions">全部区域</option>
+    <select id="f-region" aria-label={t("zh", "plans.filterRegionAria")} data-i18n-attr="aria-label:plans.filterRegionAria">
+      <option value="" data-i18n="plans.allRegions">{t("zh", "plans.allRegions")}</option>
       {regionOptions.map((r) => <option value={r}>{r}</option>)}
     </select>
-    <select id="f-audience" aria-label="按人群筛选" data-en-aria-label="Filter by audience">
-      <option value="" data-en-text="All audiences">全部人群</option>
+    <select id="f-audience" aria-label={t("zh", "plans.filterAudienceAria")} data-i18n-attr="aria-label:plans.filterAudienceAria">
+      <option value="" data-i18n="plans.allAudiences">{t("zh", "plans.allAudiences")}</option>
       {audienceOptions.map((a) => <option value={a}>{a}</option>)}
     </select>
-    <span class="count" id="count"><span class="i18n-zh" lang="zh-CN">{rows.length} / {rows.length} 个套餐</span><span class="i18n-en" lang="en">{rows.length} / {rows.length} plans</span></span>
+    <span class="count" id="count"><T k="plans.count" vars={{ visible: rows.length, total: rows.length }} /></span>
   </div>
 
   <div class="table-scroll">
     <table id="plans-table">
       <thead>
         <tr>
-          <th class="sortable" data-sort="provider">Provider</th>
-          <th class="sortable" data-sort="name"><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plan</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">类型</span><span class="i18n-en" lang="en">Type</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">区域</span><span class="i18n-en" lang="en">Region</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">人群</span><span class="i18n-en" lang="en">Audience</span></th>
-          <th class="sortable" data-sort="status"><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
-          <th class="sortable" data-sort="kind"><span class="i18n-zh" lang="zh-CN">记录类型</span><span class="i18n-en" lang="en">Kind</span></th>
-          <th class="sortable" data-sort="monthly"><span class="i18n-zh" lang="zh-CN">月价（原币种）</span><span class="i18n-en" lang="en">Monthly (original)</span></th>
-          <th class="sortable" data-sort="monthly-cny"><span class="i18n-zh" lang="zh-CN">月价（CNY）</span><span class="i18n-en" lang="en">Monthly (CNY)</span></th>
-          <th class="sortable" data-sort="annual"><span class="i18n-zh" lang="zh-CN">年价（可派生）</span><span class="i18n-en" lang="en">Annual (derived ok)</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">Token / 滚动额度</span><span class="i18n-en" lang="en">Token / rolling quota</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">Coding / Agent 兼容性</span><span class="i18n-en" lang="en">Coding / Agent compatibility</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+          <th class="sortable" data-sort="provider"><T k="col.provider" /></th>
+          <th class="sortable" data-sort="name"><T k="col.plan" /></th>
+          <th><T k="col.type" /></th>
+          <th><T k="col.region" /></th>
+          <th><T k="col.audience" /></th>
+          <th class="sortable" data-sort="status"><T k="col.status" /></th>
+          <th class="sortable" data-sort="kind"><T k="col.kind" /></th>
+          <th class="sortable" data-sort="monthly"><T k="plans.col.monthlyOriginal" /></th>
+          <th class="sortable" data-sort="monthly-cny"><Cur k="plans.col.monthlyConverted" /></th>
+          <th class="sortable" data-sort="annual"><T k="plans.col.annual" /></th>
+          <th><T k="plans.col.quota" /></th>
+          <th><T k="plans.col.compat" /></th>
+          <th><T k="col.checked" /></th>
         </tr>
       </thead>
       <tbody>
-        {rows.map(({ plan, search, compatSummary }) => (
+        {rows.map(({ plan, search, compatSummary, perSeat }) => (
           <tr
             data-search={search}
             data-provider={plan.provider || ""}
@@ -140,38 +145,41 @@ const rows = data.plans.map((plan) => {
             <td><span class="badge">{plan.record_kind || "subscription"}</span></td>
             <td>
               {money(plan.price_view.monthly, plan.price_view.currency)}
-              {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+              {perSeat && plan.price_view.monthly !== null && <span class="small muted"> <T k="common.perSeat" /></span>}
               {plan.price_view.current_offer_amount !== null && plan.price_view.current_offer_amount !== undefined && (
                 <div class="small muted">
-                  offer: {money(plan.price_view.current_offer_amount, plan.price_view.currency)}
+                  <T k="plans.offer" /> {money(plan.price_view.current_offer_amount, plan.price_view.currency)}
                 </div>
               )}
               {(plan.price_view.offers || []).map((o) =>
                 o && o.amount !== null && o.amount !== undefined ? (
                   <div class="small muted">
                     {o.market || o.region || "offer"}: {money(o.amount, o.currency)}
-                    {o.billing_model === "per_seat" ? " /seat" : ""}
+                    {o.billing_model === "per_seat" && <T k="common.perSeat" />}
                   </div>
                 ) : null
               )}
             </td>
             <td>
-              {cny(plan.price_view.monthly_cny)}
-              {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+              <Money amount={plan.price_view.monthly} currency={plan.price_view.currency} rate={rate} />
+              {perSeat && plan.price_view.monthly !== null && <span class="small muted"> <T k="common.perSeat" /></span>}
               {plan.price_view.currency && plan.price_view.monthly !== null && plan.price_view.monthly_cny === null && (
-                <div class="small muted">not directly comparable</div>
+                <div class="small muted"><T k="common.notDirectlyComparable" /></div>
               )}
             </td>
             <td>
               {plan.price_view.annual_shown !== null
                 ? <>
                     {money(plan.price_view.annual_shown, plan.price_view.currency)}
-                    {plan.price_view.billing_model === "per_seat" && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
-                    {" / "}{cny(plan.price_view.annual_cny)}
-                    {plan.price_view.billing_model === "per_seat" && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+                    {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
+                    {" / "}
+                    <Money amount={plan.price_view.annual_shown} currency={plan.price_view.currency} rate={rate} />
+                    {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
                     {plan.price_view.annual_derived && (
                       <div class="small muted">
-                        derived: <span class="i18n-zh" lang="zh-CN">{cny(plan.price_view.annual_effective_monthly)}/月 × 12</span><span class="i18n-en" lang="en">{cny(plan.price_view.annual_effective_monthly)}/mo × 12</span>
+                        <T k="plans.annualDerivedLabel" />{" "}
+                        <Money amount={plan.price_view.annual_effective_monthly} currency={plan.price_view.currency} rate={rate} />
+                        <T k="plans.annualDerivedSuffix" />
                       </div>
                     )}
                   </>
@@ -189,51 +197,48 @@ const rows = data.plans.map((plan) => {
               )}
               {fmtEstimate(plan.estimated_weekly_tokens) && (
                 <div class="small muted">
-                  ≈ {fmtEstimate(plan.estimated_weekly_tokens)} tokens/week (official estimate
-                  {plan.estimated_weekly_tokens?.basis?.cache_hit_rate != null
-                    ? `, ${Math.round(plan.estimated_weekly_tokens.basis.cache_hit_rate * 100)}% cache hit`
-                    : ""}
-                  )
+                  <T k="plans.estimate" vars={{ range: fmtEstimate(plan.estimated_weekly_tokens) }} />
+                  {plan.estimated_weekly_tokens?.basis?.cache_hit_rate != null && (
+                    <T k="plans.estimateCache" vars={{ pct: Math.round(plan.estimated_weekly_tokens.basis.cache_hit_rate * 100) }} />
+                  )}
                 </div>
               )}
               {(plan.quota_view.published_references || []).length > 0 && (
                 <div class="small muted">
-                  页仍显示参考值（非 canonical）:{" "}
+                  <T k="plans.publishedRef" />{" "}
                   {(plan.quota_view.published_references || [])
                     .map((r) => `${fmtAmount(r.amount)} ${r.unit}${r.window ? " / " + r.window : ""}`)
                     .join(" · ")}
                 </div>
               )}
               {plan.quota_view.allocation_scope && (
-                <div class="small muted">quota scope: {plan.quota_view.allocation_scope}</div>
+                <div class="small muted"><T k="plans.quotaScope" /> {plan.quota_view.allocation_scope}</div>
               )}
               {plan.extra_usage?.supported && (
                 <div class="small muted">
-                  overage PAYG
-                  {plan.extra_usage.admin_enable_required ? " (admin-enabled)" : ""}
-                  {plan.extra_usage.budget_control ? " · budget control" : ""}
+                  <T k="plans.overage" />
+                  {plan.extra_usage.admin_enable_required && <T k="plans.overageAdmin" />}
+                  {plan.extra_usage.budget_control && <T k="plans.overageBudget" />}
                 </div>
               )}
               {plan.quota_view.refresh_period && (
                 <div class="small muted">
-                  quota refresh: {plan.quota_view.refresh_period}
+                  <T k="plans.quotaRefresh" vars={{ period: plan.quota_view.refresh_period }} />
                   {plan.quota_view.allocation_scope ? ` · ${plan.quota_view.allocation_scope}` : ""}
                   {plan.price_view.billing_model === "per_seat" && (
-                    <>
-                      {" · "}
-                      <span class="i18n-zh" lang="zh-CN">年付≠年度发额度</span><span class="i18n-en" lang="en">billed yearly ≠ yearly quota</span>
-                    </>
+                    <>{" · "}<T k="plans.billedYearlyNotQuota" /></>
                   )}
                 </div>
               )}
               {plan.quota_view.shared_pool_enabled && (
                 <div class="small muted">
-                  shared pool ({display(plan.quota_view.shared_pool_refresh, "?")}
-                  {plan.quota_view.shared_pool_rollover === false ? ", no rollover" : ""})
+                  {plan.quota_view.shared_pool_rollover === false
+                    ? <T k="plans.sharedPoolNoRollover" vars={{ refresh: display(plan.quota_view.shared_pool_refresh, "?") }} />
+                    : <T k="plans.sharedPool" vars={{ refresh: display(plan.quota_view.shared_pool_refresh, "?") }} />}
                 </div>
               )}
               {plan.quota_view.agent_tasks_approx !== null && plan.quota_view.agent_tasks_approx !== undefined && (
-                <div class="small muted">≈ {plan.quota_view.agent_tasks_approx} agent tasks (approx)</div>
+                <div class="small muted"><T k="plans.agentTasks" vars={{ n: plan.quota_view.agent_tasks_approx }} /></div>
               )}
               {plan.quota_view.usage_policy && <div class="small">“{plan.quota_view.usage_policy}”</div>}
             </td>
@@ -245,24 +250,13 @@ const rows = data.plans.map((plan) => {
     </table>
   </div>
 
-  {rows.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无 Plan 数据（先运行 planscope export-site-data）。</span><span class="i18n-en" lang="en">No plan data yet (run planscope export-site-data first).</span></div>}
+  {rows.length === 0 && <div class="empty"><T k="plans.empty" /></div>}
 
-  <p class="note small">
-    <span class="i18n-zh" lang="zh-CN">
-      兼容状态取值：full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown ——
-      “兼容 OpenAI API” 不等于 “完全兼容”；officially_supported = 官方文档明确支持（未做全量核验）；
-      unsupported_by_plan = 平台支持但本套餐不含该能力（如 Go 无 Kimi Code）。
-      无法诚实换算为单价的套餐会标记 <span class="mono">not directly comparable</span>，不强行估算。
-    </span><span class="i18n-en" lang="en">
-      Compatibility values: full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown ——
-      “OpenAI-API compatible” does not mean “fully compatible”; officially_supported = explicitly documented by the vendor
-      (not exhaustively re-verified); unsupported_by_plan = the platform supports it but this plan does not include it
-      (e.g. Go has no Kimi Code). Plans that cannot honestly be converted to a unit price are marked
-      <span class="mono">not directly comparable</span> instead of being force-estimated.
-    </span>
-  </p>
+  <p class="note small"><T k="plans.compatNote" /></p>
 
   <script>
+    import { t } from "../i18n/index.js";
+
     const table = document.getElementById("plans-table");
     if (table) {
       const rows = Array.from(table.querySelectorAll("tbody tr"));
@@ -304,8 +298,8 @@ const rows = data.plans.map((plan) => {
           row.style.display = ok ? "" : "none";
           if (ok) visible += 1;
         }
-        const suffix = document.documentElement.dataset.lang === "en" ? "plans" : "个套餐";
-        if (count) count.textContent = `${visible} / ${total} ${suffix}`;
+        const lang = document.documentElement.dataset.lang === "en" ? "en" : "zh";
+        if (count) count.textContent = t(lang, "plans.count", { visible, total });
       }
 
       for (const el of [q, fp, ft, fs, fr, fa, fk]) {

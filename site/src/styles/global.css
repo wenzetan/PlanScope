@@ -171,12 +171,16 @@ td.wrap-cell { white-space: normal; min-width: 220px; }
 html[data-lang="en"] .i18n-zh { display: none; }
 html[data-lang="en"] .i18n-en { display: inline; }
 
-.lang-switch {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: auto;
-}
-.lang-switch button {
+/* ---------- Currency: both derived values ship in the markup; the
+       selected one is shown via <html data-currency>. Original-currency
+       prices are rendered outside .cur-* and never change. ---------- */
+.cur-usd { display: none; }
+html[data-currency="usd"] .cur-cny { display: none; }
+html[data-currency="usd"] .cur-usd { display: inline; }
+
+.switches { display: inline-flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.lang-switch, .cur-switch { display: inline-flex; gap: 4px; }
+.lang-switch button, .cur-switch button {
   font: inherit;
   font-size: 0.85rem;
   line-height: 1;
@@ -187,8 +191,8 @@ html[data-lang="en"] .i18n-en { display: inline; }
   color: var(--muted);
   cursor: pointer;
 }
-.lang-switch button:hover { color: var(--accent); border-color: var(--accent); }
-.lang-switch button[aria-pressed="true"] {
+.lang-switch button:hover, .cur-switch button:hover { color: var(--accent); border-color: var(--accent); }
+.lang-switch button[aria-pressed="true"], .cur-switch button[aria-pressed="true"] {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;

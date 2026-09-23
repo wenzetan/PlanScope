@@ -1,8 +1,13 @@
 ---
 import Base from "../../layouts/Base.astro";
+import T from "../../components/T.astro";
+import Cur from "../../components/Cur.astro";
+import Money from "../../components/Money.astro";
 import { href } from "../../lib/base.js";
 import { data } from "../../lib/data.js";
-import { display, money, cny, statusBadge, when } from "../../lib/format.js";
+import { display, money, statusBadge, when } from "../../lib/format.js";
+
+const rate = data.exchange_rate.usd_cny;
 
 export function getStaticPaths() {
   return data.providers.map((provider) => ({
@@ -20,53 +25,53 @@ const benchmarks = data.benchmarks.filter((entry) => entry.provider === provider
 const community = data.community.filter((entry) => entry.provider === provider.id);
 
 const POLICY_FIELDS = [
-  ["prompt_retention", "Prompt 保留", "Prompt retention"],
-  ["output_retention", "Output 保留", "Output retention"],
-  ["used_for_training", "用于训练", "Training usage"],
-  ["training_default_opt_in", "训练默认策略", "Training default"],
-  ["opt_out_supported", "Opt-out", "Opt-out"],
-  ["zero_data_retention", "Zero Data Retention", "Zero Data Retention"],
-  ["business_consumer_policy_differs", "企业 vs 个人政策差异", "Business vs consumer"],
-  ["subprocessors", "子处理方", "Subprocessors"],
-  ["data_region", "数据地区", "Data region"],
-  ["cross_border_transfer", "跨境传输", "Cross-border"],
-  ["automated_agent_allowed", "自动化 Agent", "Automated agents"],
-  ["coding_agent_tools_restricted", "Coding-agent 工具限制", "Coding-agent restrictions"],
+  ["prompt_retention", "providers.detail.policy.prompt_retention"],
+  ["output_retention", "providers.detail.policy.output_retention"],
+  ["used_for_training", "providers.detail.policy.used_for_training"],
+  ["training_default_opt_in", "providers.detail.policy.training_default_opt_in"],
+  ["opt_out_supported", "providers.detail.policy.opt_out_supported"],
+  ["zero_data_retention", "providers.detail.policy.zero_data_retention"],
+  ["business_consumer_policy_differs", "providers.detail.policy.business_consumer_policy_differs"],
+  ["subprocessors", "providers.detail.policy.subprocessors"],
+  ["data_region", "providers.detail.policy.data_region"],
+  ["cross_border_transfer", "providers.detail.policy.cross_border_transfer"],
+  ["automated_agent_allowed", "providers.detail.policy.automated_agent_allowed"],
+  ["coding_agent_tools_restricted", "providers.detail.policy.coding_agent_tools_restricted"],
 ];
 ---
 
-<Base title={provider.name} current="providers/">
-  <p class="small"><a href={href("providers/")}><span class="i18n-zh" lang="zh-CN">← 服务商</span><span class="i18n-en" lang="en">← Providers</span></a></p>
+<Base titleText={provider.name} current="providers/">
+  <p class="small"><a href={href("providers/")}><T k="providers.detail.back" /></a></p>
   <h1>{display(provider.name)}</h1>
   <p class="lead mono">{provider.id}</p>
 
   <dl class="kv">
-    <dt><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></dt>
+    <dt><T k="col.status" /></dt>
     <dd><span class={`badge ${statusBadge(provider.status).cls}`}>{statusBadge(provider.status).label}</span></dd>
-    <dt><span class="i18n-zh" lang="zh-CN">官方网站</span><span class="i18n-en" lang="en">Official website</span></dt>
+    <dt><T k="providers.detail.officialWebsite" /></dt>
     <dd>{provider.website ? <a href={provider.website} rel="noopener">{provider.website}</a> : "—"}</dd>
-    <dt><span class="i18n-zh" lang="zh-CN">文档</span><span class="i18n-en" lang="en">Docs</span></dt>
+    <dt><T k="col.docs" /></dt>
     <dd>{provider.docs ? <a href={provider.docs} rel="noopener">{provider.docs}</a> : "—"}</dd>
-    <dt><span class="i18n-zh" lang="zh-CN">备注</span><span class="i18n-en" lang="en">Notes</span></dt>
+    <dt><T k="col.notes" /></dt>
     <dd>{display(provider.notes)}</dd>
-    <dt><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></dt>
+    <dt><T k="col.checked" /></dt>
     <dd class="mono">{when(provider.checked_at)}</dd>
   </dl>
 
-  <h2><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plans</span></h2>
+  <h2><T k="providers.detail.plans" /></h2>
   {plans.length ? (
     <div class="table-scroll">
       <table>
         <thead>
           <tr>
-            <th><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plan</span></th>
-            <th><span class="i18n-zh" lang="zh-CN">类型</span><span class="i18n-en" lang="en">Type</span></th>
-            <th><span class="i18n-zh" lang="zh-CN">区域</span><span class="i18n-en" lang="en">Region</span></th>
-            <th><span class="i18n-zh" lang="zh-CN">人群</span><span class="i18n-en" lang="en">Audience</span></th>
-            <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
-            <th><span class="i18n-zh" lang="zh-CN">月价</span><span class="i18n-en" lang="en">Monthly</span></th>
-            <th>CNY</th>
-            <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+            <th><T k="col.plan" /></th>
+            <th><T k="col.type" /></th>
+            <th><T k="col.region" /></th>
+            <th><T k="col.audience" /></th>
+            <th><T k="col.status" /></th>
+            <th><T k="providers.detail.monthly" /></th>
+            <th><Cur k="providers.detail.converted" /></th>
+            <th><T k="col.checked" /></th>
           </tr>
         </thead>
         <tbody>
@@ -78,23 +83,23 @@ const POLICY_FIELDS = [
               <td>{plan.audience ? <span class="badge">{plan.audience}</span> : "—"}</td>
               <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
               <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
-              <td>{cny(plan.price_view.monthly_cny)}</td>
+              <td><Money amount={plan.price_view.monthly} currency={plan.price_view.currency} rate={rate} /></td>
               <td class="mono">{when(plan.checked_at)}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无套餐记录。</span><span class="i18n-en" lang="en">No plans recorded yet.</span></div>}
+  ) : <div class="empty"><T k="providers.detail.noPlans" /></div>}
 
-  <h2><span class="i18n-zh" lang="zh-CN">API / Coding / Agent 兼容性</span><span class="i18n-en" lang="en">API / Coding / Agent compatibility</span></h2>
+  <h2><T k="providers.detail.compat" /></h2>
   {plans.length ? plans.map((plan) => (
     <h3>{display(plan.name)}</h3>
     <div class="table-scroll">
       <table>
         <thead><tr>
-          <th><span class="i18n-zh" lang="zh-CN">接入面</span><span class="i18n-en" lang="en">Surface</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+          <th><T k="providers.detail.surface" /></th>
+          <th><T k="col.status" /></th>
         </tr></thead>
         <tbody>
           {Object.entries(plan.compatibility || {}).map(([surface, status]) => (
@@ -106,19 +111,19 @@ const POLICY_FIELDS = [
         </tbody>
       </table>
     </div>
-  )) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无兼容性记录。</span><span class="i18n-en" lang="en">No compatibility records yet.</span></div>}
+  )) : <div class="empty"><T k="providers.detail.noCompat" /></div>}
 
-  <h2><span class="i18n-zh" lang="zh-CN">模型</span><span class="i18n-en" lang="en">Models</span></h2>
+  <h2><T k="providers.detail.models" /></h2>
   {models.length ? (
     <div class="table-scroll">
       <table>
         <thead><tr>
           <th>model_id</th>
-          <th><span class="i18n-zh" lang="zh-CN">上下文</span><span class="i18n-en" lang="en">Context</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">最大输出</span><span class="i18n-en" lang="en">Max output</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">推理</span><span class="i18n-en" lang="en">Reasoning</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">工具调用</span><span class="i18n-en" lang="en">Tool calling</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
+          <th><T k="providers.detail.context" /></th>
+          <th><T k="providers.detail.maxOutput" /></th>
+          <th><T k="providers.detail.reasoning" /></th>
+          <th><T k="providers.detail.toolCalling" /></th>
+          <th><T k="col.status" /></th>
         </tr></thead>
         <tbody>
           {models.map((model) => (
@@ -134,9 +139,9 @@ const POLICY_FIELDS = [
         </tbody>
       </table>
     </div>
-  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无模型记录。</span><span class="i18n-en" lang="en">No model records yet.</span></div>}
+  ) : <div class="empty"><T k="providers.detail.noModels" /></div>}
 
-  <h2><span class="i18n-zh" lang="zh-CN">隐私政策</span><span class="i18n-en" lang="en">Privacy policy</span></h2>
+  <h2><T k="providers.detail.privacy" /></h2>
   {privacyRecords.length ? (
     privacyRecords.map((privacy) => (
       <>
@@ -147,25 +152,25 @@ const POLICY_FIELDS = [
         <div class="table-scroll">
           <table>
             <thead><tr>
-              <th><span class="i18n-zh" lang="zh-CN">字段</span><span class="i18n-en" lang="en">Field</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">值</span><span class="i18n-en" lang="en">Value</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">证据</span><span class="i18n-en" lang="en">Evidence</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">核查时间</span><span class="i18n-en" lang="en">Checked</span></th>
+              <th><T k="providers.detail.field" /></th>
+              <th><T k="providers.detail.value" /></th>
+              <th><T k="providers.detail.evidence" /></th>
+              <th><T k="providers.detail.checkedAt" /></th>
             </tr></thead>
             <tbody>
-              {POLICY_FIELDS.map(([field, zh, en]) => {
+              {POLICY_FIELDS.map(([field, labelKey]) => {
                 const entry = privacy[field];
                 const value = entry && entry.value !== undefined ? entry.value : null;
                 const isOfficial = entry && entry.source && entry.value !== null;
                 return (
                   <tr>
-                    <td><span class="i18n-zh" lang="zh-CN">{zh}</span><span class="i18n-en" lang="en">{en}</span></td>
+                    <td><T k={labelKey} /></td>
                     <td>
                       {value === null || value === undefined
                         ? <span class="badge unknown">unknown</span>
-                        : <span>{display(value)} {isOfficial && <span class="badge official"><span class="i18n-zh" lang="zh-CN">官方事实</span><span class="i18n-en" lang="en">official fact</span></span>}</span>}
+                        : <span>{display(value)} {isOfficial && <span class="badge official"><T k="providers.detail.officialFact" /></span>}</span>}
                     </td>
-                    <td>{entry && entry.source ? <a href={entry.source} rel="noopener"><span class="i18n-zh" lang="zh-CN">来源</span><span class="i18n-en" lang="en">source</span></a> : "—"}</td>
+                    <td>{entry && entry.source ? <a href={entry.source} rel="noopener"><T k="providers.detail.source" /></a> : "—"}</td>
                     <td class="mono">{entry ? when(entry.checked_at) : "—"}</td>
                   </tr>
                 );
@@ -175,33 +180,26 @@ const POLICY_FIELDS = [
         </div>
       </>
     ))
-  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无隐私政策记录。</span><span class="i18n-en" lang="en">No privacy policy records yet.</span></div>}
+  ) : <div class="empty"><T k="providers.detail.noPrivacy" /></div>}
   <p class="small muted">
-    <span class="i18n-zh" lang="zh-CN">
-      同一 Provider 可按 scope 拆多份记录（consumer / business / api …）；
-      没有直接证据（source）的字段一律不以二手信息填充。
-    </span><span class="i18n-en" lang="en">
-      One Provider may be split into several records by scope (consumer / business / api …);
-      fields without direct evidence (source) are never filled from second-hand information.
-    </span>
+    <T k="providers.detail.privacyNote" />
   </p>
 
-  <h2><span class="i18n-zh" lang="zh-CN">可靠性信号</span><span class="i18n-en" lang="en">Reliability signals</span></h2>
+  <h2><T k="providers.detail.reliability" /></h2>
   <p class="small">
-    Benchmarks: {benchmarks.length} · Community reports: {community.length}
-    <span class="i18n-zh" lang="zh-CN">（详见 </span><span class="i18n-en" lang="en"> (see </span><a href={href("reliability/")}>Reliability</a><span class="i18n-zh" lang="zh-CN">）</span><span class="i18n-en" lang="en">)</span>
+    <T k="providers.detail.reliabilityNote" vars={{ benchmarks: benchmarks.length, community: community.length, reliability: href("reliability/") }} />
   </p>
 
-  <h2><span class="i18n-zh" lang="zh-CN">数据来源</span><span class="i18n-en" lang="en">Data sources</span></h2>
+  <h2><T k="providers.detail.dataSources" /></h2>
   {sources.length ? (
     <ul class="plain">
       {sources.map((entry) => (
         <li>
           <span class="badge">{display(entry.type)}</span>{" "}
           {entry.url ? <a href={entry.url} rel="noopener">{display(entry.id)}</a> : display(entry.id)}
-          <span class="muted small"> — {display(entry.used_for)}<span class="i18n-zh" lang="zh-CN"> · 核查 </span><span class="i18n-en" lang="en"> · checked </span>{when(entry.checked_at)}</span>
+          <span class="muted small"> — {display(entry.used_for)}<T k="providers.detail.checkedInline" />{when(entry.checked_at)}</span>
         </li>
       ))}
     </ul>
-  ) : <div class="empty"><span class="i18n-zh" lang="zh-CN">尚无来源记录。</span><span class="i18n-en" lang="en">No source records yet.</span></div>}
+  ) : <div class="empty"><T k="providers.detail.noSources" /></div>}
 </Base>

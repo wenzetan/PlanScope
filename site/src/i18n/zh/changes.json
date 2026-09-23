@@ -1,0 +1,6 @@
+{
+  "changes.h1": "变更",
+  "changes.lead": "价格、额度、模型与政策的历史变化。数据来源于结构化历史数据或 snapshot diff —— 不解析 Git commit message。",
+  "changes.empty": "暂无变化记录（data/changes/）。",
+  "changes.checked": " · 核查 "
+}

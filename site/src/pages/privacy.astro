@@ -1,51 +1,52 @@
 ---
 import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
 import { href } from "../lib/base.js";
 import { data } from "../lib/data.js";
 import { display, when } from "../lib/format.js";
 
 const FIELDS = [
-  ["prompt_retention", "Prompt 保留", "Prompt retention"],
-  ["output_retention", "Output 保留", "Output retention"],
-  ["log_retention_days", "日志保留", "Log retention"],
-  ["used_for_training", "用于训练", "Training usage"],
-  ["training_default_opt_in", "训练默认策略", "Training default"],
-  ["opt_out_supported", "Opt-out", "Opt-out"],
-  ["zero_data_retention", "Zero Data Retention", "Zero Data Retention"],
-  ["enterprise_data_isolation", "企业数据隔离", "Enterprise isolation"],
-  ["third_party_model_routing", "第三方模型路由", "Third-party routing"],
-  ["subprocessors", "子处理方", "Subprocessors"],
-  ["data_region", "数据地区", "Data region"],
-  ["cross_border_transfer", "跨境传输", "Cross-border"],
-  ["api_web_policy_differs", "API vs Web 政策差异", "API vs Web policy"],
-  ["coding_api_policy_differs", "Coding vs API 政策差异", "Coding vs API policy"],
-  ["sensitive_code_allowed", "敏感代码", "Sensitive code"],
-  ["commercial_code_allowed", "商业代码", "Commercial code"],
-  ["automated_agent_allowed", "自动化 Agent", "Automated agents"],
-  ["account_sharing_forbidden", "禁止账号共享", "Account sharing forbidden"],
-  ["proxy_forwarding_forbidden", "禁止代理转发", "Proxy forwarding forbidden"],
-  ["api_gateway_restricted", "API 网关限制", "API gateway restricted"],
-  ["coding_agent_tools_restricted", "Coding-agent 工具限制", "Coding-agent restrictions"],
+  ["prompt_retention", "privacy.field.prompt_retention"],
+  ["output_retention", "privacy.field.output_retention"],
+  ["log_retention_days", "privacy.field.log_retention_days"],
+  ["used_for_training", "privacy.field.used_for_training"],
+  ["training_default_opt_in", "privacy.field.training_default_opt_in"],
+  ["opt_out_supported", "privacy.field.opt_out_supported"],
+  ["zero_data_retention", "privacy.field.zero_data_retention"],
+  ["enterprise_data_isolation", "privacy.field.enterprise_data_isolation"],
+  ["third_party_model_routing", "privacy.field.third_party_model_routing"],
+  ["subprocessors", "privacy.field.subprocessors"],
+  ["data_region", "privacy.field.data_region"],
+  ["cross_border_transfer", "privacy.field.cross_border_transfer"],
+  ["api_web_policy_differs", "privacy.field.api_web_policy_differs"],
+  ["coding_api_policy_differs", "privacy.field.coding_api_policy_differs"],
+  ["sensitive_code_allowed", "privacy.field.sensitive_code_allowed"],
+  ["commercial_code_allowed", "privacy.field.commercial_code_allowed"],
+  ["automated_agent_allowed", "privacy.field.automated_agent_allowed"],
+  ["account_sharing_forbidden", "privacy.field.account_sharing_forbidden"],
+  ["proxy_forwarding_forbidden", "privacy.field.proxy_forwarding_forbidden"],
+  ["api_gateway_restricted", "privacy.field.api_gateway_restricted"],
+  ["coding_agent_tools_restricted", "privacy.field.coding_agent_tools_restricted"],
 ];
 ---
 
-<Base title="Privacy" current="privacy/">
-  <h1>Privacy</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">隐私与数据政策是核心研究维度。每个字段区分三种状态：</span><span class="i18n-en" lang="en">Privacy and data policy are a core research dimension. Every field falls into one of three states:</span></p>
+<Base titleKey="privacy" current="privacy/">
+  <h1><T k="privacy.h1" /></h1>
+  <p class="lead"><T k="privacy.lead" /></p>
 
   <ul class="plain small">
-    <li><span class="badge official">official fact</span> — <span class="i18n-zh" lang="zh-CN">有直接来源 URL（官方政策 / 条款）</span><span class="i18n-en" lang="en">backed by a direct source URL (official policy / terms)</span></li>
-    <li><span class="badge unknown">unknown</span> — <span class="i18n-zh" lang="zh-CN">未查证，value 为 null，不猜测</span><span class="i18n-en" lang="en">not verified, value is null, never guessed</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">二手转述不进入本页，只作为 </span><span class="i18n-en" lang="en">Second-hand accounts never enter this page; they are only recorded as </span><a href={href("reliability/")}>community signal</a><span class="i18n-zh" lang="zh-CN"> 记录</span><span class="i18n-en" lang="en"></span></li>
+    <li><span class="badge official">official fact</span> — <T k="privacy.state.official" /></li>
+    <li><span class="badge unknown">unknown</span> — <T k="privacy.state.unknown" /></li>
+    <li><T k="privacy.state.communityBefore" /><a href={href("reliability/")}>community signal</a><T k="privacy.state.communityAfter" /></li>
   </ul>
 
   <div class="table-scroll">
     <table>
       <thead>
         <tr>
-          <th>Provider</th>
-          {FIELDS.map(([, zh, en]) => <th><span class="i18n-zh" lang="zh-CN">{zh}</span><span class="i18n-en" lang="en">{en}</span></th>)}
-          <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+          <th><T k="col.provider" /></th>
+          {FIELDS.map(([, key]) => <th><T k={key} /></th>)}
+          <th><T k="col.checked" /></th>
         </tr>
       </thead>
       <tbody>
@@ -83,17 +84,7 @@ const FIELDS = [
     </table>
   </div>
 
-  {data.privacy.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无隐私政策数据。</span><span class="i18n-en" lang="en">No privacy policy data yet.</span></div>}
+  {data.privacy.length === 0 && <div class="empty"><T k="privacy.empty" /></div>}
 
-  <p class="note small">
-    <span class="i18n-zh" lang="zh-CN">
-      API 与 Web 产品、Coding Plan 与普通 API 的政策可能不同，分别记录于
-      <span class="mono">api_web_policy_differs</span> / <span class="mono">coding_api_policy_differs</span>。
-      每个字段独立携带 source 与 checked_at。
-    </span><span class="i18n-en" lang="en">
-      API and Web products, or Coding Plans versus plain API, may follow different policies —
-      recorded separately in <span class="mono">api_web_policy_differs</span> /
-      <span class="mono">coding_api_policy_differs</span>. Every field carries its own source and checked_at.
-    </span>
-  </p>
+  <p class="note small"><T k="privacy.note" /></p>
 </Base>
