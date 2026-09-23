@@ -1,0 +1,6 @@
+{
+  "changes.h1": "Changes",
+  "changes.lead": "History of price, quota, model and policy changes. Entries come from structured history or snapshot diffs — Git commit messages are never parsed.",
+  "changes.empty": "No change records yet (data/changes/).",
+  "changes.checked": " · checked "
+}

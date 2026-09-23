@@ -1,0 +1,16 @@
+{
+  "models.h1": "Models",
+  "models.lead": "Answers “which plans unlock this model”. The same model_id is recorded separately per Provider — capabilities, context, multipliers and availability never overwrite each other.",
+  "models.searchPlaceholder": "Search model / provider…",
+  "models.searchAria": "Search models",
+  "models.count": "{visible} / {total} model groups",
+  "models.empty": "No model data yet (run planscope export-site-data first).",
+  "models.colAvailable": "Available from",
+  "models.colContext": "Context",
+  "models.colMaxOutput": "Max output",
+  "models.colMultimodal": "Multimodal",
+  "models.colReasoning": "Reasoning",
+  "models.colToolCalling": "Tool calling",
+  "models.colMultiplier": "Multiplier",
+  "models.colQuotaBehavior": "Quota behavior"
+}

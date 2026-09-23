@@ -1,0 +1,10 @@
+---
+// Converted amount for the price columns that switch currency.
+// The original-currency price is rendered separately and never changes.
+// Both derived values are in the markup; CSS picks one via html[data-currency].
+import { convert, fmtMoney } from "../lib/format.js";
+
+const { amount, currency, rate } = Astro.props;
+const { cny, usd } = convert(amount, currency, rate);
+---
+<span class="cur-cny">{fmtMoney(cny, "CNY")}</span><span class="cur-usd">{fmtMoney(usd, "USD")}</span>

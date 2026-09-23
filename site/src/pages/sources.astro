@@ -1,5 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import { t } from "../i18n/index.js";
 import { href } from "../lib/base.js";
 import { data } from "../lib/data.js";
 import { display, when } from "../lib/format.js";
@@ -7,30 +9,30 @@ import { display, when } from "../lib/format.js";
 const typeOptions = [...new Set(data.sources.map((s) => s.type).filter(Boolean))].sort();
 ---
 
-<Base title="Sources" current="sources/">
-  <h1>Sources</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">“这个数字是从哪里来的？” —— 每条证据的 Provider、类型、URL、核查时间与用途。</span><span class="i18n-en" lang="en">“Where did this number come from?” — provider, type, URL, check date and purpose for every piece of evidence.</span></p>
+<Base titleKey="sources" current="sources/">
+  <h1><T k="sources.h1" /></h1>
+  <p class="lead"><T k="sources.lead" /></p>
 
   <div class="toolbar">
-    <input id="q" type="search" placeholder="搜索 record / provider / url…" data-en-placeholder="Search record / provider / url…" aria-label="搜索来源" data-en-aria-label="Search sources" />
-    <select id="f-type" aria-label="按来源类型筛选" data-en-aria-label="Filter by source type">
-      <option value="" data-en-text="All types">全部类型</option>
+    <input id="q" type="search" placeholder={t("zh", "sources.searchPlaceholder")} aria-label={t("zh", "sources.searchAria")} data-i18n-attr="placeholder:sources.searchPlaceholder,aria-label:sources.searchAria" />
+    <select id="f-type" aria-label={t("zh", "sources.filterTypeAria")} data-i18n-attr="aria-label:sources.filterTypeAria">
+      <option value="" data-i18n="sources.allTypes">{t("zh", "sources.allTypes")}</option>
       {typeOptions.map((type) => <option value={type}>{type}</option>)}
     </select>
-    <span class="count" id="count"><span class="i18n-zh" lang="zh-CN">{data.sources.length} / {data.sources.length} 条来源</span><span class="i18n-en" lang="en">{data.sources.length} / {data.sources.length} sources</span></span>
+    <span class="count" id="count"><T k="sources.count" vars={{ visible: data.sources.length, total: data.sources.length }} /></span>
   </div>
 
   <div class="table-scroll">
     <table id="sources-table">
       <thead>
         <tr>
-          <th>Provider</th>
-          <th><span class="i18n-zh" lang="zh-CN">记录</span><span class="i18n-en" lang="en">Record</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">来源类型</span><span class="i18n-en" lang="en">Source type</span></th>
+          <th><T k="col.provider" /></th>
+          <th><T k="sources.col.record" /></th>
+          <th><T k="sources.col.type" /></th>
           <th>URL</th>
-          <th><span class="i18n-zh" lang="zh-CN">核查时间</span><span class="i18n-en" lang="en">Checked at</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">用途</span><span class="i18n-en" lang="en">Used for</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">置信度</span><span class="i18n-en" lang="en">Confidence</span></th>
+          <th><T k="sources.col.checkedAt" /></th>
+          <th><T k="sources.col.usedFor" /></th>
+          <th><T k="sources.col.confidence" /></th>
         </tr>
       </thead>
       <tbody>
@@ -52,19 +54,15 @@ const typeOptions = [...new Set(data.sources.map((s) => s.type).filter(Boolean))
     </table>
   </div>
 
-  {data.sources.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无来源记录。</span><span class="i18n-en" lang="en">No source records yet.</span></div>}
+  {data.sources.length === 0 && <div class="empty"><T k="sources.empty" /></div>}
 
   <p class="note small">
-    <span class="i18n-zh" lang="zh-CN">
-      来源优先级：official &gt; measured &gt; community。社区报告是信号，不是权威事实。
-      详见 <a href={href("methodology/")}>方法论</a>。
-    </span><span class="i18n-en" lang="en">
-      Source priority: official &gt; measured &gt; community. Community reports are signals, not authoritative facts.
-      See <a href={href("methodology/")}>Methodology</a>.
-    </span>
+    <T k="sources.note" vars={{ methodology: href("methodology/") }} />
   </p>
 
   <script>
+    import { t } from "../i18n/index.js";
+
     const table = document.getElementById("sources-table");
     if (table) {
       const rows = Array.from(table.querySelectorAll("tbody tr"));
@@ -83,8 +81,8 @@ const typeOptions = [...new Set(data.sources.map((s) => s.type).filter(Boolean))
           row.style.display = ok ? "" : "none";
           if (ok) visible += 1;
         }
-        const suffix = document.documentElement.dataset.lang === "en" ? "sources" : "条来源";
-        if (count) count.textContent = `${visible} / ${total} ${suffix}`;
+        const lang = document.documentElement.dataset.lang === "en" ? "en" : "zh";
+        if (count) count.textContent = t(lang, "sources.count", { visible, total });
       }
       for (const el of [q, ft]) if (el) el.addEventListener("input", apply);
       document.addEventListener("planscope:langchange", apply);

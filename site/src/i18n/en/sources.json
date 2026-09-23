@@ -1,0 +1,16 @@
+{
+  "sources.h1": "Sources",
+  "sources.lead": "“Where did this number come from?” — provider, type, URL, check date and purpose for every piece of evidence.",
+  "sources.searchPlaceholder": "Search record / provider / url…",
+  "sources.searchAria": "Search sources",
+  "sources.filterTypeAria": "Filter by source type",
+  "sources.allTypes": "All types",
+  "sources.count": "{visible} / {total} sources",
+  "sources.col.record": "Record",
+  "sources.col.type": "Source type",
+  "sources.col.checkedAt": "Checked at",
+  "sources.col.usedFor": "Used for",
+  "sources.col.confidence": "Confidence",
+  "sources.empty": "No source records yet.",
+  "sources.note": "Source priority: official &gt; measured &gt; community. Community reports are signals, not authoritative facts. See <a href=\"{methodology}\">Methodology</a>."
+}

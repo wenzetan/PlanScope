@@ -1,25 +1,26 @@
 ---
 import Base from "../../layouts/Base.astro";
+import T from "../../components/T.astro";
 import { href } from "../../lib/base.js";
 import { data } from "../../lib/data.js";
 import { display, statusBadge, when } from "../../lib/format.js";
 ---
 
-<Base title="Providers" current="providers/">
-  <h1>Providers</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">文件系统即 Provider 注册表：<span class="mono">data/providers/&lt;id&gt;/</span> 目录存在，该 Provider 即存在。</span><span class="i18n-en" lang="en">The file system is the Provider registry: if the directory <span class="mono">data/providers/&lt;id&gt;/</span> exists, the Provider exists.</span></p>
+<Base titleKey="providers" current="providers/">
+  <h1><T k="providers.index.h1" /></h1>
+  <p class="lead"><T k="providers.index.lead" /></p>
 
   <div class="table-scroll">
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th><span class="i18n-zh" lang="zh-CN">名称</span><span class="i18n-en" lang="en">Name</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">状态</span><span class="i18n-en" lang="en">Status</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">官网</span><span class="i18n-en" lang="en">Website</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">套餐数</span><span class="i18n-en" lang="en">Plans</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">模型数</span><span class="i18n-en" lang="en">Models</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+          <th><T k="col.name" /></th>
+          <th><T k="col.status" /></th>
+          <th><T k="col.website" /></th>
+          <th><T k="col.plans" /></th>
+          <th><T k="col.models" /></th>
+          <th><T k="col.checked" /></th>
         </tr>
       </thead>
       <tbody>
@@ -38,5 +39,5 @@ import { display, statusBadge, when } from "../../lib/format.js";
     </table>
   </div>
 
-  {data.providers.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无 Provider 数据（先运行 planscope export-site-data）。</span><span class="i18n-en" lang="en">No provider data yet (run planscope export-site-data first).</span></div>}
+  {data.providers.length === 0 && <div class="empty"><T k="providers.index.empty" /></div>}
 </Base>

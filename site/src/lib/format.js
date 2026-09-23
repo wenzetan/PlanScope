@@ -5,15 +5,38 @@ export function display(value, fallback = "—") {
   return String(value);
 }
 
-export function money(amount, currency) {
-  if (amount === null || amount === undefined) return "—";
-  return `${currency ?? "?"} ${amount}`;
+const SYMBOL = { CNY: "¥", USD: "$" };
+
+export function fmtMoney(amount, currency) {
+  if (amount === null || amount === undefined || !currency) return "—";
+  const rounded = Math.round(Number(amount) * 100) / 100;
+  const symbol = SYMBOL[String(currency).toUpperCase()];
+  const body = rounded.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return symbol ? `${symbol}${body}` : `${currency} ${body}`;
 }
 
+/** Original-currency price, unchanged by the currency toggle. */
+export function money(amount, currency) {
+  if (amount === null || amount === undefined) return "—";
+  return fmtMoney(amount, currency);
+}
+
+/** Backwards-compatible CNY formatter (used where a CNY-only figure is meant). */
 export function cny(value) {
-  if (value === null || value === undefined) return "—";
-  const rounded = Math.round(value * 100) / 100;
-  return `¥${rounded.toLocaleString("en-US")}`;
+  return fmtMoney(value, "CNY");
+}
+
+/**
+ * Derive the two comparable currencies from an original amount.
+ * The original currency is never overwritten: if it is neither CNY nor USD
+ * (or no FX rate is available) the missing side stays null.
+ */
+export function convert(amount, currency, rate) {
+  if (amount === null || amount === undefined || !currency) return { cny: null, usd: null };
+  const c = String(currency).toUpperCase();
+  if (c === "CNY") return { cny: amount, usd: rate ? amount / rate : null };
+  if (c === "USD") return { cny: rate ? amount * rate : null, usd: amount };
+  return { cny: null, usd: null };
 }
 
 export function when(value) {

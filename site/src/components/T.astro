@@ -1,0 +1,10 @@
+---
+// Renders a message in both languages. CSS shows the one matching
+// <html data-lang>, so switching language never needs a re-render and
+// there is no flash of untranslated content.
+import { t } from "../i18n/index.js";
+
+const { k, vars, class: className = "" } = Astro.props;
+const cls = className ? ` ${className}` : "";
+---
+<span class={`i18n-zh${cls}`} lang="zh-CN" set:html={t("zh", k, vars)}></span><span class={`i18n-en${cls}`} lang="en" set:html={t("en", k, vars)}></span>

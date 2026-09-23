@@ -1,0 +1,16 @@
+{
+  "sources.h1": "来源",
+  "sources.lead": "“这个数字是从哪里来的？” —— 每条证据的 Provider、类型、URL、核查时间与用途。",
+  "sources.searchPlaceholder": "搜索 record / provider / url…",
+  "sources.searchAria": "搜索来源",
+  "sources.filterTypeAria": "按来源类型筛选",
+  "sources.allTypes": "全部类型",
+  "sources.count": "{visible} / {total} 条来源",
+  "sources.col.record": "记录",
+  "sources.col.type": "来源类型",
+  "sources.col.checkedAt": "核查时间",
+  "sources.col.usedFor": "用途",
+  "sources.col.confidence": "置信度",
+  "sources.empty": "暂无来源记录。",
+  "sources.note": "来源优先级：official &gt; measured &gt; community。社区报告是信号，不是权威事实。详见 <a href=\"{methodology}\">方法论</a>。"
+}

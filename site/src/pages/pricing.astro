@@ -1,7 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import Cur from "../components/Cur.astro";
+import Money from "../components/Money.astro";
+import { t } from "../i18n/index.js";
 import { data } from "../lib/data.js";
-import { display, money, cny, when } from "../lib/format.js";
+import { display, money, when } from "../lib/format.js";
 
 const rate = data.exchange_rate.usd_cny;
 const rows = data.plans.map((plan) => ({
@@ -12,119 +16,68 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
 
 // 席位计价的 Plan：seat_count 是数量不是档位，成本 = 单席年价 × N（展示层派生，绝不建多档文件）。
 const perSeatPlans = data.plans.filter((p) => p.price_view && p.price_view.billing_model === "per_seat");
-
-// API 基线逐模型单价（§5/6）：原币种保存 → CNY 与 region ratio 仅在展示层派生，绝不回写。
-const rateFx = data.exchange_rate.usd_cny;
-function toCny(amount, currency) {
-  if (amount === null || amount === undefined || !currency) return null;
-  const c = String(currency).toUpperCase();
-  if (c === "CNY") return amount;
-  if (c === "USD" && rateFx != null) return amount * rateFx;
-  return null;
-}
-const fmtAmt = (comp) => (comp && comp.amount != null ? comp.amount : "—");
-
-const apiPlans = data.plans.filter((p) => Array.isArray(p.model_pricing) && p.model_pricing.length > 0);
-const byModel = new Map();
-const modelOrder = [];
-for (const plan of apiPlans) {
-  const currency = plan.pricing ? plan.pricing.currency : null;
-  const label = plan.region === "cn" ? "CN" : plan.region === "global" ? "Global" : plan.region || "—";
-  for (const mp of plan.model_pricing) {
-    if (!byModel.has(mp.model)) {
-      byModel.set(mp.model, []);
-      modelOrder.push(mp.model);
-    }
-    byModel.get(mp.model).push({ label, plan, mp, currency });
-  }
-}
-const apiRows = modelOrder.map((model) => {
-  const entries = byModel.get(model);
-  const row = { model, entries, ratio: null };
-  const cn = entries.find((e) => e.label === "CN");
-  const gl = entries.find((e) => e.label === "Global");
-  const missOf = (e) => toCny(e.mp.input_cache_miss && e.mp.input_cache_miss.amount, e.currency);
-  const outOf = (e) => toCny(e.mp.output && e.mp.output.amount, e.currency);
-  if (cn && gl && missOf(cn) && missOf(gl)) {
-    row.ratio = {
-      input: missOf(cn) / missOf(gl),
-      output: outOf(cn) && outOf(gl) ? outOf(cn) / outOf(gl) : null,
-    };
-  }
-  return row;
-});
 ---
 
-<Base title="Pricing" current="pricing/">
-  <h1>Pricing</h1>
-  <p class="lead"><span class="i18n-zh" lang="zh-CN">成本比较视图：原始价格 → 人民币等价 → 年度成本 → 有效 Token 成本。</span><span class="i18n-en" lang="en">Cost comparison: original price → CNY equivalent → annual cost → effective token cost.</span></p>
+<Base titleKey="pricing" current="pricing/">
+  <h1><T k="pricing.h1" /></h1>
+  <p class="lead"><T k="pricing.lead" /></p>
 
   <div class="note">
-    <span class="i18n-zh" lang="zh-CN">
-      换算规则：<span class="mono">CNY = USD × {rate ?? "—"}</span>，
-      系数来自 <span class="mono">config/exchange_rate.yaml</span>（每日 D-7 ~ D-1 七日均值，代码中从不硬编码）。
-      这是用于横向比较的近似值，不是实时支付 / 结算汇率。
-    </span><span class="i18n-en" lang="en">
-      Conversion rule: <span class="mono">CNY = USD × {rate ?? "—"}</span>, with the factor from
-      <span class="mono">config/exchange_rate.yaml</span> (daily D-7 ~ D-1 seven-day average, never hardcoded).
-      It is an approximation for cross-plan comparison, not a live payment / settlement rate.
-    </span>
+    <T k="pricing.rateNote" vars={{ rate: rate ?? "—" }} />
   </div>
 
   <div class="table-scroll">
     <table>
       <thead>
         <tr>
-          <th>Provider</th>
-          <th><span class="i18n-zh" lang="zh-CN">套餐</span><span class="i18n-en" lang="en">Plan</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">原始价格</span><span class="i18n-en" lang="en">Original price</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">CNY 等价</span><span class="i18n-en" lang="en">CNY equivalent</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">年价（原币种）</span><span class="i18n-en" lang="en">Annual (original)</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">年价（CNY）</span><span class="i18n-en" lang="en">Annual (CNY)</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">有效 RMB / 1M 输入</span><span class="i18n-en" lang="en">Effective RMB / 1M input</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">有效 RMB / 1M 输出</span><span class="i18n-en" lang="en">Effective RMB / 1M output</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">促销</span><span class="i18n-en" lang="en">Promotion</span></th>
-          <th><span class="i18n-zh" lang="zh-CN">最近核查</span><span class="i18n-en" lang="en">Last checked</span></th>
+          <th><T k="col.provider" /></th>
+          <th><T k="col.plan" /></th>
+          <th><T k="pricing.col.original" /></th>
+          <th><Cur k="pricing.col.converted" /></th>
+          <th><T k="pricing.col.annualOriginal" /></th>
+          <th><Cur k="pricing.col.annualConverted" /></th>
+          <th><Cur k="pricing.col.effectiveInput" /></th>
+          <th><Cur k="pricing.col.effectiveOutput" /></th>
+          <th><T k="pricing.col.promotion" /></th>
+          <th><T k="col.checked" /></th>
         </tr>
       </thead>
       <tbody>
         {rows.map(({ plan }) => {
           const perSeat = plan.price_view.billing_model === "per_seat";
-          const inputCost = plan.token_rules && plan.token_rules.directly_comparable === false
-            ? "not directly comparable"
-            : "—";
+          const notComparable = plan.token_rules && plan.token_rules.directly_comparable === false;
           return (
             <tr>
               <td>{display(plan.provider_name, plan.provider)}</td>
               <td class="wrap-cell">{display(plan.name)}</td>
               <td>
                 {money(plan.price_view.monthly, plan.price_view.currency)}
-                {perSeat && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+                {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
               </td>
               <td>
-                {cny(plan.price_view.monthly_cny)}
-                {perSeat && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+                <Money amount={plan.price_view.monthly} currency={plan.price_view.currency} rate={rate} />
+                {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
               </td>
               <td>
                 {plan.price_view.annual_shown !== null ? (
                   <>
                     {money(plan.price_view.annual_shown, plan.price_view.currency)}
-                    {perSeat && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
-                    {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
+                    {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
+                    {plan.price_view.annual_derived && <span class="small muted"> <T k="common.derived" /></span>}
                   </>
                 ) : "—"}
               </td>
               <td>
                 {plan.price_view.annual_shown !== null ? (
                   <>
-                    {cny(plan.price_view.annual_cny)}
-                    {perSeat && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
-                    {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
+                    <Money amount={plan.price_view.annual_shown} currency={plan.price_view.currency} rate={rate} />
+                    {perSeat && <span class="small muted"> <T k="common.perSeat" /></span>}
+                    {plan.price_view.annual_derived && <span class="small muted"> <T k="common.derived" /></span>}
                   </>
                 ) : "—"}
               </td>
-              <td>{inputCost}</td>
-              <td>{inputCost}</td>
+              <td>{notComparable ? <T k="common.notDirectlyComparable" /> : "—"}</td>
+              <td>{notComparable ? <T k="common.notDirectlyComparable" /> : "—"}</td>
               <td class="wrap-cell small">{display(plan.price_view.promotion, "—")}</td>
               <td class="mono">{when(plan.checked_at)}</td>
             </tr>
@@ -134,25 +87,12 @@ const apiRows = modelOrder.map((model) => {
     </table>
   </div>
 
-  {rows.length === 0 && <div class="empty"><span class="i18n-zh" lang="zh-CN">暂无价格数据。</span><span class="i18n-en" lang="en">No pricing data yet.</span></div>}
+  {rows.length === 0 && <div class="empty"><T k="pricing.empty" /></div>}
 
   {perSeatPlans.length > 0 && (
     <section>
-      <h2><span class="i18n-zh" lang="zh-CN">席位成本计算器（Seat calculator）</span><span class="i18n-en" lang="en">Seat cost calculator</span></h2>
-      <div class="note small">
-        <span class="i18n-zh" lang="zh-CN">
-          seat 是 <strong>pricing quantity（计价数量），不是 plan tier</strong> —— 不会为 2 席 / 5 席 / 20 席
-          建立不同的 Plan 文件。所有团队成本均由
-          <span class="mono">annual_cost = 单席年价 × seat_count</span> 在展示层派生。
-          另外注意：<strong>billing 按年 ≠ 年度一次性发额度</strong> —— 企业席位的成员额度按月刷新（见 Plans 页 quota 列）。
-        </span><span class="i18n-en" lang="en">
-          seat is a <strong>pricing quantity, not a plan tier</strong> — no separate plan files are created for
-          2 / 5 / 20 seats. Every team cost is derived in the presentation layer via
-          <span class="mono">annual_cost = annual price per seat × seat_count</span>.
-          Also note: <strong>billed yearly ≠ quota issued yearly</strong> — enterprise seat members' quota
-          refreshes monthly (see the quota column on the Plans page).
-        </span>
-      </div>
+      <h2><T k="pricing.seatCalc.h2" /></h2>
+      <div class="note small"><T k="pricing.seatCalc.note" /></div>
 
       {perSeatPlans.map((plan) => {
         const pv = plan.price_view;
@@ -163,21 +103,24 @@ const apiRows = modelOrder.map((model) => {
         const discounts = plan.pricing && plan.pricing.discounts;
         const annualPerSeat = pv.annual_shown;
         return (
-          <div class="card" data-seat-calculator data-annual={annualPerSeat} data-min={minSeats} data-max={maxSeats ?? ""}>
+          <div class="card" data-seat-calculator data-annual={annualPerSeat} data-min={minSeats} data-max={maxSeats ?? ""} data-currency={pv.currency ?? ""} data-rate={rate ?? ""}>
             <strong>{display(plan.provider_name, plan.provider)} · {display(plan.name)}</strong>
             <div class="mono small">
-              {pv.currency} {annualPerSeat}<span class="i18n-zh" lang="zh-CN"> /席/年</span><span class="i18n-en" lang="en"> /seat/year</span>
+              {money(annualPerSeat, pv.currency)}<T k="common.perSeatPerYear" />
               {pv.annual_effective_monthly != null && (
                 <>
-                  <span class="i18n-zh" lang="zh-CN">（月均 {pv.currency} {pv.annual_effective_monthly} /席）</span><span class="i18n-en" lang="en"> ({pv.currency} {pv.annual_effective_monthly} /seat per month avg)</span>
+                  <T k="pricing.seatCalc.monthlyAvg" vars={{ amount: money(pv.annual_effective_monthly, pv.currency) }} />
                 </>
               )}
               {" · "}
-              <span class="i18n-zh" lang="zh-CN">月付: </span><span class="i18n-en" lang="en">Monthly billing: </span>{pv.monthly_billing_available === false ? <><span class="i18n-zh" lang="zh-CN">不支持</span><span class="i18n-en" lang="en">not offered</span></> : <><span class="i18n-zh" lang="zh-CN">见原始价格</span><span class="i18n-en" lang="en">see original price</span></>}
+              <T k="pricing.seatCalc.monthlyBilling" />
+              {pv.monthly_billing_available === false
+                ? <T k="pricing.seatCalc.monthlyBillingNo" />
+                : <T k="pricing.seatCalc.monthlyBillingSee" />}
             </div>
             <div class="toolbar">
               <label class="small">
-                <span class="i18n-zh" lang="zh-CN">席位数</span><span class="i18n-en" lang="en">Seats</span>{" "}
+                <T k="pricing.seatCalc.seats" />{" "}
                 <input
                   class="seat-input"
                   type="number"
@@ -190,23 +133,50 @@ const apiRows = modelOrder.map((model) => {
               <span class="seat-output"></span>
             </div>
             <div class="small muted">
-              <span class="i18n-zh" lang="zh-CN">最低 {minSeats} 席{maxSeats ? ` · 单次最多 ${maxSeats} 席` : ""}{minOrder ? ` · 最低订单 ¥${minOrder.toLocaleString("en-US")}/年` : ""} · 折扣: {discounts && discounts.publicly_available === false ? "官方暂无公开折扣" : "见原始数据"} · 增购按剩余天数 prorate、与原订阅统一到期</span><span class="i18n-en" lang="en">min {minSeats} seats{maxSeats ? ` · max ${maxSeats} per purchase` : ""}{minOrder ? ` · min order ¥${minOrder.toLocaleString("en-US")}/yr` : ""} · discount: {discounts && discounts.publicly_available === false ? "no public discount from the vendor" : "see raw data"} · added seats are prorated for the remaining days and expire with the original subscription</span>
+              <T k="pricing.seatCalc.minSeats" vars={{ min: minSeats }} />
+              {maxSeats && <T k="pricing.seatCalc.maxSeats" vars={{ max: maxSeats }} />}
+              {minOrder && <T k="pricing.seatCalc.minOrder" vars={{ amount: money(minOrder, pv.currency) }} />}
+              {" · "}
+              {discounts && discounts.publicly_available === false
+                ? <T k="pricing.seatCalc.noDiscount" />
+                : <T k="pricing.seatCalc.seeRaw" />}
+              {" · "}
+              <T k="pricing.seatCalc.prorate" />
             </div>
           </div>
         );
       })}
 
       <script>
-        function fmt(n) {
-          return "¥" + Math.round(n).toLocaleString("en-US");
+        import { t } from "../i18n/index.js";
+
+        function convert(amount, orig, disp, rate) {
+          if (amount === null || amount === undefined || Number.isNaN(amount)) return null;
+          const o = String(orig || "").toUpperCase();
+          if (o === disp) return amount;
+          if (!rate) return null;
+          if (o === "CNY" && disp === "USD") return amount / rate;
+          if (o === "USD" && disp === "CNY") return amount * rate;
+          return null;
         }
+
         for (const box of document.querySelectorAll("[data-seat-calculator]")) {
           const annual = parseFloat(box.dataset.annual || "0");
           const min = parseInt(box.dataset.min || "1", 10);
           const maxRaw = box.dataset.max;
           const max = maxRaw ? parseInt(maxRaw, 10) : null;
+          const orig = box.dataset.currency || "CNY";
+          const rate = parseFloat(box.dataset.rate || "0") || null;
           const input = box.querySelector(".seat-input");
           const output = box.querySelector(".seat-output");
+
+          const fmt = (n) => {
+            const disp = document.documentElement.dataset.currency === "usd" ? "USD" : "CNY";
+            const value = convert(n, orig, disp, rate);
+            if (value === null) return "—";
+            return (disp === "USD" ? "$" : "¥") + Math.round(value).toLocaleString("en-US");
+          };
+
           const update = () => {
             if (!input || !output) return;
             let seats = parseInt(input.value || String(min), 10);
@@ -214,110 +184,21 @@ const apiRows = modelOrder.map((model) => {
             const bounded = Math.min(Math.max(seats, min), max ?? seats);
             const annualCost = annual * bounded;
             const monthlyCost = annualCost / 12;
-            const en = document.documentElement.dataset.lang === "en";
+            const lang = document.documentElement.dataset.lang === "en" ? "en" : "zh";
+            const range = `${min}${max ? `–${max}` : "+"}`;
             output.innerHTML =
-              (en
-                ? `Annual cost <strong>${fmt(annualCost)}</strong> · avg monthly team cost <strong>${fmt(monthlyCost)}</strong>`
-                : `年成本 <strong>${fmt(annualCost)}</strong> · 月均团队成本 <strong>${fmt(monthlyCost)}</strong>`) +
-              (seats !== bounded
-                ? en
-                  ? ` (clamped to the ${min}${max ? `–${max}` : "+"} seat range)`
-                  : `（已按 ${min}${max ? `–${max}` : "+"} 席范围计算）`
-                : "");
+              t(lang, "pricing.seatCalc.output", { annual: fmt(annualCost), monthly: fmt(monthlyCost) }) +
+              (seats !== bounded ? t(lang, "pricing.seatCalc.clamped", { range }) : "");
           };
+
           if (input) {
             input.addEventListener("input", update);
             update();
             document.addEventListener("planscope:langchange", update);
+            document.addEventListener("planscope:currencychange", update);
           }
         }
       </script>
     </section>
   )}
-
-  {apiRows.length > 0 && (
-    <section>
-      <h2><span class="i18n-zh" lang="zh-CN">API 模型单价（CN vs Global）</span><span class="i18n-en" lang="en">API model unit prices (CN vs Global)</span></h2>
-      <div class="note small">
-        <span class="i18n-zh" lang="zh-CN">
-          CN 与 Global 是<strong>两套报价体系</strong>：原币种（CNY / USD / MTok）分别保存，绝不回写折算价。
-          <span class="mono">→CNY</span> 列按 <span class="mono">config/exchange_rate.yaml</span> 当日汇率派生；
-          <span class="mono">region ratio</span> 是 derived analysis（地区溢价参考），不写入数据层。
-          PAYG 无月费/年费 —— 这里的单价本身就是比较口径。
-        </span><span class="i18n-en" lang="en">
-          CN and Global are <strong>two separate price books</strong>: original currencies (CNY / USD / MTok) are stored
-          per record and converted prices are never written back. The <span class="mono">→CNY</span> column is derived
-          with the day's rate from <span class="mono">config/exchange_rate.yaml</span>;
-          <span class="mono">region ratio</span> is derived analysis (regional-premium reference) and never stored in the
-          data layer. PAYG has no monthly or annual fee — these unit prices are the comparison basis.
-        </span>
-      </div>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th><span class="i18n-zh" lang="zh-CN">模型</span><span class="i18n-en" lang="en">Model</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">区域</span><span class="i18n-en" lang="en">Region</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">记录</span><span class="i18n-en" lang="en">Record</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">单位</span><span class="i18n-en" lang="en">Unit</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">缓存命中</span><span class="i18n-en" lang="en">Cache hit</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">缓存未命中（输入）</span><span class="i18n-en" lang="en">Cache miss (input)</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">缓存写入</span><span class="i18n-en" lang="en">Cache write</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">输出</span><span class="i18n-en" lang="en">Output</span></th>
-              <th>→ CNY <span class="i18n-zh" lang="zh-CN">（未命中 / 输出）</span><span class="i18n-en" lang="en"> (miss / out)</span></th>
-              <th><span class="i18n-zh" lang="zh-CN">地区比价（派生）</span><span class="i18n-en" lang="en">Region ratio (derived)</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            {apiRows.map((row) =>
-              row.entries.map((e) => {
-                const missCny = toCny(e.mp.input_cache_miss && e.mp.input_cache_miss.amount, e.currency);
-                const outCny = toCny(e.mp.output && e.mp.output.amount, e.currency);
-                const unit = (e.mp.input_cache_miss && e.mp.input_cache_miss.unit) || "MTok";
-                return (
-                  <tr>
-                    <td class="mono">{row.model}</td>
-                    <td><span class="badge">{e.label}</span></td>
-                    <td class="mono small">{e.plan.id}</td>
-                    <td class="mono">{e.currency} / {unit}</td>
-                    <td>{fmtAmt(e.mp.input_cache_hit)}</td>
-                    <td>{fmtAmt(e.mp.input_cache_miss)}</td>
-                    <td>{fmtAmt(e.mp.cache_write)}</td>
-                    <td>{fmtAmt(e.mp.output)}</td>
-                    <td class="mono">
-                      {missCny != null ? `¥${(Math.round(missCny * 100) / 100).toLocaleString("en-US")}` : "—"}
-                      {" / "}
-                      {outCny != null ? `¥${(Math.round(outCny * 100) / 100).toLocaleString("en-US")}` : "—"}
-                    </td>
-                    <td class="mono small">
-                      {row.ratio
-                        ? `${row.ratio.input.toFixed(2)}× input${row.ratio.output ? ` / ${row.ratio.output.toFixed(2)}× out` : ""} (derived)`
-                        : "—"}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
-      {(() => {
-        const k3 = apiRows.find((r) => r.model === "kimi-k3" && r.ratio);
-        return k3 ? (
-          <p class="small muted">
-            <span class="i18n-zh" lang="zh-CN">示例：K3 输入单价 CN ≈ {k3.ratio.input.toFixed(2)}× Global（按当日 {rateFx ?? "—"} 汇率派生，仅作参考）。</span><span class="i18n-en" lang="en">Example: K3 input unit price CN ≈ {k3.ratio.input.toFixed(2)}× Global (derived at today's {rateFx ?? "—"} rate, for reference only).</span>
-          </p>
-        ) : null;
-      })()}
-    </section>
-  )}
-
-  <ul class="plain small muted">
-    <li><span class="i18n-zh" lang="zh-CN">原始价格与币种永不被覆盖；促销价单独记录，不写入标准价字段。</span><span class="i18n-en" lang="en">Original prices and currencies are never overwritten; promotions are recorded separately, never in the standard price field.</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">人民币列全部为派生值，可由原始价格 + 配置汇率重新计算。</span><span class="i18n-en" lang="en">Every CNY column is derived and can be recomputed from the original price plus the configured rate.</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">官方数字（official）、多源报道核验（verified_public_report）、本项目计算（derived）三者用 origin 标注区分。</span><span class="i18n-en" lang="en">Vendor figures (official), cross-checked reports (verified_public_report) and our own math (derived) are distinguished by the origin field.</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">无法换算为每百万 Token 单价时标记 </span><span class="i18n-en" lang="en">When a price cannot be converted to a per-million-token rate it is marked </span><span class="mono">not directly comparable</span><span class="i18n-zh" lang="zh-CN">，不强行估算。</span><span class="i18n-en" lang="en"> instead of being force-estimated.</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">Effective Token Cost 需要已核实的 Token 额度与模型倍率；数据不完整时显示 —，不猜测。</span><span class="i18n-en" lang="en">Effective token cost needs a verified quota and model multipliers; when data is incomplete it shows — and never guesses.</span></li>
-    <li><span class="i18n-zh" lang="zh-CN">席位边界（最少/最多席位、最低订单）是原始事实；任意席位数的团队成本是派生值。</span><span class="i18n-en" lang="en">Seat bounds (min / max seats, minimum order) are source facts; team cost for any seat count is derived.</span></li>
-  </ul>
 </Base>

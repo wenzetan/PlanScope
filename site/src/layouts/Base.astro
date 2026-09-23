@@ -1,68 +1,57 @@
 ---
 import { href } from "../lib/base.js";
 import { data } from "../lib/data.js";
+import { t } from "../i18n/index.js";
+import T from "../components/T.astro";
 import "../styles/global.css";
 
 const NAV = [
-  ["", "概览", "Overview"],
-  ["providers/", "服务商", "Providers"],
-  ["plans/", "套餐", "Plans"],
-  ["models/", "模型", "Models"],
-  ["pricing/", "价格", "Pricing"],
-  ["privacy/", "隐私", "Privacy"],
-  ["reliability/", "可靠性", "Reliability"],
-  ["changes/", "变更", "Changes"],
-  ["sources/", "来源", "Sources"],
-  ["methodology/", "方法论", "Methodology"],
+  ["", "nav.overview"],
+  ["providers/", "nav.providers"],
+  ["plans/", "nav.plans"],
+  ["models/", "nav.models"],
+  ["pricing/", "nav.pricing"],
+  ["privacy/", "nav.privacy"],
+  ["reliability/", "nav.reliability"],
+  ["changes/", "nav.changes"],
+  ["sources/", "nav.sources"],
+  ["methodology/", "nav.methodology"],
 ];
 
-const ZH_TITLE = {
-  Overview: "概览",
-  Providers: "服务商",
-  Plans: "套餐",
-  Models: "模型",
-  Pricing: "价格",
-  Privacy: "隐私",
-  Reliability: "可靠性",
-  Changes: "变更",
-  Sources: "来源",
-  Methodology: "方法论",
-};
-
-const { title = "PlanScope", current = "" } = Astro.props;
+// `titleKey` looks up a localized <title>; `titleText` is used verbatim for
+// records whose name is data (e.g. a provider name).
+const { titleKey = "overview", titleText = null, current = "" } = Astro.props;
+const docTitleKey = `docTitle.${titleKey}`;
+const docTitleZh = titleText ? `${titleText} · PlanScope` : t("zh", docTitleKey);
 const generated = data.generated_at ? data.generated_at.slice(0, 19).replace("T", " ") : "—";
-const zhTitle = ZH_TITLE[title] || title;
 ---
-
 <!doctype html>
-<html lang="zh-CN" data-lang="zh">
+<html lang="zh-CN" data-lang="zh" data-currency="cny">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="PlanScope — AI Coding / Token / Agent plan tracker (personal use)" />
-    <title data-en-text={`${title} · PlanScope`}>{zhTitle} · PlanScope</title>
+    <title data-i18n={titleText ? null : docTitleKey}>{docTitleZh}</title>
     <script is:inline>
-      /* Resolve the language before first paint:
-         1. explicit choice in localStorage
-         2. browser language hint (navigator.language follows the Accept-Language request header)
-         3. default = Chinese; any non-Chinese hint = English */
+      /* Resolve language + currency before first paint:
+         language: stored choice > navigator.language (Accept-Language) > zh
+         currency: stored choice > language default (zh->CNY, en->USD) */
       (function () {
-        function set(lang) {
-          document.documentElement.dataset.lang = lang;
-          document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
-        }
-        var saved = null;
-        try {
-          saved = localStorage.getItem("planscope-lang");
-        } catch (e) {}
-        if (saved === "zh" || saved === "en") {
-          set(saved);
-          return;
-        }
+        var root = document.documentElement;
+        var savedLang = null;
+        try { savedLang = localStorage.getItem("planscope-lang"); } catch (e) {}
         var hint = (navigator.languages && navigator.languages[0]) || navigator.language || "";
-        if (!hint) set("zh");
-        else set(/^zh/i.test(hint) ? "zh" : "en");
+        var lang = savedLang === "zh" || savedLang === "en"
+          ? savedLang
+          : (!hint ? "zh" : (/^zh/i.test(hint) ? "zh" : "en"));
+        root.dataset.lang = lang;
+        root.lang = lang === "en" ? "en" : "zh-CN";
+        var savedCur = null;
+        try { savedCur = localStorage.getItem("planscope-currency"); } catch (e) {}
+        root.dataset.currency = savedCur === "cny" || savedCur === "usd"
+          ? savedCur
+          : (lang === "en" ? "usd" : "cny");
       })();
     </script>
   </head>
@@ -71,16 +60,21 @@ const zhTitle = ZH_TITLE[title] || title;
       <div class="wrap">
         <a class="brand" href={href("")}>PlanScope</a>
         <nav class="pages">
-          {NAV.map(([path, zh, en]) => (
-            <a
-              href={href(path)}
-              aria-current={current === path ? "page" : undefined}
-            ><span class="i18n-zh" lang="zh-CN">{zh}</span><span class="i18n-en" lang="en">{en}</span></a>
+          {NAV.map(([path, key]) => (
+            <a href={href(path)} aria-current={current === path ? "page" : undefined}>
+              <T k={key} />
+            </a>
           ))}
         </nav>
-        <div class="lang-switch" role="group" aria-label="语言 / Language" data-en-aria-label="Language">
-          <button type="button" data-lang-btn="zh" aria-pressed="true">中文</button>
-          <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+        <div class="switches">
+          <div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:common.langLabel">
+            <button type="button" data-lang-btn="zh" aria-pressed="true">中文</button>
+            <button type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+          </div>
+          <div class="cur-switch" role="group" aria-label="Currency" data-i18n-attr="aria-label:common.currencyLabel">
+            <button type="button" data-cur-btn="cny" aria-pressed="true">CNY</button>
+            <button type="button" data-cur-btn="usd" aria-pressed="false">USD</button>
+          </div>
         </div>
       </div>
     </header>
@@ -93,88 +87,90 @@ const zhTitle = ZH_TITLE[title] || title;
 
     <footer class="site">
       <div class="wrap">
-        <p>
-          <span class="i18n-zh" lang="zh-CN">
-            PlanScope 是个人自用研究项目，非商业产品、非 SaaS、无返利/推广链接。
-            数据不保证实时正确，请以官方来源为准。
-          </span><span class="i18n-en" lang="en">
-            PlanScope is a personal research project — not a commercial product, not a SaaS,
-            no affiliate or referral links. Data may not be current; verify against official sources.
-          </span>
-        </p>
-        <p class="small">
-          <span class="i18n-zh" lang="zh-CN">
-            本站使用的商标与产品名称（含 GLM、Kimi、Zhipu、Z.ai、OpenCode、OpenAI 等）
-            仅用于标识所记录对象，与相关官方无任何关系；本站仅记录公开套餐与 Token 额度信息，
-            不鼓励违反用户手册 / 隐私政策 / 使用说明的调用。
-            Trademarks belong to their respective owners; this project is unaffiliated with any official entity.
-          </span><span class="i18n-en" lang="en">
-            Trademarks and product names used on this site (GLM, Kimi, Zhipu, Z.ai, OpenCode, OpenAI, etc.)
-            identify the recorded subjects only and imply no affiliation with any official entity.
-            This project records publicly offered plans and token quotas only, and does not encourage
-            any invocation that violates a vendor's manual, privacy policy, or terms of use.
-            Trademarks belong to their respective owners; this project is unaffiliated with any official entity.
-          </span>
-        </p>
-        <p class="small mono">
-          <span class="i18n-zh" lang="zh-CN">数据生成时间（UTC+8）：{generated}</span><span class="i18n-en" lang="en">Data generated (UTC+8): {generated}</span>
-        </p>
+        <p><T k="footer.project" /></p>
+        <p class="small"><T k="footer.trademark" /></p>
+        <p class="small mono"><T k="footer.generated" vars={{ time: generated }} /></p>
       </div>
     </footer>
 
     <script>
-      // Applies attribute-level translations and owns the 中文 / EN toggle.
-      // Content-level translations are plain markup spans (.i18n-zh / .i18n-en) toggled by CSS.
-      const ATTRS = [
-        ["data-en-text", "textContent"],
-        ["data-en-placeholder", "placeholder"],
-        ["data-en-aria-label", "aria-label"],
-        ["data-en-title", "title"],
-      ];
+      import { t, DEFAULT_CURRENCY } from "../i18n/index.js";
 
-      const currentLang = () =>
-        document.documentElement.dataset.lang === "en" ? "en" : "zh";
+      const root = document.documentElement;
+      const LANG_KEY = "planscope-lang";
+      const CUR_KEY = "planscope-currency";
 
-      function applyText(lang) {
-        for (const [attr, prop] of ATTRS) {
-          document.querySelectorAll(`[${attr}]`).forEach((el) => {
-            const cache = `__zh_${prop}`;
-            if (!(cache in el)) {
-              el[cache] = prop === "textContent" ? el.textContent : el.getAttribute(prop);
-            }
-            const value = lang === "en" ? el.getAttribute(attr) : el[cache];
-            if (prop === "textContent") el.textContent = value;
-            else el.setAttribute(prop, value);
-          });
-        }
+      function store(key, value) {
+        try { localStorage.setItem(key, value); } catch (e) {}
+      }
+      function read(key) {
+        try { return localStorage.getItem(key); } catch (e) { return null; }
+      }
+      function currentLang() {
+        return root.dataset.lang === "en" ? "en" : "zh";
+      }
+      function currentCurrency() {
+        return root.dataset.currency === "usd" ? "usd" : "cny";
       }
 
-      function syncButtons(lang) {
-        document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
-          btn.setAttribute(
-            "aria-pressed",
-            btn.getAttribute("data-lang-btn") === lang ? "true" : "false"
-          );
+      // Attribute-level translations (placeholder / aria-label / title) and
+      // whole-element text (e.g. <option>, <title>). Content-level messages are
+      // rendered by <T /> in both languages and toggled by CSS.
+      function applyTranslations(lang) {
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (key) el.textContent = t(lang, key);
+        });
+        document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+          const spec = el.getAttribute("data-i18n-attr") || "";
+          spec.split(",").forEach((pair) => {
+            const i = pair.indexOf(":");
+            if (i < 0) return;
+            const attr = pair.slice(0, i).trim();
+            const key = pair.slice(i + 1).trim();
+            if (attr && key) el.setAttribute(attr, t(lang, key));
+          });
         });
       }
 
-      function setLang(lang) {
-        const root = document.documentElement;
+      function syncLangButtons(lang) {
+        document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-lang-btn") === lang ? "true" : "false");
+        });
+      }
+      function syncCurButtons(cur) {
+        document.querySelectorAll("[data-cur-btn]").forEach((btn) => {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-cur-btn") === cur ? "true" : "false");
+        });
+      }
+
+      function setLang(lang, persist = true) {
         root.dataset.lang = lang;
         root.lang = lang === "en" ? "en" : "zh-CN";
-        try {
-          localStorage.setItem("planscope-lang", lang);
-        } catch (e) {}
-        applyText(lang);
-        syncButtons(lang);
+        if (persist) store(LANG_KEY, lang);
+        applyTranslations(lang);
+        syncLangButtons(lang);
+        // Currency follows the language default until the user picks one.
+        if (!read(CUR_KEY)) setCurrency(DEFAULT_CURRENCY[lang], false);
         window.dispatchEvent(new CustomEvent("planscope:langchange", { detail: { lang } }));
       }
 
-      const initial = currentLang();
-      applyText(initial);
-      syncButtons(initial);
+      function setCurrency(cur, persist = true) {
+        root.dataset.currency = cur;
+        if (persist) store(CUR_KEY, cur);
+        syncCurButtons(cur);
+        window.dispatchEvent(new CustomEvent("planscope:currencychange", { detail: { currency: cur } }));
+      }
+
+      applyTranslations(currentLang());
+      syncLangButtons(currentLang());
+      syncCurButtons(currentCurrency());
+
       document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
         btn.addEventListener("click", () => setLang(btn.getAttribute("data-lang-btn") || "zh"));
+      });
+      document.querySelectorAll("[data-cur-btn]").forEach((btn) => {
+        btn.addEventListener("click", () => setCurrency(btn.getAttribute("data-cur-btn") || "cny"));
       });
     </script>
   </body>
