@@ -169,7 +169,9 @@ coding: null                 # {included, product, personal_use_only, enterprise
 endpoints: null              # {openai_compatible: URL, anthropic_compatible: URL}
 api_keys: null               # {membership_api_key, max_keys, shared_quota_across_keys, shared_quota_across_devices}
 extra_usage: null            # {supported, subscribers_only, currency, minimum_topup, balance_expires,
-                             #  pricing_basis, bypass_subscription_quota_when_active, shared_with_web, enterprise_supported}
+                             #  pricing_basis, note, bypass_subscription_quota_when_active,
+                             #  bypass_monthly_limit, bypass_weekly_limit, bypass_rolling_window_limit,
+                             #  shared_with_web, enterprise_supported} —— 绕过粒度按实际已知记录
 benefits: null               # 官方权益原文（approximate_* = 厂商估算，不是硬配额）
 background_consumption: null # 后台/驻留消耗：[{resource, rate, unit, condition, note}] —— 不假定消耗都来自主动请求
 confidence: null             # high / medium / low —— 本记录整体研究置信度
@@ -299,7 +301,7 @@ models:
   - model_id: mimo-7b        # 该 Provider 实际暴露的标识符（可能是 alias）
     underlying_model: null   # alias 当前实际指向的底层模型/版本（如 kimi-for-coding → K2.8 Preview）
     speed_tier: null         # standard / highspeed（词表统一）
-    speed_multiplier: null   # 相对标准档的近似速度倍率（如 HighSpeed ≈5.5×）
+    speed_multiplier: null   # 相对标准档速度倍率：单值（5.5）或官方区间 {min: 5, max: 6}
     quota_usage_multiplier: null  # 额度消耗倍率（如 HighSpeed 3×）
     quota_relative_cost:     # 相对额度消耗（如 k3-256k ≈ k3 的 0.5×）
       reference_model: null

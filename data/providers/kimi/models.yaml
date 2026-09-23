@@ -45,6 +45,9 @@ models:
       - plan: cn-personal-allegretto-legacy
         available: true
         effective_context_window: 1048576
+      - plan: cn-personal-allegro-legacy
+        available: true
+        effective_context_window: 1048576
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -89,6 +92,9 @@ models:
       - plan: cn-personal-allegretto-legacy
         available: true
         effective_context_window: 1048576   # Allegretto 起解锁 1M
+      - plan: cn-personal-allegro-legacy
+        available: true
+        effective_context_window: 1048576
     rate_limits: null
     notes: 模型上限 1M；各 Plan 生效上下文见 availability。
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -135,6 +141,9 @@ models:
       - plan: cn-personal-allegretto-legacy
         available: true
         effective_context_window: 262144
+      - plan: cn-personal-allegro-legacy
+        available: true
+        effective_context_window: 262144
     rate_limits: null
     notes: null
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -144,7 +153,9 @@ models:
     model_family: K2
     underlying_model: K2.7 Code HighSpeed
     speed_tier: highspeed
-    speed_multiplier: 5.5               # 官方描述约 5–6× 输出速度（approximate）
+    speed_multiplier:
+      min: 5                     # 官方描述约 5–6× 输出速度（区间原样保留）
+      max: 6
     quota_usage_multiplier: 3           # 模型配置页：3× quota usage
     context_window: 262144              # 本档上下文 262,144（官方矩阵）
     max_output: null
@@ -175,6 +186,9 @@ models:
         effective_context_window: null
       - plan: cn-personal-allegretto-legacy
         available: true                 # Allegretto 起可用
+        effective_context_window: 262144
+      - plan: cn-personal-allegro-legacy
+        available: true
         effective_context_window: 262144
     rate_limits: null
     notes: 额度消耗 3×、约 5–6× 输出速度；消耗/速度倍率见 speed_multiplier / quota_usage_multiplier。

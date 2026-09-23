@@ -49,9 +49,14 @@
           "description": "e.g. standard / highspeed（同一模型不同速度档位可能是不同 model_id）。"
         },
         "speed_multiplier": {
-          "type": ["number", "null"],
+          "type": ["number", "object", "null"],
           "minimum": 0,
-          "description": "相对标准档的近似输出速度倍率（如 HighSpeed 官方描述约 5–6×，记录 approximate 值）。"
+          "description": "相对标准档的近似输出速度倍率。可为单值（如 5.5）或官方区间 {min, max}（如 HighSpeed 5–6×，approximate）。",
+          "properties": {
+            "min": { "type": "number", "minimum": 0 },
+            "max": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": false
         },
         "quota_usage_multiplier": {
           "type": ["number", "null"],

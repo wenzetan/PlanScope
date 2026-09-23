@@ -1,0 +1,208 @@
+# Kimi 中国大陆个人版 Allegro（老套餐体系最高档，¥699/月）
+# 完整旧个人体系：Andante ¥49 → Moderato ¥99 → Allegretto ¥199 → Allegro ¥699。
+id: cn-personal-allegro-legacy
+name: Allegro
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: legacy
+plan_family: membership
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: false
+  existing_subscription_use: true
+  existing_subscription_renewal: true
+  legacy_upgrade_path: true        # 如 ¥199 档可在旧体系内升级到 ¥699 档
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 699              # 官方连续包月
+    origin: official
+    billing_period: month
+  annual:
+    amount: 6708             # 派生：559×12（不冒充官方页面直出价格）
+    origin: derived
+    billing_period: year
+    effective_monthly: 559   # 官方 K2.6 定价资料给出连续包年折合 ¥559/月
+    effective_monthly_origin: official
+    note: 官方近期 K2.6 定价资料给出 Allegro 连续包年折合 ¥559/月，年总额按 559×12=¥6708 记录
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                     # 精确 token 数官方未公开；不根据「360 Agent」反推
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: 360         # 官方基于典型任务 token 消耗的估算，不是 request quota
+  coding_tasks: null
+  shared_pool_enabled: true       # 所有会员功能（Agent/DeepResearch/PPT/Kimi Code/Work/Claw）共享
+  shared_pool_refresh: billing_cycle
+  shared_pool_rollover: false     # 未使用额度不累计
+  accounting_basis: token_usage
+  weekly_applies_to_legacy_plans: true
+  rolling_windows:
+    - 5 hours                     # Kimi Code 5 小时滚动频率窗口
+    - 7 days                      # Kimi Code 每 7 天刷新额度（旧套餐）
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: 4                  # 官方权益：4 个 Agent 并行任务（本档比低档翻倍）
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    三层约束并存：会员共享额度池（按账期刷新、不累计）+ Kimi Code 7 日额度（旧套餐专属、
+    不累积）+ 5 小时滚动窗口；精确 token/request 上限官方均未公开。官方另确认：月会员额度
+    耗尽时 Kimi Code 也会被冻结；达到上限时可启用 Extra Usage 绕过（见 extra_usage）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null         # HighSpeed 3× 在 models.yaml quota_usage_multiplier
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - k3                             # 完整 1M context（Allegretto 及以上）
+  - k3-256k
+  - kimi-for-coding                # K2.8 Preview, 1M
+  - kimi-for-coding-highspeed      # K2.7 Code HighSpeed, ≈5–6× 速度 / 3× 消耗
+
+benefits:                          # 官方权益原文；approximate_* 是估算，不是硬配额
+  agent:
+    approximate_uses: 360
+    parallel_tasks: 4
+    priority_generation_queue_multiplier: 4
+  agent_swarm:
+    available: true
+    approximate_uses: 120
+    parallel_subtasks: 8
+  goal_mode: true
+  kimi_claw:
+    included: true
+    deployment_modes:
+      - cloud
+      - android_local
+      - desktop
+    group_chats: 10
+  dream_memory: true
+  self_evolving_skills: true
+  long_conversation:
+    million_token_support: true    # 主产品会员权益 ≠ 模型 context_window（两层概念分开）
+  scheduled_tasks:
+    max_tasks: 20
+  widget_tasks:
+    max_tasks: 20
+  projects:
+    max_projects: 100
+    storage_gb: 50
+  professional_database_calls:
+    approximate_calls: 12000
+  website_with_database: true
+  kimi_code:
+    included: true
+
+background_consumption:            # 后台/驻留消耗（本档含 Kimi Claw，与 Allegretto 同源）
+  - resource: kimi_claw_cloud_host
+    rate: 0.6
+    unit: percent_of_membership_quota_per_day
+    condition: 实例保留即计费，即使没有主动执行任务
+    note: 官方 Claw 云主机驻留消耗（本档已含 Kimi Claw）
+  - resource: agent_website_cloud
+    rate: 0.08
+    unit: percent_of_membership_quota_per_day
+    condition: 已发布的 Agent Website 云服务驻留
+    note: null
+
+compatibility:
+  kimi_code_cli: officially_supported
+  kimi_code_vscode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  codex: officially_supported
+  roo_code: officially_supported
+  hermes: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true
+  shared_quota_across_devices: true
+
+extra_usage:
+  supported: true
+  subscribers_only: true
+  currency: CNY
+  minimum_topup: 25
+  balance_expires: false
+  bypass_monthly_limit: true             # 绕过月度会员额度上限
+  bypass_weekly_limit: true              # 绕过周额度上限
+  bypass_rolling_window_limit: true      # 绕过 5 小时滚动窗口上限
+  pricing_basis: approximately_kimi_api_payg
+  note: 使用时只扣 Extra Usage 余额，不影响原会员额度刷新
+
+confidence: high
+missing_fields:
+  - exact_monthly_token_pool
+  - exact_weekly_kimi_code_quota
+  - exact_5h_rate_limit
+  - exact_privacy_retention_period
+  - overseas_equivalent_plan
+
+source_refs: []                    # sources.yaml 待补官方 URL 后建立引用
+sources: []
+
+notes: >-
+  ① 旧体系最高档：Andante ¥49 → Moderato ¥99 → Allegretto ¥199 → Allegro ¥699。
+  ② 年价：官方给折合 ¥559/月 → 6708=559×12 派生（origin: derived + effective
+  monthly official），不把 6708 标成官方直出价；Allegretto 仍因官方未给年价而不推算。
+  ③ 百万 Token 长对话是**主产品会员权益**（benefits.long_conversation），与
+  k3 等模型的 context_window=1048576（Kimi Code/API 能力）是两个层级，不合并字段。
+  ④ Extra Usage 按粒度记录可绕过的限制（monthly/weekly/rolling），而非单一 overage 标志。
+  ⑤ 个人版记录：不继承 Kimi Business / Enterprise / API prepaid / 海外订阅的
+  价格、ZDR、政策或配额 —— 那些如有数据须各自建立独立 Plan。
+  ⑥ 各来源 URL 待补（K2.6 定价资料 / 2026-07-20 公告 / 模型矩阵 / Extra Usage 文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null
