@@ -1,0 +1,118 @@
+# Kimi 开放平台 API 隐私与数据政策（大陆 platform.kimi.com + 海外 platform.kimi.ai）。
+# Training / Retention / ZDR 是三个独立字段，**不训练 ≠ 所有运营/安全/计费日志 0 retention**。
+# 与 consumer（消费版）、business（企业席位）两份记录互相独立，绝不合并。
+id: api
+provider: kimi
+scope: api
+policy_document_url: null
+terms_url: null
+prompt_retention:
+  value: null                       # 一般请求日志保留期未公开
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+log_retention_days:
+  value: null                       # general request retention 未公开（missing_fields）
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+used_for_training:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方明确：API input 与 output 均不用于模型训练（大陆与海外开放平台页面）。URL 待补。
+training_persistent_storage:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 数据仅用于执行当前 API 请求，不为训练目的持久化存储。URL 待补。
+zero_data_retention:
+  value: null                       # 官方未给出一般请求日志完整 ZDR 承诺 —— 不训练 ≠ ZDR=true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开资料未披露，保持 unknown。URL 待补。
+transport_encryption:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: HTTPS / TLS。URL 待补。
+user_data_isolation:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 用户数据隔离。URL 待补。
+content_safety_review:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 大陆开放平台明确包含内容安全审核；海外页面未提及 —— 待按来源分别核验。URL 待补。
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_web_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+business_consumer_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+sensitive_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+commercial_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+automated_agent_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+account_sharing_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+proxy_forwarding_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_gateway_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_agent_tools_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  本记录覆盖大陆与海外开放平台 API 的共性事实（不训练、不为训练持久化、TLS、
+  用户隔离、ZDR/保留期未知）。内容安全审核仅大陆页面明确 —— 海外待核验。
+  与 consumer / business 记录严格分开；Training / Retention / ZDR 三字段独立，互不推导。
+  官方 URL 待补（platform.kimi.com 与 platform.kimi.ai 的隐私条款）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

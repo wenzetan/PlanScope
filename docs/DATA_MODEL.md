@@ -39,6 +39,9 @@ data/
 | 区域：中国 / 海外双价格 | `region: cn / global`（短代码，各自保留原币种） | `plans/token-plan-cn.yaml`（CNY）vs `plans/token-plan-global.yaml`（USD） |
 | 子平台 / 品牌 | `market: bailian / bigmodel / zai` | `plans/bigmodel-team-token.yaml` vs `plans/zai-personal-token.yaml` |
 | 计划代际（新旧体系） | `type` + `status`（`legacy`=存量可续费 / `deprecated`=停供）+ `effective_until` | `plans/cn-personal-andante-legacy.yaml`（`status: legacy`） |
+| 地区报价（CN / Global） | `region` + 独立文件 + 各自原始币种；溢价比较只在展示层派生 | `cn-api-payg.yaml`（CNY）vs `global-api-payg.yaml`（USD） |
+| 账户 tier / 席位数 **不是** Plan | tier → `rate_limits`；席位 → `pricing.seats`（单一 Plan × N seats） | 不建 `API Tier 2`、`cn-business-2-seat` 这类文件 |
+| 单一产品线多记录 | PAYG 基线与合同 Offer 用 `record_kind` 分开，不造不存在的档位 | `cn-api-payg` + `cn-enterprise-api`（无 Enterprise S/M/L） |
 
 示例：
 
@@ -66,15 +69,24 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 否则会把「中国老套餐」「海外套餐」「中国新体系」错误合并成同一个 Plan。
 文件名/`id` 一旦确定即为稳定标识，不因展示名或体系更替而重命名。
 
-首批实例（Kimi 中国大陆个人体系 8 条，旧 4 + 新 4）：
+首批实例（Kimi 17 条 + 模板；完整树见 §DATA_MODEL 实例说明）：
 - 旧体系（`generation: legacy`、`status: legacy`、有 7 日额度）：
   `cn-personal-andante-legacy`（¥49）→ `cn-personal-moderato-legacy`（¥99）→
   `cn-personal-allegretto-legacy`（¥199，官方未给年价不推算）→ `cn-personal-allegro-legacy`（¥699）
 - 新体系（`generation: current`、`status: active`、无 7 日额度）：
   `cn-personal-go`（¥49，**无 Kimi Code**）→ `cn-personal-plus`（¥99，新 Code 最低入口）→
   `cn-personal-pro`（¥199，解锁 K3 1M + HighSpeed）→ `cn-personal-max`（¥699，Agent 倍率 14×）
-- 海外体系（`kimi.ai`、美元/本地定价）单独调研为 `global-personal-*`，不并入以上 8 条
+- 海外个人（`region: global`，**draft 占位**、数值全 null 待调研）：
+  `global-personal-moderato` / `global-personal-allegretto` / `global-personal-allegro` / `global-personal-vivace`
+- 企业团队（按席位年订）：`cn-business`（¥4,200/席/年，seat = quantity 不是 tier）
+- API 系列（`record_kind` 分组，官方**无订阅制 API Plan**）：
+  `cn-api-payg`（CNY 公开单价 + ¥15 赠券）/ `cn-enterprise-api`（合同+协商折扣）/
+  `global-api-payg`（USD 公开单价）/ `global-enterprise-api` —— CN/Global 分币种，溢价比较只在展示层
+- 系列隔离：Kimi API Open Platform / Kimi Code / Kimi Membership 的 key、balance、benefits、billing 互不相通
+  （`product_isolation`），不写可兑换字段；限流按账户 tier（`rate_limits`），不建 Tier Plan
 - Provider 级 `quota_policies` 按代系维护通用额度机制（旧：月池+7 日+5h；新：月池+5h）
+- 隐私按 scope 三份：`privacy/consumer.yaml`（可训练+opt-out）、`privacy/business.yaml`（不训练+隔离）、
+  `privacy/api.yaml`（不训练、不为训练持久化、ZDR unknown）—— Training / Retention / ZDR 三字段独立
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -161,7 +173,12 @@ type:
 status: unknown              # active / beta / invite_only / legacy / deprecated / discontinued / unknown
 region: null                 # cn / global —— 区域变体拆独立记录（短代码，不是散文）
 market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
-audience: null               # personal / team / enterprise —— 人群变体拆独立记录
+audience: null               # personal / team / enterprise / business / api —— 人群/用途变体拆独立记录
+record_kind: subscription    # subscription / legacy_subscription / payg_baseline / enterprise_contract /
+                              # prepaid_package / token_plan / credits_plan —— 不是每个记录都是订阅
+service_domain: null         # 平台域名（platform.kimi.com vs platform.kimi.ai = 两套报价体系）
+priority: null               # p0 / p1 / p2 / p3 —— 调研优先级
+research_status: null        # draft / verified_initial / verified_complete / stale —— 有 unknown 时不要标 complete
 plan_family: null            # membership / payg / credits —— 订阅性质（"subscription" 记这里，不占 type）
 generation: null             # legacy / current —— 代系，必须与 id 后缀（-legacy）一致
 positioning: null            # everyday_use / productivity_upgrade / professional / premium（厂商档位定位，verbatim）

@@ -12,6 +12,47 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
 
 // 席位计价的 Plan：seat_count 是数量不是档位，成本 = 单席年价 × N（展示层派生，绝不建多档文件）。
 const perSeatPlans = data.plans.filter((p) => p.price_view && p.price_view.billing_model === "per_seat");
+
+// API 基线逐模型单价（§5/6）：原币种保存 → CNY 与 region ratio 仅在展示层派生，绝不回写。
+const rateFx = data.exchange_rate.usd_cny;
+function toCny(amount, currency) {
+  if (amount === null || amount === undefined || !currency) return null;
+  const c = String(currency).toUpperCase();
+  if (c === "CNY") return amount;
+  if (c === "USD" && rateFx != null) return amount * rateFx;
+  return null;
+}
+const fmtAmt = (comp) => (comp && comp.amount != null ? comp.amount : "—");
+
+const apiPlans = data.plans.filter((p) => Array.isArray(p.model_pricing) && p.model_pricing.length > 0);
+const byModel = new Map();
+const modelOrder = [];
+for (const plan of apiPlans) {
+  const currency = plan.pricing ? plan.pricing.currency : null;
+  const label = plan.region === "cn" ? "CN" : plan.region === "global" ? "Global" : plan.region || "—";
+  for (const mp of plan.model_pricing) {
+    if (!byModel.has(mp.model)) {
+      byModel.set(mp.model, []);
+      modelOrder.push(mp.model);
+    }
+    byModel.get(mp.model).push({ label, plan, mp, currency });
+  }
+}
+const apiRows = modelOrder.map((model) => {
+  const entries = byModel.get(model);
+  const row = { model, entries, ratio: null };
+  const cn = entries.find((e) => e.label === "CN");
+  const gl = entries.find((e) => e.label === "Global");
+  const missOf = (e) => toCny(e.mp.input_cache_miss && e.mp.input_cache_miss.amount, e.currency);
+  const outOf = (e) => toCny(e.mp.output && e.mp.output.amount, e.currency);
+  if (cn && gl && missOf(cn) && missOf(gl)) {
+    row.ratio = {
+      input: missOf(cn) / missOf(gl),
+      output: outOf(cn) && outOf(gl) ? outOf(cn) / outOf(gl) : null,
+    };
+  }
+  return row;
+});
 ---
 
 <Base title="Pricing" current="pricing/">
@@ -168,6 +209,75 @@ const perSeatPlans = data.plans.filter((p) => p.price_view && p.price_view.billi
           }
         }
       </script>
+    </section>
+  )}
+
+  {apiRows.length > 0 && (
+    <section>
+      <h2>API 模型单价（CN vs Global）</h2>
+      <div class="note small">
+        CN 与 Global 是**两套报价体系**：原币种（CNY / USD / MTok）分别保存，绝不回写折算价。
+        <span class="mono">→CNY</span> 列按 <span class="mono">config/exchange_rate.yaml</span> 当日汇率派生；
+        <span class="mono">region ratio</span> 是 derived analysis（地区溢价参考），不写入数据层。
+        PAYG 无月费/年费 —— 这里的单价本身就是比较口径。
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Region</th>
+              <th>Record</th>
+              <th>Unit</th>
+              <th>Cache hit</th>
+              <th>Cache miss (input)</th>
+              <th>Cache write</th>
+              <th>Output</th>
+              <th>→ CNY (miss / out)</th>
+              <th>Region ratio (derived)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {apiRows.map((row) =>
+              row.entries.map((e) => {
+                const missCny = toCny(e.mp.input_cache_miss && e.mp.input_cache_miss.amount, e.currency);
+                const outCny = toCny(e.mp.output && e.mp.output.amount, e.currency);
+                const unit = (e.mp.input_cache_miss && e.mp.input_cache_miss.unit) || "MTok";
+                return (
+                  <tr>
+                    <td class="mono">{row.model}</td>
+                    <td><span class="badge">{e.label}</span></td>
+                    <td class="mono small">{e.plan.id}</td>
+                    <td class="mono">{e.currency} / {unit}</td>
+                    <td>{fmtAmt(e.mp.input_cache_hit)}</td>
+                    <td>{fmtAmt(e.mp.input_cache_miss)}</td>
+                    <td>{fmtAmt(e.mp.cache_write)}</td>
+                    <td>{fmtAmt(e.mp.output)}</td>
+                    <td class="mono">
+                      {missCny != null ? `¥${(Math.round(missCny * 100) / 100).toLocaleString("en-US")}` : "—"}
+                      {" / "}
+                      {outCny != null ? `¥${(Math.round(outCny * 100) / 100).toLocaleString("en-US")}` : "—"}
+                    </td>
+                    <td class="mono small">
+                      {row.ratio
+                        ? `${row.ratio.input.toFixed(2)}× input${row.ratio.output ? ` / ${row.ratio.output.toFixed(2)}× out` : ""} (derived)`
+                        : "—"}
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+      {(() => {
+        const k3 = apiRows.find((r) => r.model === "kimi-k3" && r.ratio);
+        return k3 ? (
+          <p class="small muted">
+            示例：K3 输入单价 CN ≈ {k3.ratio.input.toFixed(2)}× Global（按当日 {rateFx ?? "—"} 汇率派生，仅作参考）。
+          </p>
+        ) : null;
+      })()}
     </section>
   )}
 

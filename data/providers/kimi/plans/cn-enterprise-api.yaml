@@ -1,0 +1,159 @@
+# Kimi Enterprise API —— 中国大陆**合同型 Offer**（不是固定价档位）。
+# 模式 = 标准 API + 企业认证 + 正式合同 + 承诺用量/合同期 → 协商折扣。
+# 不存在 Enterprise S/M/L 之类档位；具体折扣/SLA/限流数值未公开，全部 null。
+id: cn-enterprise-api
+name: Kimi Enterprise API
+provider: kimi
+record_kind: enterprise_contract
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: cn
+market: null
+audience: enterprise
+service_domain: platform.kimi.com
+purchase_url: null
+
+availability:
+  public_self_service: false       # 不能自助开通
+  contact_sales: true
+
+pricing:
+  currency: CNY
+  public_fixed_price: false        # 无公开固定价，价格定制
+  base_pricing_reference: cn-api-payg   # 基准 = 标准 API 公开价 + 合同条款
+  volume_discount:
+    available: true
+    based_on:
+      - committed_usage
+      - contract_duration
+    exact_value: null              # 折扣数值未公开 —— 不假定为标准价的某个百分比
+    exact_public: false
+    note: 官方确认大用量企业可申请专属折扣，幅度与承诺用量、合作期限有关
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing: null                # 无独立价格表：定价基准 = 标准 API + 合同（base_pricing_reference）
+
+models: null                       # 未逐模型枚举；集合与定价基准随标准 API（见 notes ①）
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: null
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 企业版 Rate Limit / 并发高于标准 API 且可定制，但具体数值未公开（见 rate_limits）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+rate_limits:
+  higher_than_standard_api: true
+  custom_concurrency: true
+  exact_values: null               # 具体数值未公开
+  note: 企业合同定制限流，不构成可购买的 Tier 档位
+
+compatibility:
+  openai_compatible_api: officially_supported   # 标准 API 端点 + 合同条款（base_pricing_reference）
+  anthropic_compatible_api: unknown
+
+enterprise_services:                # 合同 / SLA / 支持 / 早期体验（原文结构）
+  contract:
+    organization_verification_required: true
+    standard_service_agreement: true
+    custom_contract: true
+    corporate_bank_transfer: true
+  sla:
+    enterprise_grade: true
+    customizable: true
+    exact_terms: null              # SLA 具体条款未公开
+  support:
+    dedicated_technical_support: true
+  early_access:
+    new_features: true
+
+evidence:
+  pricing_mechanism:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 标准 API + 认证 + 合同 + 承诺用量 → 协商折扣（URL 待补）
+  enterprise_services:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 更高限流/并发、专属支持、定制 SLA、新功能优先（URL 待补）
+  exact_discount:
+    authority: unknown
+  exact_sla:
+    authority: unknown
+  zero_data_retention:
+    authority: unknown
+
+confidence: high
+priority: p0
+research_status: verified_initial
+missing_fields:
+  - enterprise_discount_schedule
+  - minimum_commit
+  - exact_sla
+  - exact_enterprise_rate_limits
+  - zero_data_retention
+  - negotiated_security_options
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 不是固定价档位：没有 Enterprise S/M/L；模型集合与定价基准 = 标准 API + 合同条款
+  （base_pricing_reference → cn-api-payg），未逐模型单列价格。
+  ② 折扣、最低承诺量、SLA、限流具体值全部未公开 → null + missing_fields，绝不假定百分比。
+  ③ record_kind: enterprise_contract —— 与 PAYG 基线、订阅档位在 Pages 分组中分开显示。
+  ④ cn-api-payg 的 enterprise_upgrade.target 指向本记录。
+  ⑤ 隐私与安全选项见 privacy/api.yaml + missing_fields（negotiated_security_options）。
+  ⑥ 各来源 URL 待补（企业版专页 / 合同说明 / FAQ）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

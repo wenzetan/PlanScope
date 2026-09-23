@@ -58,6 +58,22 @@
       "$ref": "#/$defs/policyField",
       "description": "Restrictions targeting automated coding agents such as OpenClaw / Claude Code / OpenCode style callers."
     },
+    "training_persistent_storage": {
+      "$ref": "#/$defs/policyField",
+      "description": "是否为训练目的持久化存储请求内容 —— 与 used_for_training、retention、ZDR 相互独立，不可互相推导。"
+    },
+    "content_safety_review": {
+      "$ref": "#/$defs/policyField",
+      "description": "请求内容是否经过安全审核（如大陆开放平台明确、海外页面未提时按来源分开记录）。"
+    },
+    "transport_encryption": {
+      "$ref": "#/$defs/policyField",
+      "description": "传输加密（HTTPS/TLS）。"
+    },
+    "user_data_isolation": {
+      "$ref": "#/$defs/policyField",
+      "description": "用户数据与其他用户/用途的隔离。"
+    },
 
     "notes": { "type": ["string", "null"] },
     "checked_at": { "$ref": "#/$defs/iso8601OrNull" },

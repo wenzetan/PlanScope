@@ -7,9 +7,12 @@ const providerOptions = [...new Set(data.plans.map((p) => p.provider))].sort();
 const typeOptions = [...new Set(data.plans.flatMap((p) => p.type || []))].sort();
 const regionOptions = [...new Set(data.plans.map((p) => p.region).filter(Boolean))].sort();
 const audienceOptions = [...new Set(data.plans.map((p) => p.audience).filter(Boolean))].sort();
+const kindOptions = [...new Set(data.plans.map((p) => p.record_kind).filter(Boolean))].sort();
 
 const rows = data.plans.map((plan) => {
   const compat = plan.compatibility || {};
+  const perSeat = plan.price_view && plan.price_view.billing_model === "per_seat";
+  const kind = plan.record_kind || "subscription";
   const compatSummary = Object.entries(compat)
     .map(([key, value]) => `${key}: ${value ?? "unknown"}`)
     .join(" · ");
@@ -21,13 +24,15 @@ const rows = data.plans.map((plan) => {
     plan.region,
     plan.market,
     plan.audience,
+    kind,
+    perSeat ? "seat per-seat 席位" : "",
     ...(plan.type || []),
     compatSummary,
   ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
-  return { plan, search, compatSummary };
+  return { plan, search, compatSummary, kind };
 });
 ---
 
@@ -37,6 +42,11 @@ const rows = data.plans.map((plan) => {
 
   <div class="toolbar">
     <input id="q" type="search" placeholder="搜索 plan / provider / 兼容性…" aria-label="Search plans" />
+    <select id="f-kind" aria-label="Filter by record kind">
+      <option value="plans" selected>套餐（subscription + legacy）</option>
+      <option value="all">全部记录</option>
+      {kindOptions.map((k) => <option value={k}>{k}</option>)}
+    </select>
     <select id="f-provider" aria-label="Filter by provider">
       <option value="">全部 Provider</option>
       {providerOptions.map((id) => <option value={id}>{id}</option>)}
@@ -70,6 +80,7 @@ const rows = data.plans.map((plan) => {
           <th>Region</th>
           <th>Audience</th>
           <th class="sortable" data-sort="status">Status</th>
+          <th class="sortable" data-sort="kind">Kind</th>
           <th class="sortable" data-sort="monthly">Monthly (original)</th>
           <th class="sortable" data-sort="monthly-cny">Monthly (CNY)</th>
           <th class="sortable" data-sort="annual">Annual (derived ok)</th>
@@ -87,6 +98,7 @@ const rows = data.plans.map((plan) => {
             data-region={plan.region || ""}
             data-audience={plan.audience || ""}
             data-status={plan.status || "unknown"}
+            data-kind={plan.record_kind || "subscription"}
             data-name={(plan.name || "").toLowerCase()}
             data-monthly={plan.price_view.monthly ?? ""}
             data-monthly-cny={plan.price_view.monthly_cny ?? ""}
@@ -102,6 +114,7 @@ const rows = data.plans.map((plan) => {
             <td>{plan.region ? <span class="badge">{plan.region}</span> : "—"}</td>
             <td>{plan.audience ? <span class="badge">{plan.audience}</span> : "—"}</td>
             <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
+            <td><span class="badge">{plan.record_kind || "subscription"}</span></td>
             <td>
               {money(plan.price_view.monthly, plan.price_view.currency)}
               {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> /席</span>}
@@ -178,8 +191,16 @@ const rows = data.plans.map((plan) => {
       const fs = document.getElementById("f-status");
       const fr = document.getElementById("f-region");
       const fa = document.getElementById("f-audience");
+      const fk = document.getElementById("f-kind");
       const count = document.getElementById("count");
       const total = rows.length;
+      const PLAN_KINDS = ["subscription", "legacy_subscription"];
+
+      function kindMatches(kind, filter) {
+        if (!filter || filter === "all") return true;
+        if (filter === "plans") return PLAN_KINDS.includes(kind);
+        return kind === filter;
+      }
 
       function apply() {
         const text = (q && q.value ? q.value : "").trim().toLowerCase();
@@ -188,6 +209,7 @@ const rows = data.plans.map((plan) => {
         const status = fs && fs.value ? fs.value : "";
         const region = fr && fr.value ? fr.value : "";
         const audience = fa && fa.value ? fa.value : "";
+        const kind = fk && fk.value ? fk.value : "all";
         let visible = 0;
         for (const row of rows) {
           const ok =
@@ -196,16 +218,18 @@ const rows = data.plans.map((plan) => {
             (!type || (row.dataset.type || "").split(",").includes(type)) &&
             (!status || row.dataset.status === status) &&
             (!region || row.dataset.region === region) &&
-            (!audience || row.dataset.audience === audience);
+            (!audience || row.dataset.audience === audience) &&
+            kindMatches(row.dataset.kind || "subscription", kind);
           row.style.display = ok ? "" : "none";
           if (ok) visible += 1;
         }
         if (count) count.textContent = `${visible} / ${total} plans`;
       }
 
-      for (const el of [q, fp, ft, fs, fr, fa]) {
+      for (const el of [q, fp, ft, fs, fr, fa, fk]) {
         if (el) el.addEventListener("input", apply);
       }
+      apply();   // 初始按默认分组（真套餐）渲染
 
       let sortKey = "";
       let sortAsc = true;

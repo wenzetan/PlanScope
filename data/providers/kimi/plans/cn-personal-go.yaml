@@ -3,6 +3,7 @@
 id: cn-personal-go
 name: Go
 provider: kimi
+record_kind: subscription
 type:
   - agent_plan                  # 新版无 coding_plan：官方文档「Go（新套餐）→ 无 coding 额度」
 status: active
@@ -118,6 +119,8 @@ extra_usage:
   note: 会员 Extra Usage 由 membership 规则继承，细则未单独公开
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:
   - exact_monthly_credit_amount
   - exact_agent_quota

@@ -92,6 +92,7 @@ _MINIMAL_PLAN = """\
 id: {id}
 name: {name}
 provider: {provider}
+record_kind: subscription
 type:
   - token_plan
 status: unknown

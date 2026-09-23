@@ -1,0 +1,173 @@
+# Kimi API PAYG —— 海外开放平台**比较基线**（platform.kimi.ai，USD 报价）。
+# 与大陆 cn-api-payg 是**不同报价体系**：分币种保存，地区溢价只在展示层派生。
+id: global-api-payg
+name: Kimi API PAYG
+provider: kimi
+record_kind: payg_baseline
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: global
+market: null
+audience: api                     # supported: individual / organization
+service_domain: platform.kimi.ai
+purchase_url: null
+
+pricing:
+  currency: USD                    # 原始结算币种，绝不用折算价覆盖
+  public_fixed_price: true
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null                   # 各地区税费未核实（missing_fields: tax_and_vat_by_region）
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing:                     # platform.kimi.ai 公开价（USD / MTok，原样保存）
+  - model: kimi-k3
+    context_window: 1048576
+    input_cache_hit: { amount: 0.30, unit: MTok, origin: official }
+    input_cache_miss: { amount: 3.00, unit: MTok, origin: official }
+    cache_write: { amount: 3.00, unit: MTok, origin: official }
+    output: { amount: 15.00, unit: MTok, origin: official }
+  - model: kimi-k2.7-code
+    context_window: 262144
+    input_cache_hit: { amount: 0.19, unit: MTok, origin: official }
+    input_cache_miss: { amount: 0.95, unit: MTok, origin: official }
+    output: { amount: 4.00, unit: MTok, origin: official }
+  - model: kimi-k2.6
+    context_window: 262144
+    input_cache_hit: { amount: 0.16, unit: MTok, origin: official }
+    input_cache_miss: { amount: 0.95, unit: MTok, origin: official }
+    output: { amount: 4.00, unit: MTok, origin: official }
+
+additional_pricing:
+  web_search: { amount: 0.004, currency: USD, unit: invocation }
+
+trial:                             # 海外试用政策未核实 —— 不沿用大陆 ¥15 券
+  available: null
+  note: 海外 trial policy 未知（missing_fields 中的 global_trial_policy）
+
+payments:
+  individual:
+    online_topup: true
+  organization:
+    online_topup: true
+    bank_transfer:
+      availability: region_dependent
+
+rate_limits:
+  dimensions:
+    - concurrency
+    - RPM
+    - TPM
+    - TPD
+  scope: account
+  tier_basis: cumulative_spend     # 海外按累计消费（区别于大陆累计充值）
+  exact_public_tiers: false
+  note: 账户级 tier，不是可购买套餐 —— 不建 API Tier N 文件
+
+models:
+  - kimi-k3
+  - kimi-k2.7-code
+  - kimi-k2.6
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false       # PAYG 本身就是单价口径
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                      # 预付余额按量扣费，无固定配额
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 计费单位 1,000,000 tokens（MTok）、预付余额；tier 数值未公开。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: unknown
+
+product_isolation:                 # 与大陆一致：API / Code / Membership 三线隔离
+  membership_balance_shared: false
+  kimi_code_key_shared: false
+  membership_api_key_shared: false
+  note: API Key / Balance / Benefits / Billing 互不相通、不可兑换
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: platform.kimi.ai 公开价（URL 待补）
+  rate_limit_tiers:
+    authority: unknown
+  complete_model_price_table:
+    authority: unknown
+  country_availability:
+    authority: unknown
+
+confidence: high
+priority: p0
+research_status: verified_initial
+missing_fields:
+  - complete_model_price_table
+  - global_trial_policy
+  - exact_rate_limit_tiers
+  - exact_country_availability
+  - tax_and_vat_by_region
+  - general_request_retention_period
+  - zero_data_retention
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 与 cn-api-payg 是同一服务的**两套报价体系**（USD vs CNY），绝不合并、绝不用折算价回写；
+  K3 单价对比：大陆 ¥20/¥100 每 MTok vs 海外 $3/$15 —— regional_price_ratio 属 derived
+  analysis，只在展示层按 config/exchange_rate.yaml 计算。
+  ② 存在对应的 global-enterprise-api 记录；本记录未声明升级入口（大陆版才有
+  enterprise_upgrade），不照搬。
+  ③ 海外地区范围 exact_countries unknown；银行转账 region_dependent；本地商店售价不在本记录。
+  ④ 隐私与大陆共用 privacy/api.yaml 记录（content_safety_review 仅大陆页面明确，见该文件 note）。
+  ⑤ 各来源 URL 待补（platform.kimi.ai 定价页 / 限流文档 / 隐私条款）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

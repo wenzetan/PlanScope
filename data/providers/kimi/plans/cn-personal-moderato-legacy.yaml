@@ -4,6 +4,7 @@
 id: cn-personal-moderato-legacy
 name: Moderato
 provider: kimi
+record_kind: legacy_subscription
 type:
   - agent_plan
   - coding_plan
@@ -158,6 +159,8 @@ extra_usage:
   enterprise_supported: false
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:                          # 明确的未知缺口，防止被当作数据完整
   - exact_monthly_credit_amount
   - exact_weekly_kimi_code_quota

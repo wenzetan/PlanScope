@@ -4,6 +4,7 @@
 id: example-coding-plan
 name: Example Coding Plan (Template)
 provider: openai
+record_kind: subscription
 type:
   - coding_plan
 status: unknown

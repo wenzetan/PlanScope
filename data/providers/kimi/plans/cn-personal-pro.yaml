@@ -4,6 +4,7 @@
 id: cn-personal-pro
 name: Pro
 provider: kimi
+record_kind: subscription
 type:
   - agent_plan
   - coding_plan
@@ -147,6 +148,8 @@ api_keys:
   shared_quota_across_devices: null
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:
   - exact_monthly_credit_amount
   - exact_5h_kimi_code_limit

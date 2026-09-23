@@ -4,6 +4,7 @@
 id: cn-personal-andante-legacy
 name: Andante
 provider: kimi
+record_kind: legacy_subscription
 type:
   - agent_plan
   - coding_plan
@@ -130,6 +131,14 @@ extra_usage:
   balance_expires: false
   pricing_basis: kimi_api_payg     # 近似计费口径（估算），非精确定价
   bypass_subscription_quota_when_active: true
+
+confidence: high
+priority: p0
+research_status: verified_initial
+missing_fields:                       # 首批记录后补的显式缺口
+  - exact_monthly_credit_amount
+  - exact_weekly_kimi_code_quota
+  - exact_5h_rate_limit
 
 source_refs: []                    # sources.yaml 待补官方 URL 后建立引用
 sources: []

@@ -74,9 +74,18 @@ def test_price_origin_and_compat_enums_cover_provenance_levels(repo_root: Path) 
     for key in ("evidence_conflicts", "platforms", "organization", "enterprise_services"):
         assert key in schema["properties"], f"缺少 {key}"
     pricing = schema["$defs"]["pricing"]["properties"]
-    for key in ("seats", "discounts", "additional_seats", "tax", "invoices", "monthly_billing_available"):
+    for key in ("seats", "discounts", "additional_seats", "tax", "invoices", "monthly_billing_available",
+                "public_fixed_price", "base_pricing_reference", "volume_discount"):
         assert key in pricing, f"pricing 缺少 {key}"
     assert "business" in schema["properties"]["audience"]["enum"]
+    assert "api" in schema["properties"]["audience"]["enum"]
+    # record_kind 必填且枚举覆盖三类语义
+    assert "record_kind" in schema["required"]
+    kinds = schema["properties"]["record_kind"]["enum"]
+    assert {"subscription", "payg_baseline", "enterprise_contract", "legacy_subscription"} <= set(kinds)
+    for key in ("service_domain", "model_pricing", "trial", "payments", "rate_limits",
+                "enterprise_upgrade", "product_isolation", "priority", "research_status"):
+        assert key in schema["properties"], f"缺少 {key}"
 
 
 def test_sources_schema_is_a_list_registry(repo_root: Path) -> None:

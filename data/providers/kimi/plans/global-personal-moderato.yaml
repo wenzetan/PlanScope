@@ -1,0 +1,53 @@
+# 海外个人会员 —— **draft 占位**：名单与 id 来自调研框架，价格/权益/模型权限均未调研。
+# research_status: draft —— 收到对应数据段后填充；不要当作已核验记录（不猜任何数值）。
+id: global-personal-moderato
+name: Moderato
+provider: kimi
+record_kind: subscription
+type:
+  - agent_plan                     # 占位：是否含 Kimi Code / coding_plan 待核实（见 missing_fields）
+status: unknown
+plan_family: membership
+generation: null                   # 海外体系代系未核实 —— 不套用大陆 legacy/current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+
+pricing:
+  currency: null                   # 海外存在 USD 与本地 App Store / Google Play 定价，均未调研
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: null
+
+models: null
+
+research_status: draft
+missing_fields:
+  - plan_type_and_kimi_code_inclusion
+  - pricing_usd
+  - regional_app_store_pricing
+  - benefits_matrix
+  - kimi_code_model_matrix
+  - weekly_quota_policy
+  - exact_quotas
+  - overseas_business_availability   # 与个人记录的边界（企业另计）
+
+source_refs: []
+sources: []
+
+notes: >-
+  占位记录（draft）：id/名称来自 Kimi 海外个人体系名单（Moderato / Allegretto / Allegro / Vivace）。
+  价格、权益、模型权限、周额度机制一概未核验 —— 全部保持 null/unknown，收到数据段后补齐。
+  海外与大陆是不同报价体系，绝不套用大陆档位数值。
+checked_at: null
+effective_from: null
+effective_until: null

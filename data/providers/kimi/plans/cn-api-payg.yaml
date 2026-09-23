@@ -1,0 +1,192 @@
+# Kimi API PAYG —— 中国大陆开放平台**比较基线**（非订阅）。
+# 官方明确：pay-as-you-go / no subscription plan —— 不与 Membership/Business 混类，不建订阅档位。
+# 个人与普通企业认证用户同价 → 不拆两个虚假 Plan（audience: api 覆盖两类用户）。
+id: cn-api-payg
+name: Kimi API PAYG
+provider: kimi
+record_kind: payg_baseline
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: cn
+market: null
+audience: api                     # supported: individual / organization（同价，见 notes）
+service_domain: platform.kimi.com
+purchase_url: null
+
+pricing:
+  currency: CNY
+  public_fixed_price: true        # 公开固定单价（区别于 Enterprise 定制价）
+  monthly: null                    # 无订阅、无月付
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing:                     # 大陆官方开放平台首页公开价（原币种原单位，绝不折算覆盖）
+  - model: kimi-k3
+    context_window: 1048576
+    input_cache_hit: { amount: 2.00, unit: MTok, origin: official }
+    input_cache_miss: { amount: 20.00, unit: MTok, origin: official }
+    cache_write: { amount: 20.00, unit: MTok, origin: official }
+    output: { amount: 100.00, unit: MTok, origin: official }
+  - model: kimi-k2.7-code
+    context_window: 262144
+    input_cache_hit: { amount: 1.30, unit: MTok, origin: official }
+    input_cache_miss: { amount: 6.50, unit: MTok, origin: official }
+    output: { amount: 27.00, unit: MTok, origin: official }
+  - model: kimi-k2.6
+    context_window: 262144
+    input_cache_hit: { amount: 1.10, unit: MTok, origin: official }
+    input_cache_miss: { amount: 6.50, unit: MTok, origin: official }
+    output: { amount: 27.00, unit: MTok, origin: official }
+
+additional_pricing:
+  web_search: { amount: 0.03, currency: CNY, unit: invocation }   # 独立于 Token 费用
+
+trial:                             # 一次性赠券，**不是 free tier**
+  available: true
+  eligibility:
+    mainland_china_mobile_number: true
+    identity_verification_required: true
+  voucher:
+    amount: 15
+    currency: CNY
+    validity_months: 3
+  restrictions:
+    kimi_k3_eligible: false        # 赠券不能用于 K3
+
+payments:
+  individual:
+    - wechat_pay
+    - alipay
+  organization:
+    - wechat_pay
+    - alipay
+    - corporate_bank_transfer
+
+rate_limits:
+  dimensions:
+    - concurrency
+    - RPM
+    - TPM
+    - TPD
+  scope: account
+  shared_across_models: true
+  tier_basis: cumulative_topup_amount
+  exact_public_tiers: false
+  note: 账户级 tier 由累计充值决定 —— 不是可购买套餐，不建 API Tier N 文件
+
+models:
+  - kimi-k3
+  - kimi-k2.7-code
+  - kimi-k2.6
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null          # 逐组件单价见 model_pricing（含 cache hit/miss/write）
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false       # PAYG 按量计费，不存在「套餐每百万 Token 单价」可比口径 —— 本身就是单价
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                      # PAYG 无固定配额，按预付余额扣费
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account        # 限流按账户，不按 key
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null                        # 维度存在但 tier 数值未公开（见 rate_limits：concurrency/RPM/TPM/TPD）
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 计费单位 1,000,000 tokens（MTok）、预付余额制；限流维度为 concurrency/RPM/TPM/TPD，具体 tier 数值未公开。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+compatibility:
+  openai_compatible_api: officially_supported   # 官方开放平台提供 OpenAI-compatible 端点
+  anthropic_compatible_api: unknown             # 本记录未声明，显式保留未知
+
+enterprise_upgrade:
+  available: true
+  target: cn-enterprise-api
+  note: 大用量可转企业合同（协商折扣）
+
+product_isolation:                 # API Open Platform / Kimi Code / Membership 三线隔离
+  membership_balance_shared: false
+  kimi_code_key_shared: false
+  membership_api_key_shared: false
+  note: API Key / Balance / Benefits / Billing 互不相通、不可兑换；不要写可兑换字段
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 大陆开放平台首页公开价（URL 待补）
+  trial:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 新用户赠券规则（URL 待补）
+  rate_limit_tiers:
+    authority: unknown
+  complete_model_price_table:
+    authority: unknown
+
+confidence: high
+priority: p0
+research_status: verified_initial
+missing_fields:
+  - complete_model_price_table
+  - exact_rate_limit_tiers
+  - general_request_retention_period
+  - zero_data_retention
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① record_kind: payg_baseline —— 官方明确开放平台**无订阅制 API Plan**，本记录是比较基线，
+  不是 subscription；四条 API 记录（CN/Global × PAYG/Enterprise）都不与 Membership/Business 混类。
+  ② 个人与普通企业认证用户 PAYG 同价 → 单一记录（audience: api，supported: individual+organization）；
+  真正产生价格/SLA/限流/支持差异的是 Enterprise Contract（独立记录）。
+  ③ 隐私事实（API input/output 不训练、不为训练持久化、ZDR unknown）统一记在
+  privacy/api.yaml —— Training / Retention / ZDR 三个独立字段，不训练 ≠ ZDR。
+  ④ CN 与 Global 报价分币种保存（CNY vs USD）；地区溢价比较（regional_price_ratio）
+  是 derived analysis，只在展示层用 config/exchange_rate.yaml 计算，绝不回写。
+  ⑤ 赠券 ≠ free tier：一次性、3 个月有效、K3 不可用。
+  ⑥ 限流 tier 是账户属性不是 Plan —— 不建 API Tier 1/2/3 文件。
+  ⑦ 开放平台余额预付；与 Membership / Kimi Code 的余额、key、权益、计费互不相通。
+  ⑧ 各来源 URL 待补（platform.kimi.com 定价页 / 限流文档 / 隐私条款）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

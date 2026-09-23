@@ -3,6 +3,7 @@
 id: cn-personal-allegretto-legacy
 name: Allegretto
 provider: kimi
+record_kind: legacy_subscription
 type:
   - agent_plan
   - coding_plan
@@ -178,6 +179,8 @@ extra_usage:
   bypass_subscription_quota_when_active: true
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:
   - exact_annual_price
   - exact_monthly_token_pool

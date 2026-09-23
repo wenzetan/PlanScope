@@ -45,6 +45,10 @@
 - **官方冲突留档 `evidence_conflicts`**：官方文档互相矛盾时记录 `selected_value/selected_source` vs `conflicting_value/conflicting_source` + `resolution.reason`（如专页 2 席 vs API 概览旧文案 5 席，专页优先），防止每日 CI 被旧页面回改。
 - **不训练 ≠ ZDR**：企业「不用于模型训练」承诺不能推导 `ZDR = true` 或保留期 —— 逐字段保持 `unknown`（见 `privacy/business.yaml`）。隐私按 scope 拆文件：`privacy/consumer.yaml` / `privacy/business.yaml`，绝不合并。
 - **可用性三值**：`models: []` = 明确无可用模型（如 Go 无 Kimi Code）；`models: null` = 矩阵未公开；第三方 agent / API Key 未核实时 compat **显式写 `unknown`**，不继承个人版的 `officially_supported`。
+- **`record_kind` 区分语义**：`subscription` / `legacy_subscription` = 真订阅套餐；`payg_baseline` = 比较基线（Kimi 官方明确开放平台**无订阅制 API Plan**）；`enterprise_contract` = 合同型 Offer；另有 `prepaid_package / token_plan / credits_plan`。**账户 tier（API Tier 1/2/3）、seat 数量、地区报价都不是 Plan**，分别放 `rate_limits` / `pricing.seats` / 独立 region 文件。Pages 按 record_kind 分组（Plans 默认只显示订阅类）。
+- **CN 与 Global 是两套报价体系**：分文件、分币种（`region: cn`+CNY vs `region: global`+USD）保存，绝不折算回写；地区溢价 `regional_price_ratio` 是 derived analysis，只在展示层按 `config/exchange_rate.yaml` 计算。API 侧模型 id（`kimi-k3`…）与会员侧 id（`k3`…）分开记录，不合并、不假设别名。
+- **试用 ≠ free tier**：赠券写 `trial.voucher`（一次性、有期限、适用限制如 K3 不可用），不写 `free_tier: true`。产品三线隔离写 `product_isolation`（API Open Platform / Kimi Code / Membership 的 key、balance、benefits、billing 互不相通），**不写可兑换字段**。
+- **draft 占位记录**：尚未调研的记录用 `research_status: draft` + `status: unknown` + 显式 `missing_fields` + 数值全 `null`（如海外 `global-personal-*`），收到数据段再补齐，**绝不套用大陆/其他体系数值**。首轮核验完成但仍有 unknown 时标 `research_status: verified_initial` + `priority`，不要标 `verified_complete`。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。

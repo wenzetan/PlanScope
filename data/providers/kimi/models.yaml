@@ -241,3 +241,107 @@ models:
     rate_limits: null
     notes: 额度消耗 3×、约 5–6× 输出速度；消耗/速度倍率见 speed_multiplier / quota_usage_multiplier。
     checked_at: "2026-09-23T00:00:00+08:00"
+
+  # ---- 开放平台 API 模型（platform.kimi.com / platform.kimi.ai）----
+  # API 侧 id 与会员体系（k3 / kimi-for-coding）分开记录，不合并 id、不假设别名关系。
+  # 逐组件公开单价（cache hit/miss/write、output）见各 PAYG 记录的 model_pricing。
+  - model_id: kimi-k3
+    display_name: null
+    model_family: K3
+    underlying_model: null
+    speed_tier: null
+    context_window: 1048576
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null                 # API 定价页未列能力，不沿用会员侧数据
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: true             # 价目含 cache hit/miss/write → 官方按缓存计价
+    structured_output: null
+    status: active
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-api-payg
+        available: true
+        effective_context_window: 1048576
+        note: CN 公开价（CNY / MTok）
+      - plan: global-api-payg
+        available: true
+        effective_context_window: 1048576
+        note: Global 公开价（USD / MTok）
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: kimi-k2.7-code
+    display_name: null
+    model_family: K2
+    underlying_model: null
+    speed_tier: null
+    context_window: 262144
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: true             # 价目含 cache hit/miss
+    structured_output: null
+    status: active
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-api-payg
+        available: true
+        effective_context_window: 262144
+      - plan: global-api-payg
+        available: true
+        effective_context_window: 262144
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: kimi-k2.6
+    display_name: null
+    model_family: K2
+    underlying_model: null
+    speed_tier: null
+    context_window: 262144
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: true             # 价目含 cache hit/miss
+    structured_output: null
+    status: active
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-api-payg
+        available: true
+        effective_context_window: 262144
+      - plan: global-api-payg
+        available: true
+        effective_context_window: 262144
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"

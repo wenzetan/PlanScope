@@ -181,6 +181,39 @@ def test_per_seat_plan_exports_and_single_plan_rule() -> None:
     assert go["models"] == []
 
 
+def test_api_baseline_records_keep_original_currencies() -> None:
+    """API 系列：payg_baseline 分组、双报价体系分币种、逐模型单价原样保存。"""
+    data = build_site_data(Path(__file__).resolve().parents[1])
+    by_id = {p["id"]: p for p in data["plans"]}
+
+    cn = by_id["cn-api-payg"]
+    gl = by_id["global-api-payg"]
+    assert cn["record_kind"] == "payg_baseline"
+    assert gl["record_kind"] == "payg_baseline"
+    assert by_id["cn-enterprise-api"]["record_kind"] == "enterprise_contract"
+    assert by_id["cn-business"]["record_kind"] == "subscription"
+
+    # 无月费/年费（PAYG 本身是单价口径）
+    assert cn["price_view"]["monthly"] is None and cn["price_view"]["annual"] is None
+
+    # 原币种保存，不折算回写
+    assert cn["pricing"]["currency"] == "CNY"
+    assert gl["pricing"]["currency"] == "USD"
+    k3_cn = next(m for m in cn["model_pricing"] if m["model"] == "kimi-k3")
+    k3_gl = next(m for m in gl["model_pricing"] if m["model"] == "kimi-k3")
+    assert k3_cn["input_cache_miss"]["amount"] == 20.00
+    assert k3_cn["output"]["amount"] == 100.00
+    assert k3_gl["input_cache_miss"]["amount"] == 3.00
+    assert k3_gl["output"]["amount"] == 15.00
+
+    # draft 占位：海外个人记录数值全 null、research_status draft
+    draft = by_id["global-personal-moderato"]
+    assert draft["research_status"] == "draft"
+    assert draft["status"] == "unknown"
+    assert draft["pricing"]["monthly"] is None
+    assert draft["pricing"]["currency"] is None
+
+
 def test_changes_and_community_present(repo_root: Path) -> None:
     data = build_site_data(repo_root)
     assert data["changes"], "data/changes/ 应被导出"

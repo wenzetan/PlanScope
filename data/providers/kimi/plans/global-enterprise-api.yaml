@@ -1,0 +1,158 @@
+# Kimi Enterprise API —— 海外**合同型 Offer**（platform.kimi.ai，USD）。
+# 机制与大陆版一致：organization verification + service agreement + committed usage → 协商折扣；
+# 更高 Rate Limit / 并发、专属支持、定制 SLA、新功能优先 —— 具体数值全部未公开。
+id: global-enterprise-api
+name: Kimi Enterprise API
+provider: kimi
+record_kind: enterprise_contract
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: global
+market: null
+audience: enterprise
+service_domain: platform.kimi.ai
+purchase_url: null
+
+availability:
+  public_self_service: false
+  contact_sales: true
+
+pricing:
+  currency: USD
+  public_fixed_price: false
+  base_pricing_reference: global-api-payg   # 基准 = 海外标准 API 公开价 + 合同条款
+  volume_discount:
+    available: true
+    based_on:
+      - committed_usage
+      - contract_duration
+    exact_value: null
+    exact_public: false
+    note: 官方确认大用量企业可申请专属折扣，幅度与承诺用量、合作期限有关
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing: null                # 定价基准 = 标准 API + 合同（base_pricing_reference）
+models: null                       # 未逐模型枚举
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: null
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 企业版限流/并发高于标准且可定制，具体值未公开（见 rate_limits）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+rate_limits:
+  higher_than_standard_api: true
+  custom_concurrency: true
+  exact_values: null
+  note: 合同定制限流，不构成可购买 Tier 档位
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: unknown
+
+enterprise_services:
+  contract:
+    organization_verification_required: true
+    standard_service_agreement: true
+    custom_contract: true
+    payment_methods:
+      bank_transfer:
+        availability: region_dependent
+  sla:
+    enterprise_grade: true
+    customizable: true
+    exact_terms: null
+  support:
+    dedicated_technical_support: true
+  early_access:
+    new_features: true
+
+evidence:
+  pricing_mechanism:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 认证 + 合同 + 承诺用量 → 协商折扣（URL 待补）
+  enterprise_services:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 更高限流/并发、专属支持、定制 SLA、新功能优先（URL 待补）
+  exact_discount:
+    authority: unknown
+  exact_sla:
+    authority: unknown
+  zero_data_retention:
+    authority: unknown
+
+confidence: high
+priority: p0
+research_status: verified_initial
+missing_fields:
+  - minimum_commit
+  - enterprise_discount_schedule
+  - exact_sla
+  - exact_rate_limits
+  - zero_data_retention
+  - supported_contract_regions
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 与大陆 cn-enterprise-api 机制一致但分属两套报价体系（USD 基准），绝不合并；
+  合同适用地区（supported_contract_regions）未核实。
+  ② 无公开固定价、无 Enterprise S/M/L 档位；折扣/最低承诺/SLA/限流全部 null + missing_fields。
+  ③ global-api-payg 本记录未声明升级入口（未在来源中出现），不照搬大陆版 enterprise_upgrade。
+  ④ 各来源 URL 待补（海外企业版专页 / 合同说明 / FAQ）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

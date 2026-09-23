@@ -4,6 +4,7 @@
 id: cn-business
 name: Kimi Business
 provider: kimi
+record_kind: subscription
 type:
   - agent_plan
   - coding_plan             # subscription → plan_family；team 维度 → audience: business
@@ -223,6 +224,8 @@ api_keys:
   shared_quota_across_devices: null
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:                         # 11 项显式缺口
   - exact_business_monthly_credit
   - exact_agent_quota

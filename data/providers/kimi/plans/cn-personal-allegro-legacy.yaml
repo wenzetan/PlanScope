@@ -3,6 +3,7 @@
 id: cn-personal-allegro-legacy
 name: Allegro
 provider: kimi
+record_kind: legacy_subscription
 type:
   - agent_plan
   - coding_plan
@@ -185,6 +186,8 @@ extra_usage:
   note: 使用时只扣 Extra Usage 余额，不影响原会员额度刷新
 
 confidence: high
+priority: p0
+research_status: verified_initial
 missing_fields:
   - exact_monthly_token_pool
   - exact_weekly_kimi_code_quota
