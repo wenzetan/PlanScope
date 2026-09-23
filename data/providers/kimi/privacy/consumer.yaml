@@ -1,6 +1,7 @@
 # Kimi 个人消费版隐私与数据政策（含 Kimi Code 会员）。
 # 必须与 Kimi API / Kimi Business 分开记录，不继承 API 的政策。
 # ⚠ 各字段 source（官方 URL）待补：value 来自维护者对官方页面的当日核验（见 notes）。
+id: consumer
 provider: kimi
 scope: consumer
 policy_document_url: null

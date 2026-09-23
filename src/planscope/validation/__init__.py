@@ -36,8 +36,8 @@ SCHEMA_FILES: dict[str, str] = {
 }
 
 DATA_SUBDIRS_ALLOWED = {"providers", "changes", "models"}
-PROVIDER_FILES_ALLOWED = {"provider.yaml", "sources.yaml", "models.yaml", "privacy.yaml"}
-PROVIDER_DIRS_ALLOWED = {"plans", "benchmarks", "community"}
+PROVIDER_FILES_ALLOWED = {"provider.yaml", "sources.yaml", "models.yaml"}
+PROVIDER_DIRS_ALLOWED = {"plans", "benchmarks", "community", "privacy"}
 
 
 @dataclass(frozen=True)
@@ -356,13 +356,16 @@ def validate_tree(root: Path | str | None = None) -> list[ValidationError]:
                 _validate_model_plan_refs(doc, plan_ids, rel, errors)
                 _reject_anthropic_models(_model_checks_from_models_doc(doc), rel, errors)
 
-        # privacy.yaml
-        privacy_path = provider_dir / "privacy.yaml"
-        if privacy_path.is_file():
-            rel = str(privacy_path.relative_to(base))
-            doc = _load(privacy_path, rel, errors)
-            if doc is not None:
+        # privacy/ directory — one record per policy scope (consumer / business / api ...).
+        privacy_dir = provider_dir / "privacy"
+        if privacy_dir.is_dir():
+            for path in sorted(privacy_dir.glob("*.yaml")):
+                rel = str(path.relative_to(base))
+                doc = _load(path, rel, errors)
+                if doc is None:
+                    continue
                 _check(validators["privacy"], doc, rel, errors)
+                _validate_id(doc, path.stem, "id", rel, errors)
                 _check_provider_ref(doc, "provider", provider_id, rel, errors)
 
         # benchmarks/ and community/
@@ -427,8 +430,9 @@ def count_records(root: Path | str | None = None) -> dict[str, int]:
                         counts["models"] += len(doc["models"])
                 except yaml.YAMLError:
                     pass
-            if (provider_dir / "privacy.yaml").is_file():
-                counts["privacy"] += 1
+            privacy_dir = provider_dir / "privacy"
+            if privacy_dir.is_dir():
+                counts["privacy"] += len(list(privacy_dir.glob("*.yaml")))
             sources_path = provider_dir / "sources.yaml"
             if sources_path.is_file():
                 try:

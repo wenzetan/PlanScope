@@ -241,6 +241,11 @@
           "description": "official = 厂商页面直接公布；verified_public_report = 官方页面暂缺、由多份近期公开报道交叉核验（待抓到官方页后升级为 official）；derived = PlanScope 计算得出（如 effective_monthly × 12）。"
         },
         "billing_period": { "type": ["string", "null"], "enum": ["month", "year", null] },
+        "billing_model": {
+          "type": ["string", "null"],
+          "enum": ["per_seat", "flat", null],
+          "description": "per_seat=按席位计价（如 Kimi Business 按 seat 年订）；flat=固定价。"
+        },
         "effective_monthly": {
           "type": ["number", "null"],
           "minimum": 0,

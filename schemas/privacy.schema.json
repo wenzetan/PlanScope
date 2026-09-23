@@ -5,8 +5,13 @@
   "description": "Provider-level privacy and data-handling policy at data/providers/<provider>/privacy.yaml. Every policy field carries its own source and checked_at — never fill fields from second-hand information alone. Use value: null for unknown. Plan-specific overrides may live in the plan notes.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["provider", "checked_at"],
+  "required": ["id", "provider", "checked_at"],
   "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable slug, must equal the file name under privacy/ (e.g. consumer / business)."
+    },
     "provider": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9-]*$",
@@ -14,8 +19,8 @@
     },
     "scope": {
       "type": ["string", "null"],
-      "enum": ["api", "web", "coding_plan", "general", "consumer", null],
-      "description": "Set when this record covers only one product surface; api/web/coding plans may differ. consumer = 个人消费版（与 API / Business 政策分开）."
+      "enum": ["api", "web", "coding_plan", "general", "consumer", "business", null],
+      "description": "Set when this record covers only one product surface/audience; api/web/coding/consumer/business policies may differ materially."
     },
     "region": {
       "type": ["string", "null"],
@@ -39,6 +44,10 @@
     "cross_border_transfer": { "$ref": "#/$defs/policyField" },
     "api_web_policy_differs": { "$ref": "#/$defs/policyField" },
     "coding_api_policy_differs": { "$ref": "#/$defs/policyField" },
+    "business_consumer_policy_differs": {
+      "$ref": "#/$defs/policyField",
+      "description": "企业/团队版与个人消费版的政策是否存在实质差异（如训练承诺相反）。"
+    },
     "sensitive_code_allowed": { "$ref": "#/$defs/policyField" },
     "commercial_code_allowed": { "$ref": "#/$defs/policyField" },
     "automated_agent_allowed": { "$ref": "#/$defs/policyField" },

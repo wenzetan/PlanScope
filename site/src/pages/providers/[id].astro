@@ -14,7 +14,7 @@ export function getStaticPaths() {
 const { provider } = Astro.props;
 const plans = data.plans.filter((plan) => plan.provider === provider.id);
 const models = data.models.filter((model) => model.provider === provider.id);
-const privacy = data.privacy.find((record) => record.provider === provider.id);
+const privacyRecords = data.privacy.filter((record) => record.provider === provider.id);
 const sources = data.sources.filter((entry) => entry.provider === provider.id);
 const benchmarks = data.benchmarks.filter((entry) => entry.provider === provider.id);
 const community = data.community.filter((entry) => entry.provider === provider.id);
@@ -23,8 +23,10 @@ const POLICY_FIELDS = [
   ["prompt_retention", "Prompt retention"],
   ["output_retention", "Output retention"],
   ["used_for_training", "Training usage"],
+  ["training_default_opt_in", "Training default"],
   ["opt_out_supported", "Opt-out"],
   ["zero_data_retention", "Zero Data Retention"],
+  ["business_consumer_policy_differs", "Business vs consumer"],
   ["subprocessors", "Subprocessors"],
   ["data_region", "Data region"],
   ["cross_border_transfer", "Cross-border"],
@@ -116,35 +118,44 @@ const POLICY_FIELDS = [
   ) : <div class="empty">尚无模型记录。</div>}
 
   <h2>Privacy policy</h2>
-  {privacy ? (
-    <>
-      <div class="table-scroll">
-        <table>
-          <thead><tr><th>Field</th><th>Value</th><th>Evidence</th><th>Checked</th></tr></thead>
-          <tbody>
-            {POLICY_FIELDS.map(([field, label]) => {
-              const entry = privacy[field];
-              const value = entry && entry.value !== undefined ? entry.value : null;
-              const isOfficial = entry && entry.source && entry.value !== null;
-              return (
-                <tr>
-                  <td>{label}</td>
-                  <td>
-                    {value === null || value === undefined
-                      ? <span class="badge unknown">unknown</span>
-                      : <span>{display(value)} {isOfficial && <span class="badge official">official fact</span>}</span>}
-                  </td>
-                  <td>{entry && entry.source ? <a href={entry.source} rel="noopener">source</a> : "—"}</td>
-                  <td class="mono">{entry ? when(entry.checked_at) : "—"}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <p class="small muted">没有直接证据（source）的字段一律标记为 unknown，不以二手信息填充。</p>
-    </>
+  {privacyRecords.length ? (
+    privacyRecords.map((privacy) => (
+      <>
+        <h3>
+          <span class="badge">{privacy.scope || privacy.id || "general"}</span>{" "}
+          <span class="mono small">{privacy.id}</span>
+        </h3>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Field</th><th>Value</th><th>Evidence</th><th>Checked</th></tr></thead>
+            <tbody>
+              {POLICY_FIELDS.map(([field, label]) => {
+                const entry = privacy[field];
+                const value = entry && entry.value !== undefined ? entry.value : null;
+                const isOfficial = entry && entry.source && entry.value !== null;
+                return (
+                  <tr>
+                    <td>{label}</td>
+                    <td>
+                      {value === null || value === undefined
+                        ? <span class="badge unknown">unknown</span>
+                        : <span>{display(value)} {isOfficial && <span class="badge official">official fact</span>}</span>}
+                    </td>
+                    <td>{entry && entry.source ? <a href={entry.source} rel="noopener">source</a> : "—"}</td>
+                    <td class="mono">{entry ? when(entry.checked_at) : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </>
+    ))
   ) : <div class="empty">尚无隐私政策记录。</div>}
+  <p class="small muted">
+    同一 Provider 可按 scope 拆多份记录（consumer / business / api …）；
+    没有直接证据（source）的字段一律不以二手信息填充。
+  </p>
 
   <h2>Reliability signals</h2>
   <p class="small">

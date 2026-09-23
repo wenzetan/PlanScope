@@ -1,0 +1,106 @@
+# Kimi Business / 企业团队版隐私与数据政策。
+# 与个人消费版（privacy/consumer.yaml）存在实质差异：企业数据承诺不用于模型训练。
+# 对应 Plan（按 seat、年度订阅）待完整数据段入库：data/providers/kimi/plans/...
+id: business
+provider: kimi
+scope: business
+policy_document_url: null
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+used_for_training:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方企业版数据承诺：不用于模型训练（区别于个人消费版默认可能训练）。URL 待补。
+training_default_opt_in:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 企业版默认不用于训练。URL 待补。
+opt_out_supported:
+  value: null                       # 默认不训练时该项是否仍适用/是否提供开关 —— 未核实，不猜
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_web_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+business_consumer_policy_differs:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 与个人消费版（consumer）数据政策存在实质差异：训练承诺相反。URL 待补。
+sensitive_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+commercial_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+automated_agent_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+account_sharing_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+proxy_forwarding_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_gateway_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_agent_tools_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  本记录仅含已核验的两条企业版差异事实（不用于训练、与消费版实质不同），
+  其余字段（保留期、ZDR、数据地区、subprocessor、跨境、席位/账号限制等）待完整数据段核验。
+  官方企业版数据政策 / 服务条款 URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -81,6 +81,9 @@ def test_privacy_fields_carry_source_and_checked_at(repo_root: Path) -> None:
     schema = _load(repo_root, "privacy.schema.json")
     field = schema["$defs"]["policyField"]
     assert set(field["required"]) == {"value", "source", "checked_at"}
+    assert "id" in schema["required"], "privacy 文件按 id（=文件名）标识"
+    assert "business" in schema["properties"]["scope"]["enum"]
+    assert "business_consumer_policy_differs" in schema["properties"]
 
 
 def test_compatibility_status_enum(repo_root: Path) -> None:

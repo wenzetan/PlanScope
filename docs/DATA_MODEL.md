@@ -15,7 +15,7 @@ data/
 │       ├── provider.yaml           # Provider 元数据（仅 Provider 层信息）
 │       ├── sources.yaml            # 常用官方来源注册表（YAML list）
 │       ├── models.yaml             # 该 Provider 实际暴露的模型及能力
-│       ├── privacy.yaml            # 隐私与数据政策（逐字段来源）
+│       ├── privacy/                # 隐私与数据政策，按 scope 一文件一记录（consumer / business / api…）
 │       ├── plans/
 │       │   └── <plan-id>.yaml      # 1 plan = 1 file
 │       ├── benchmarks/
@@ -98,7 +98,7 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 | `provider.yaml` | `provider.schema.json` |
 | `plans/*.yaml` | `plan.schema.json` |
 | `models.yaml` | `provider-models.schema.json` |
-| `privacy.yaml` | `privacy.schema.json` |
+| `privacy/*.yaml` | `privacy.schema.json`（`id` = 文件名，一 scope 一文件） |
 | `sources.yaml` | `sources.schema.json`（顶层为 list） |
 | `benchmarks/*.yaml` | `benchmark.schema.json` |
 | `community/*.yaml` | `community.schema.json` |
@@ -189,6 +189,7 @@ pricing:
     amount: null
     origin: null
     billing_period: null     # month / year
+    billing_model: null      # per_seat（按席位，如 Kimi Business 年订）/ flat / null
   annual:
     amount: null             # 若为 effective_monthly × 12 算出 → origin 必须是 derived
     origin: null
@@ -358,7 +359,19 @@ models:
 
 `data/models/` 仅作为未来可选的 canonical index，**不能覆盖** Provider 暴露的实际能力。
 
-## Privacy（`privacy.yaml`，Provider 级）
+## Privacy（`privacy/<id>.yaml`，按 scope 拆分）
+
+一个 Provider 可以有多份隐私记录，**按 scope 一文件一记录**（`id` = 文件名）：
+
+```text
+data/providers/kimi/privacy/
+├── consumer.yaml     # 个人消费版（默认可训练 + opt-out）
+└── business.yaml     # 企业版（承诺不用于训练）—— 与 consumer 实质差异
+```
+
+`scope` 取值：`api / web / coding_plan / general / consumer / business`。
+个人版与企业版的政策差异绝不能合并成一份记录（例：Kimi 企业承诺不训练 vs 消费版默认可能训练，
+用 `business_consumer_policy_differs` 显式标注差异存在）。
 
 字段与 `policyField` 结构（见 `schemas/privacy.schema.json`）：
 
@@ -376,8 +389,8 @@ used_for_training:
 # prompt_retention / output_retention / log_retention_days / training_default_opt_in /
 # opt_out_supported / zero_data_retention / enterprise_data_isolation /
 # third_party_model_routing / subprocessors / data_region / cross_border_transfer /
-# api_web_policy_differs / coding_api_policy_differs / sensitive_code_allowed /
-# commercial_code_allowed / automated_agent_allowed / account_sharing_forbidden /
+# api_web_policy_differs / coding_api_policy_differs / business_consumer_policy_differs /
+# sensitive_code_allowed / commercial_code_allowed / automated_agent_allowed / account_sharing_forbidden /
 # proxy_forwarding_forbidden / api_gateway_restricted / coding_agent_tools_restricted
 notes: null
 checked_at: "..."

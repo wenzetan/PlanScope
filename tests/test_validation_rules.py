@@ -186,3 +186,35 @@ def test_non_anthropic_models_pass_validation(mini_repo: Path) -> None:
     assert not _is_anthropic_model("gpt-5.2")
     assert not _is_anthropic_model("mimo-v2.6-flash")
     assert validate_tree(mini_repo) == []
+
+
+def test_privacy_records_are_scoped_and_named(mini_repo: Path) -> None:
+    """一个 Provider 多份隐私记录（consumer/business…）：id 必须等于文件名。"""
+    import shutil
+
+    src = mini_repo / "data" / "providers" / "kimi" / "privacy" / "business.yaml"
+    dst_dir = mini_repo / "data" / "providers" / "anthropic" / "privacy"
+    dst_dir.mkdir(exist_ok=True)
+
+    # 多份记录按 scope 共存：结构有效
+    dst = dst_dir / "business.yaml"
+    shutil.copy(src, dst)
+    dst.write_text(dst.read_text(encoding="utf-8").replace("provider: kimi", "provider: anthropic"), encoding="utf-8")
+    consumer = dst_dir / "consumer.yaml"
+    shutil.copy(dst, consumer)
+    consumer.write_text(
+        consumer.read_text(encoding="utf-8").replace("id: business", "id: consumer"), encoding="utf-8"
+    )
+    assert validate_tree(mini_repo) == []
+
+    # id 与文件名不一致 → 拒绝
+    consumer.write_text(
+        consumer.read_text(encoding="utf-8").replace("id: consumer", "id: wrong"), encoding="utf-8"
+    )
+    errors = validate_tree(mini_repo)
+    assert any(e.field == "id" and "consumer.yaml" in e.file for e in errors)
+
+    # 单份记录也仍然有效（provider 不一致会被拒）
+    bad = dst_dir / "business.yaml"
+    bad.write_text(bad.read_text(encoding="utf-8").replace("provider: anthropic", "provider: kimi"), encoding="utf-8")
+    assert any(e.field == "provider" and "business.yaml" in e.file for e in validate_tree(mini_repo))

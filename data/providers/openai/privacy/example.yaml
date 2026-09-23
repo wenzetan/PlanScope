@@ -1,5 +1,6 @@
 # Provider 级隐私与数据政策（结构示例模板）。
 # 每个字段必须自带 source 与 checked_at；未查证时 value 必须为 null，不要凭二手信息填写。
+id: example
 provider: openai
 scope: null
 policy_document_url: null

@@ -113,9 +113,13 @@ def load_provider_records(base: Path | str | None = None) -> dict[str, list]:
 
         privacy_path = provider_dir / "privacy.yaml"
         if privacy_path.is_file():
-            doc = read_yaml(privacy_path)
-            if isinstance(doc, dict):
-                records["privacy"].append({**doc, "provider": doc.get("provider") or provider_id})
+            records["privacy"].append(read_yaml(privacy_path))  # legacy fallback
+        privacy_dir = provider_dir / "privacy"
+        if privacy_dir.is_dir():
+            for path in sorted(privacy_dir.glob("*.yaml")):
+                doc = read_yaml(path)
+                if isinstance(doc, dict):
+                    records["privacy"].append({**doc, "provider": doc.get("provider") or provider_id})
 
         for source in load_sources(provider_dir):
             records["sources"].append({**source, "provider": provider_id})
