@@ -32,11 +32,12 @@
 
 - **Provider-centric**：一个 Provider ≈ 一个目录 `data/providers/<id>/`；文件系统即注册表，不要恢复 `config/providers.yaml` 之类第二份索引。
 - **1 plan = 1 文件**；`id` 只需同 Provider 内唯一；**文件名 = `id`，是稳定标识符，不因展示名变化而重命名**。
-- **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），避免跨区域 / 跨人群 / 跨代系错误合并。
+- **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），并有显式字段 `generation: legacy | current` 与 id 后缀对应，避免跨区域 / 跨人群 / 跨代系错误合并。**同价不同代 = 两个 Plan**（如旧 Andante 与新 Go 同为 ¥49，但 Go 无 Kimi Code，绝不改名合并）。
 - **老套餐 `status: legacy`** + `availability: {new_purchase, existing_subscription_use, existing_subscription_renewal, legacy_upgrade_path}`，区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
-- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin: official|derived` —— 官方折合月价存 `annual.effective_monthly`（official），`annual.amount` 若是 ×12 算出来的就标 `origin: derived`，两者永不混淆。
+- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin`：`official`（官方页面直出）/ `verified_public_report`（官方页暂缺、多份近期报道交叉核验，**待 CI 抓到官方页后只升级 origin、不改数值**）/ `derived`（×12 等计算）/ `unknown`。权益表内部相对倍率（如 Kimi 新版 `quota_multiplier: 2/4/14`）只存相对值，**不可反推绝对额度**。
+- **字段级证据 `evidence`**：同一记录不同字段权威度不同时逐字段标 `authority: official|verified_public_report|community_reported|estimated|unknown` + `checked_at`，不要只写记录级 confidence。跨 Plan 的通用额度机制放 Provider 级 `quota_policies`（按 `generation: legacy/current` 维护，如旧体系有 7 日额度、新体系取消），Plan 自身 `quota` 块只写具体值（`weekly_quota_enabled: legacy→true / current→false`）。
 - **模型上限 ≠ 套餐生效上下文**：`context_window` 是模型上限；套餐封顶写 `availability[].effective_context_window`（如 K3 支持 1M，Moderato 只解锁 256K）。相对额度消耗用 `quota_relative_cost: {reference_model, approximate_ratio}`。**产品权益 ≠ 模型能力**：`benefits.long_conversation.million_token_support`（百万 Token 长对话权益）绝不写成模型 `context_window`。
-- **兼容六态**：`full / officially_supported / partial / unofficial / unsupported / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`full` 保留给经核验的完全兼容。
+- **兼容七态**：`full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`unsupported_by_plan` = 平台支持但本套餐不含该能力（如 Go 无 Kimi Code）；`full` 保留给经核验的完全兼容。
 - **记录缺口要显式**：用 `missing_fields: [...]` 列出未核实项，用 `confidence: high|medium|low` 标注整体置信度，防止被当作数据已完整。
 - **官方没给的价就不推算**：即使能由月价反推，年价官方未公布 → `annual: {amount: null, origin: unknown, note: ...}`，不写 ×12 结果（只有官方给了折合月价才允许派生）。
 - **后台消耗单独记录**：`background_consumption: [{resource, rate, unit, condition}]` —— 不要假定额度消耗都来自主动请求（如 Kimi Claw 云主机驻留 ~0.6%/天）。速度/消耗倍率进 `models.yaml` 的 `speed_multiplier` / `quota_usage_multiplier`，不留备注。

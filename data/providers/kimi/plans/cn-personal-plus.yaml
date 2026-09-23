@@ -1,0 +1,172 @@
+# Kimi 中国大陆个人版 Plus（**新体系**）—— 新版 Kimi Code 的最低入口（¥99 档）。
+# 与旧 Moderato 同价，但权益不同（新版移除 Agent Swarm / 多 Agent 并行），独立记录。
+id: cn-personal-plus
+name: Plus
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: productivity_upgrade
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: true
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 99
+    origin: verified_public_report    # 9/18–20 多份近期报道交叉核验
+    billing_period: month
+  annual:
+    amount: 948
+    origin: verified_public_report
+    billing_period: year
+    effective_monthly: 79
+    effective_monthly_origin: verified_public_report
+    note: 新版价格来自近期公开报道交叉核验，待官方新版会员价格页确认
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null         # 新版绝对额度未公开；quota_multiplier 2 是权益表内部相对值
+  coding_tasks: null
+  shared_pool_enabled: true
+  shared_pool_refresh: billing_cycle
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  weekly_quota_enabled: false      # 新体系取消 weekly quota（官方当前文档）
+  rolling_windows:
+    - 5 hours                       # Kimi Code 5 小时滚动窗口（新版仍存在）
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null                 # 新版多 Agent 并行已移除（见 benefits.agent_multitasking）
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    新体系两层机制：月共享额度池 + 5 小时 Kimi Code 滚动窗口，无 7 日额度。
+    精确 token/request 上限官方均未公开；倍率不可反推绝对值。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - k3                             # Plus 上限 256K
+  - k3-256k
+  - kimi-for-coding                # K2.8 Preview, 1M
+                                   # highspeed 不可用（见 models.yaml availability）
+
+benefits:                          # 新版权益表原文；不继承旧 Moderato 权益
+  agent:
+    included: true
+    quota_multiplier: 2            # 新版权益表内部相对倍率（基础额度未公开，不可反推绝对值）
+    exact_quota: null
+  agent_multitasking:
+    included: false                # 新版 ¥99 档已移除多 Agent 并行
+  agent_swarm:
+    included: false                # 新版 ¥99 档已移除 Agent Swarm
+  custom_dashboard: true
+  scheduled_tasks: true
+  featured_plugins: true
+  paid_databases: true
+  website_with_database: true
+  kimi_code:
+    included: true
+
+compatibility:
+  kimi_code_cli: officially_supported
+  kimi_code_vscode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  codex: officially_supported
+  hermes: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true   # 原文 shared_quota: true
+  shared_quota_across_devices: null  # 新版权益未逐项声明，不猜
+
+confidence: high
+missing_fields:
+  - exact_monthly_credit_amount
+  - exact_5h_kimi_code_limit
+evidence:
+  pricing:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 9/18–20 多份近期报道交叉核验
+  model_access:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Kimi 当前官方 Coding 文档（Plus 可调 k3 / k3-256k / kimi-for-coding）
+  weekly_quota_removed:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方当前文档：Current（Go/Plus/Pro/Max）无 weekly quota
+  exact_monthly_quota:
+    authority: unknown
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 新版 Kimi Code 最低入口：k3 在 Plus 上限 256K（1M 自 Pro 起）。
+  ② 新 Plus 不继承旧 Moderato 的 Agent Swarm / 多 Agent 并行（近期权益表明确移除，
+  记 included: false，不照搬旧档）。
+  ③ 价格 provenance = verified_public_report，待官方页升级。
+  ④ roo_code / responses_api 新版权益未逐项声明 → 不列（unknown），不沿用旧档。
+  ⑤ 各来源 URL 待补（新版定价报道 / 官方 Coding 文档 / 新版权益表 / API 接入文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

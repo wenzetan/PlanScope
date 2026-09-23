@@ -7,6 +7,39 @@ purchase_url: null
 status: active
 regions:
   - mainland_china
+quota_policies:                 # 按代系维护的通用额度机制（Plan 自身 quota 块记录具体值）
+  - generation: legacy
+    monthly_shared_pool:
+      enabled: true
+      exact_amount_public: false
+      accounting_basis: token_usage
+      refresh: null             # 档位间表述不一（monthly / billing_cycle），具体看各 Plan
+      rollover: false
+    coding_weekly_limit:
+      enabled: true
+      window_days: 7
+      note: 官方文档：7 日额度只适用于 Andante / Moderato / Allegretto / Allegro
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: false
+    note: 旧体系三层：月额度池 + 7 日 Code 额度 + 5 小时滚动窗口
+  - generation: current
+    monthly_shared_pool:
+      enabled: true
+      exact_amount_public: false
+      accounting_basis: token_usage
+      refresh: billing_cycle
+      rollover: false
+    coding_weekly_limit:
+      enabled: false            # 官方当前文档：新版取消 weekly quota
+      window_days: null
+      note: null
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: false
+    note: 新体系两层：月额度池 + 5 小时滚动窗口（官方当前文档）
 notes: >-
   Kimi 中国大陆个人/会员体系（含 Kimi Code）。首批数据：老套餐 Andante（个人版最低档）。
   本目录仅记录中国大陆体系；如后续需要与海外体系并列，用 market/region 区分，不与 moonshot 目录混写。

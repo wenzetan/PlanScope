@@ -1,0 +1,152 @@
+# Kimi 中国大陆个人版 Go（**新体系**，2026-09 重新开放）
+# 与旧 Andante 同为 ¥49 档，但新版已移除 Kimi Code —— 两个独立历史 Plan，绝不改名/合并。
+id: cn-personal-go
+name: Go
+provider: kimi
+type:
+  - agent_plan                  # 新版无 coding_plan：官方文档「Go（新套餐）→ 无 coding 额度」
+status: active
+plan_family: membership
+generation: current
+positioning: everyday_use
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: true
+
+coding:
+  included: false               # Go 不含 Kimi Code
+  product: Kimi Code
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 49
+    origin: verified_public_report    # 9/18–20 多份近期报道交叉核验；官方页抓取后升级 official
+    billing_period: month
+  annual:
+    amount: 468
+    origin: verified_public_report
+    billing_period: year
+    effective_monthly: 39
+    effective_monthly_origin: verified_public_report
+    note: 新版价格来自近期公开报道交叉核验，待官方新版会员价格页确认
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null             # 新版 Agent 额度绝对值未公开，不按旧 Andante 反推
+  agent_tasks_approx: null
+  coding_tasks: null            # 无 Kimi Code，Code 类额度不适用
+  shared_pool_enabled: true
+  shared_pool_refresh: billing_cycle
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  weekly_quota_enabled: false   # 新体系取消 weekly quota（官方当前文档）
+  rolling_windows: []           # 5 小时窗口属 Kimi Code，Go 不适用
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    新体系两层机制（见 provider quota_policies generation: current）：月共享额度池 + 5 小时滚动；
+    Go 因不含 Kimi Code，Code 相关窗口与额度均不适用。月池与 Agent 绝对额度官方未公开。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: []                       # 官方：Go（新套餐）→ 无 coding 额度，不列任何 Kimi Code 模型
+
+benefits:
+  agent:
+    included: true
+    quota_multiplier: null       # 新版 Go 为基准档（倍率体系内无 2/4/14）
+    exact_quota: null            # 绝对值未公开，不反推
+  office_file_processing: true
+  deep_research: true
+  website_deployment: true
+  kimi_code:
+    included: false
+
+compatibility:
+  kimi_code_cli: unsupported_by_plan     # 平台支持，但本套餐不含 Kimi Code
+  kimi_code_vscode: unsupported_by_plan
+  claude_code: unsupported_by_plan
+  opencode: unsupported_by_plan
+  codex: unsupported_by_plan
+  hermes: unsupported_by_plan
+
+extra_usage:
+  supported: true
+  note: 会员 Extra Usage 由 membership 规则继承，细则未单独公开
+
+confidence: high
+missing_fields:
+  - exact_monthly_credit_amount
+  - exact_agent_quota
+evidence:
+  pricing:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 9/18–20 多份近期报道交叉核验
+  kimi_code_excluded:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方当前 Coding 文档「Go（新套餐）→ 无 coding 额度」
+  weekly_quota_removed:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方当前文档区分 Legacy（有 7-day quota）与 Current（无）
+  exact_monthly_quota:
+    authority: unknown
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 与旧 Andante 同价（¥49/¥468）但必须独立：新 Go 移除 Kimi Code，旧 Andante 曾可使用
+  kimi-for-coding —— 价格相同不等于同一个 Plan。
+  ② 价格 provenance = verified_public_report（help center 静态索引仍显示旧档页面）；
+  待官方新版会员价格页可抓取后升级为 official。
+  ③ 新旧额度机制差别见 data/providers/kimi/provider.yaml 的 quota_policies。
+  ④ 各来源 URL 待补（新版定价报道 / 官方 Coding 文档 / 新版权益表）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

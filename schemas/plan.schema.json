@@ -37,6 +37,16 @@
       "pattern": "^[a-z][a-z0-9_-]*$",
       "description": "Plan identity family, e.g. membership / payg / credits. 订阅性质（subscription）由本字段表达，不占用 type。"
     },
+    "generation": {
+      "type": ["string", "null"],
+      "enum": ["legacy", "current", null],
+      "description": "套餐代系：legacy=旧体系（如 Kimi Andante…Allegro）、current=新体系（Go/Plus/Pro/Max）。同时必须体现在 id 编码（-legacy 后缀）。"
+    },
+    "positioning": {
+      "type": ["string", "null"],
+      "enum": ["everyday_use", "productivity_upgrade", "professional", "premium", null],
+      "description": "厂商给的档位定位（verbatim），仅作展示与分组，不构成主观评分。"
+    },
     "availability": {
       "type": ["object", "null"],
       "additionalProperties": false,
@@ -158,6 +168,24 @@
       "description": "明确列出尚未核实的字段缺口（如 exact_weekly_kimi_code_quota），防止被误当作数据已完整。"
     },
 
+    "evidence": {
+      "type": ["object", "null"],
+      "description": "字段级 provenance：同一记录不同字段可来自不同权威度。CI 抓到官方页后只升级 authority，无需改数据值。",
+      "additionalProperties": {
+        "type": ["object", "null"],
+        "required": ["authority"],
+        "additionalProperties": false,
+        "properties": {
+          "authority": {
+            "type": "string",
+            "enum": ["official", "verified_public_report", "community_reported", "estimated", "unknown"]
+          },
+          "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
+
     "source_refs": {
       "type": ["array", "null"],
       "items": { "type": "string" },
@@ -209,8 +237,8 @@
         "amount": { "type": ["number", "null"], "minimum": 0 },
         "origin": {
           "type": ["string", "null"],
-          "enum": ["official", "derived", "unknown", null],
-          "description": "official = 厂商直接公布；derived = PlanScope 计算得出（如 effective_monthly × 12）。"
+          "enum": ["official", "verified_public_report", "derived", "unknown", null],
+          "description": "official = 厂商页面直接公布；verified_public_report = 官方页面暂缺、由多份近期公开报道交叉核验（待抓到官方页后升级为 official）；derived = PlanScope 计算得出（如 effective_monthly × 12）。"
         },
         "billing_period": { "type": ["string", "null"], "enum": ["month", "year", null] },
         "effective_monthly": {
@@ -220,7 +248,7 @@
         },
         "effective_monthly_origin": {
           "type": ["string", "null"],
-          "enum": ["official", "derived", "unknown", null]
+          "enum": ["official", "verified_public_report", "derived", "unknown", null]
         },
         "note": { "type": ["string", "null"] }
       }
@@ -276,6 +304,10 @@
         "weekly_applies_to_legacy_plans": {
           "type": ["boolean", "null"],
           "description": "周期性额度是否仅适用于旧套餐（如 Kimi 官方文档：7 日额度只适用于 Andante/Moderato/Allegretto/Allegro）。"
+        },
+        "weekly_quota_enabled": {
+          "type": ["boolean", "null"],
+          "description": "该 Plan 是否存在 weekly/7 日额度：旧体系 true、新体系 false（Kimi 官方当前文档）。新旧机制的关键差别。"
         },
         "rolling_windows": {
           "type": ["array", "null"],
@@ -348,7 +380,7 @@
       "description": "Coding / Agent surface compatibility. 'compatible with OpenAI API' never implies 'fully compatible'. Extra surface keys are allowed.",
       "additionalProperties": {
         "type": ["string", "null"],
-        "enum": ["full", "officially_supported", "partial", "unofficial", "unsupported", "unknown", null]
+        "enum": ["full", "officially_supported", "partial", "unofficial", "unsupported", "unsupported_by_plan", "unknown", null]
       },
       "properties": {
         "opencode": { "$ref": "#/$defs/compatValue" },
@@ -379,8 +411,8 @@
     },
     "compatValue": {
       "type": ["string", "null"],
-      "enum": ["full", "officially_supported", "partial", "unofficial", "unsupported", "unknown", null],
-      "description": "full=经核验完全兼容；officially_supported=官方文档明确支持并给出接入方法（未做全量核验）；partial=部分/未核验兼容。"
+      "enum": ["full", "officially_supported", "partial", "unofficial", "unsupported", "unsupported_by_plan", "unknown", null],
+      "description": "full=经核验完全兼容；officially_supported=官方文档明确支持并给出接入方法（未做全量核验）；unsupported_by_plan=平台支持但本套餐不含该能力（如 Go 无 Kimi Code）；partial=部分/未核验兼容。"
     }
   }
 }

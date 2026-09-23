@@ -22,6 +22,48 @@
       "enum": ["active", "beta", "invite_only", "deprecated", "unknown"]
     },
     "regions": { "type": ["array", "null"], "items": { "type": "string" } },
+    "quota_policies": {
+      "type": ["array", "null"],
+      "description": "按代系（legacy/current）维护的通用额度机制，避免每个 Plan 重复声明同一规则；Plan 自己的 quota 块记录具体值。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["generation"],
+        "properties": {
+          "generation": { "type": "string", "enum": ["legacy", "current"] },
+          "monthly_shared_pool": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "enabled": { "type": ["boolean", "null"] },
+              "exact_amount_public": { "type": ["boolean", "null"] },
+              "accounting_basis": { "type": ["string", "null"] },
+              "refresh": { "type": ["string", "null"] },
+              "rollover": { "type": ["boolean", "null"] }
+            }
+          },
+          "coding_weekly_limit": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "enabled": { "type": ["boolean", "null"] },
+              "window_days": { "type": ["integer", "null"], "minimum": 0 },
+              "note": { "type": ["string", "null"] }
+            }
+          },
+          "coding_rolling_limit": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "enabled": { "type": ["boolean", "null"] },
+              "window_hours": { "type": ["number", "null"], "minimum": 0 },
+              "exact_amount_public": { "type": ["boolean", "null"] }
+            }
+          },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
     "notes": { "type": ["string", "null"] },
     "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
     "effective_from": { "$ref": "#/$defs/iso8601OrNull" },

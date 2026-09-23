@@ -1,0 +1,189 @@
+# Kimi 中国大陆个人版 Max（**新体系**最高档，¥699 档）。
+# 与旧 Allegro 同价；关键变化不是 Coding 模型（Pro 已解锁全部），而是
+# 新版 Agent 额度相对倍率 14×（旧 Allegro 权益表为 10×）。
+id: cn-personal-max
+name: Max
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: premium
+region: cn
+market: null
+audience: personal
+purchase_url: null
+
+availability:
+  new_purchase: true
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 699
+    origin: verified_public_report    # 9/18–20 多份近期报道交叉核验
+    billing_period: month
+  annual:
+    amount: 6708
+    origin: verified_public_report
+    billing_period: year
+    effective_monthly: 559
+    effective_monthly_origin: verified_public_report
+    note: 新版价格来自近期公开报道交叉核验，待官方新版会员价格页确认
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null         # 新版绝对额度未公开；14 是相对倍率，不是绝对次数
+  coding_tasks: null
+  shared_pool_enabled: true
+  shared_pool_refresh: billing_cycle
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  weekly_quota_enabled: false      # 新体系取消 weekly quota（官方当前文档）
+  rolling_windows:
+    - 5 hours
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null                 # exact_parallel_tasks 未公开，不复制旧 Allegro 的 4
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    新体系两层机制：月共享额度池 + 5 小时 Kimi Code 滚动窗口，无 7 日额度。
+    精确 token/request 上限官方均未公开；quota_multiplier 14 为新版权益表内部相对倍率，
+    不是 14× 旧 Allegro，也不能与 Go 相乘得出确定 Token 数。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - k3                             # 1M context
+  - k3-256k
+  - kimi-for-coding                # K2.8 Preview, 1M
+  - kimi-for-coding-highspeed      # ≈6× 速度 / 3× 消耗（模型能力与 Pro 相同）
+
+benefits:                          # 新版权益表原文
+  agent:
+    included: true
+    quota_multiplier: 14           # 新版权益表内部相对倍率（旧 Allegro 为 10×）—— 非绝对值
+    exact_quota: null
+  agent_multitasking:
+    included: true
+    exact_parallel_tasks: null
+  agent_swarm:
+    included: true
+    exact_usage: null
+    exact_parallel_subtasks: null
+  goal_mode: true
+  kimi_claw:
+    included: true
+  dream_memory: true
+  self_evolving_skills: true
+  million_token_long_conversation: true   # 主产品会员权益，≠ 模型 context_window
+  custom_dashboard: true
+  scheduled_tasks: true
+  featured_plugins: true
+  paid_databases: true
+  website_with_database: true
+  kimi_code:
+    included: true
+
+compatibility:
+  kimi_code_cli: officially_supported
+  kimi_code_vscode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  codex: officially_supported
+  hermes: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true
+  shared_quota_across_devices: null
+
+confidence: high
+missing_fields:
+  - exact_monthly_credit_amount
+  - exact_5h_kimi_code_limit
+  - exact_agent_parallelism
+  - exact_agent_swarm_quota
+evidence:
+  pricing:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 9/18–20 多份近期报道交叉核验
+  model_access:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Kimi 当前官方 Coding 文档：Pro 及以上解锁全部 Coding 模型（Max 同 Pro）
+  weekly_quota_removed:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方当前文档：Current 无 weekly quota
+  agent_multiplier_14x:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 新版权益表（相对倍率，非绝对额度）
+  exact_monthly_quota:
+    authority: unknown
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① 新版变化 = Agent 相对倍率 14×（旧 Allegro 权益表 10×）；**不是 14× 旧 Allegro 的额度**，
+  也不能由「Go 基准 × 14」推导确定 Token 数 —— 基础额度官方未公开。
+  ② Coding 模型能力与 Pro 相同（Pro 已解锁全部），Max 不新增模型。
+  ③ 百万 Token 超长对话保留，作为 benefits 权益记录，不写进模型 context_window。
+  ④ 价格 provenance = verified_public_report；roo_code/responses_api 未逐项声明 → 不列。
+  ⑤ 各来源 URL 待补（新版定价报道 / 官方 Coding 文档 / 新版权益表 / API 接入文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -8,6 +8,7 @@ type:
   - coding_plan
 status: legacy
 plan_family: membership
+generation: legacy
 region: cn
 market: null
 audience: personal
@@ -58,6 +59,7 @@ quota:
   shared_pool_rollover: false     # 未使用额度不累计
   accounting_basis: token_usage
   weekly_applies_to_legacy_plans: true
+  weekly_quota_enabled: true          # 旧体系存在 7 日额度（新体系为 false）
   rolling_windows:
     - 5 hours                     # Kimi Code 5 小时滚动频率窗口
     - 7 days                      # Kimi Code 每 7 天刷新额度（旧套餐）

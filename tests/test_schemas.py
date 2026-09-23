@@ -56,6 +56,20 @@ def test_plan_status_includes_legacy(repo_root: Path) -> None:
     status_enum = schema["properties"]["status"]["enum"]
     assert "legacy" in status_enum
     assert {"region", "market", "audience", "plan_family"} <= set(schema["properties"])
+    # 新旧体系与字段级证据
+    assert schema["properties"]["generation"]["enum"] == ["legacy", "current", None]
+    assert "evidence" in schema["properties"]
+    assert "positioning" in schema["properties"]
+
+
+def test_price_origin_and_compat_enums_cover_provenance_levels(repo_root: Path) -> None:
+    """价格 origin 区分官方 / 多源报道 / 派生；兼容第七态 unsupported_by_plan。"""
+    schema = _load(repo_root, "plan.schema.json")
+    origin_enum = schema["$defs"]["priceValue"]["properties"]["origin"]["enum"]
+    assert {"official", "verified_public_report", "derived", "unknown"} <= set(origin_enum)
+    compat_enum = schema["$defs"]["compatValue"]["enum"]
+    assert "unsupported_by_plan" in compat_enum
+    assert len(compat_enum) == 8  # 7 states + null
 
 
 def test_sources_schema_is_a_list_registry(repo_root: Path) -> None:
@@ -71,5 +85,5 @@ def test_privacy_fields_carry_source_and_checked_at(repo_root: Path) -> None:
 
 def test_compatibility_status_enum(repo_root: Path) -> None:
     schema = _load(repo_root, "plan.schema.json")
-    allowed = {"full", "officially_supported", "partial", "unofficial", "unsupported", "unknown", None}
+    allowed = {"full", "officially_supported", "partial", "unofficial", "unsupported", "unsupported_by_plan", "unknown", None}
     assert set(schema["$defs"]["compatValue"]["enum"]) == allowed

@@ -66,12 +66,15 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 否则会把「中国老套餐」「海外套餐」「中国新体系」错误合并成同一个 Plan。
 文件名/`id` 一旦确定即为稳定标识，不因展示名或体系更替而重命名。
 
-首批实例：
-- `data/providers/kimi/plans/cn-personal-andante-legacy.yaml`
-  （Kimi 中国大陆个人版 Andante 老套餐：`status: legacy`、`availability.new_purchase: false`、存量可续费）
-- `data/providers/kimi/plans/cn-personal-moderato-legacy.yaml`
-  （Moderato：月付 ¥99 official、年付 948 derived（官方折合 79/月 official）、
-  获得 k3/k3-256k、`benefits` 权益原文、`missing_fields` 缺口、`confidence: high`）
+首批实例（Kimi 中国大陆个人体系 8 条，旧 4 + 新 4）：
+- 旧体系（`generation: legacy`、`status: legacy`、有 7 日额度）：
+  `cn-personal-andante-legacy`（¥49）→ `cn-personal-moderato-legacy`（¥99）→
+  `cn-personal-allegretto-legacy`（¥199，官方未给年价不推算）→ `cn-personal-allegro-legacy`（¥699）
+- 新体系（`generation: current`、`status: active`、无 7 日额度）：
+  `cn-personal-go`（¥49，**无 Kimi Code**）→ `cn-personal-plus`（¥99，新 Code 最低入口）→
+  `cn-personal-pro`（¥199，解锁 K3 1M + HighSpeed）→ `cn-personal-max`（¥699，Agent 倍率 14×）
+- 海外体系（`kimi.ai`、美元/本地定价）单独调研为 `global-personal-*`，不并入以上 8 条
+- Provider 级 `quota_policies` 按代系维护通用额度机制（旧：月池+7 日+5h；新：月池+5h）
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -81,7 +84,7 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 
 | 规则 | 说明 |
 | --- | --- |
-| 文件系统即注册表 | `data/providers/<id>/provider.yaml` 存在 ⇒ 该 Provider 存在，**没有第二份 `config/providers.yaml` 索引** |
+| 文件系统即注册表 | `data/providers/<id>/provider.yaml` 存在 ⇒ 该 Provider 存在，**没有第二份 `config/providers.yaml` 索引**；Provider 级 `quota_policies` 按 `generation` 维护跨 Plan 通用额度机制 |
 | 1 plan = 1 文件 | diff 清晰、Agent 修改范围小、减少并发冲突、易回溯与删除 |
 | 逻辑 ID | Plan 为 `<provider>/<plan-id>`（如 `xiaomi/mimo-token-plan`），`id` **只需在同 Provider 内唯一** |
 | 文件名稳定 | 文件名 = `id` = 稳定标识符；展示名称改了**不要重命名文件**（改 `name` 即可） |
@@ -160,6 +163,9 @@ region: null                 # cn / global —— 区域变体拆独立记录（
 market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
 audience: null               # personal / team / enterprise —— 人群变体拆独立记录
 plan_family: null            # membership / payg / credits —— 订阅性质（"subscription" 记这里，不占 type）
+generation: null             # legacy / current —— 代系，必须与 id 后缀（-legacy）一致
+positioning: null            # everyday_use / productivity_upgrade / professional / premium（厂商档位定位，verbatim）
+evidence: null               # 字段级 provenance：{pricing: {authority: official|verified_public_report|..., checked_at}, ...}
 availability:                # 老套餐身份的关键部分
   new_purchase: null         # 是否仍可新购（legacy 通常 false）
   existing_subscription_use: null       # 存量订阅者是否可继续使用
@@ -179,7 +185,7 @@ missing_fields: null         # 明确列出未核实的字段缺口，如 exact_
 
 pricing:
   currency: null             # 原始结算币种（如 USD）；CNY 是派生值，绝不写这里
-  monthly:                   # 每个周期都带 origin：official=厂商公布 / derived=本项目计算
+  monthly:                   # 每个周期都带 origin：official=厂商公布 / verified_public_report=多源报道交叉核验（待升级）/ derived=本项目计算 / unknown
     amount: null
     origin: null
     billing_period: null     # month / year
@@ -205,6 +211,12 @@ quota:
   agent_tasks: null
   agent_tasks_approx: null   # 厂商「约 N 个用量」估算值 —— 绝不存进 requests
   coding_tasks: null
+  shared_pool_enabled: null       # 多功能共享额度池
+  shared_pool_refresh: null       # monthly / billing_cycle（原话记录）
+  shared_pool_rollover: null      # 未用完是否结转
+  accounting_basis: null          # e.g. token_usage
+  weekly_quota_enabled: null      # 旧体系 true / 新体系 false（新旧机制的关键差别）
+  weekly_applies_to_legacy_plans: null  # 7 日额度仅限旧套餐时为 true
   rolling_windows: []        # ["3 hours", "5 hours"]
   daily: null
   weekly: null
@@ -242,8 +254,9 @@ token_rules:
 models: []                   # 本 Plan 可用的 provider 级 model_id
 
 compatibility:               # 兼容 ≠ 完全兼容；任意 surface 键都可扩展
-  opencode: unknown          # full / officially_supported / partial / unofficial / unsupported / unknown
+  opencode: unknown          # full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown
                              # full=经核验完全兼容；officially_supported=官方文档明确支持并给出接入方法
+                             # unsupported_by_plan=平台支持但本套餐不含（如 Go 无 Kimi Code）
   claude_code: unknown
   codex: unknown
   pi: unknown

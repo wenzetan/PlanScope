@@ -128,6 +128,6 @@ plans/  benchmarks/  community/
 - [ ] 价格保留原始币种，促销价未覆盖标准价
 - [ ] 未编造任何未查证数据
 - [ ] 关键字段有 `sources` / `source_refs` 与 `checked_at`
-- [ ] 兼容性用 `full / officially_supported / partial / unofficial / unsupported / unknown` 标注
+- [ ] 兼容性用 `full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown` 标注
 - [ ] 文件名未因展示名变化而重命名
 - [ ] 没有在代码中硬编码汇率
