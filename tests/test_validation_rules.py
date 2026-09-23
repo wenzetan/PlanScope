@@ -140,3 +140,49 @@ def test_variant_ids_need_not_be_globally_unique(mini_repo: Path) -> None:
     )
     (other / "example-coding-plan.yaml").write_text(content, encoding="utf-8")
     assert validate_tree(mini_repo) == []
+
+
+def test_anthropic_models_are_rejected_in_models_yaml(mini_repo: Path) -> None:
+    """AGENTS.md 绝对规则：永不记录 Anthropic 系模型（无论哪个 Provider）。"""
+    path = mini_repo / "data" / "providers" / "openai" / "models.yaml"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("model_id: example-model", "model_id: claude-sonnet-4"),
+        encoding="utf-8",
+    )
+    errors = validate_tree(mini_repo)
+    assert any(e.field == "models[0].model_id" and "Anthropic" in e.message for e in errors)
+
+
+def test_anthropic_models_are_rejected_in_plan_models(mini_repo: Path) -> None:
+    path = mini_repo / "data" / "providers" / "openai" / "plans" / "example-coding-plan.yaml"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace(
+            "models: []", "models:\n  - anthropic/claude-haiku-4"
+        ),
+        encoding="utf-8",
+    )
+    errors = validate_tree(mini_repo)
+    assert any(e.field == "models[0]" and "Anthropic" in e.message for e in errors)
+
+
+def test_anthropic_models_are_rejected_in_benchmarks(mini_repo: Path) -> None:
+    path = mini_repo / "data" / "providers" / "openai" / "benchmarks" / "example-ttft.yaml"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("model: example-model", "model: claude-opus-4"),
+        encoding="utf-8",
+    )
+    errors = validate_tree(mini_repo)
+    assert any(e.field == "model" and "Anthropic" in e.message for e in errors)
+
+
+def test_non_anthropic_models_pass_validation(mini_repo: Path) -> None:
+    """反向保证：规则只拦截 Anthropic 系，普通模型不受影响。"""
+    from planscope.validation import _is_anthropic_model
+
+    assert _is_anthropic_model("claude-sonnet-4")
+    assert _is_anthropic_model("Anthropic/claude-3")
+    assert _is_anthropic_model("openrouter/claude-haiku")
+    assert not _is_anthropic_model("example-model")
+    assert not _is_anthropic_model("gpt-5.2")
+    assert not _is_anthropic_model("mimo-v2.6-flash")
+    assert validate_tree(mini_repo) == []

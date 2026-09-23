@@ -103,6 +103,61 @@ def _check_provider_ref(doc, field: str, provider_id: str, rel: str, errors: lis
         )
 
 
+# Personal preference of the repo owner — see AGENTS.md. Never recorded, any provider.
+ANTHROPIC_MODEL_RULE = "个人项目偏好：永不记录 Anthropic 系模型（无论哪个 Provider 提供），见 AGENTS.md"
+
+
+def _is_anthropic_model(value) -> bool:
+    if not isinstance(value, str):
+        return False
+    text = value.strip().lower()
+    if not text:
+        return False
+    return (
+        text.startswith(("claude", "anthropic"))
+        or "/claude" in text
+        or "/anthropic" in text
+    )
+
+
+def _reject_anthropic_models(checks, rel: str, errors: list[ValidationError]) -> None:
+    """Enforce the repo-wide rule: Anthropic models are never recorded."""
+    for field, value in checks:
+        if _is_anthropic_model(value):
+            errors.append(ValidationError(rel, field, f"{ANTHROPIC_MODEL_RULE}: {value}"))
+
+
+def _model_checks_from_plan(doc) -> list[tuple[str, object]]:
+    checks: list[tuple[str, object]] = []
+    if not isinstance(doc, dict):
+        return checks
+    models = doc.get("models")
+    if isinstance(models, list):
+        for index, value in enumerate(models):
+            checks.append((f"models[{index}]", value))
+    token_rules = doc.get("token_rules")
+    if isinstance(token_rules, dict) and isinstance(token_rules.get("model_multipliers"), list):
+        for index, entry in enumerate(token_rules["model_multipliers"]):
+            if isinstance(entry, dict):
+                checks.append((f"token_rules.model_multipliers[{index}].model", entry.get("model")))
+    return checks
+
+
+def _model_checks_from_models_doc(doc) -> list[tuple[str, object]]:
+    checks: list[tuple[str, object]] = []
+    if not isinstance(doc, dict) or not isinstance(doc.get("models"), list):
+        return checks
+    for index, model in enumerate(doc["models"]):
+        if not isinstance(model, dict):
+            continue
+        checks.append((f"models[{index}].model_id", model.get("model_id")))
+        aliases = model.get("aliases")
+        if isinstance(aliases, list):
+            for alias_index, alias in enumerate(aliases):
+                checks.append((f"models[{index}].aliases[{alias_index}]", alias))
+    return checks
+
+
 def _collect_plans(
     plans_dir: Path,
     validator,
@@ -122,6 +177,7 @@ def _collect_plans(
         _validate_id(doc, path.stem, "id", rel, errors)
         _check_provider_ref(doc, "provider", provider_id, rel, errors)
         _validate_plan_source_refs(doc, source_ids, sources_present, rel, errors)
+        _reject_anthropic_models(_model_checks_from_plan(doc), rel, errors)
         if isinstance(doc, dict) and isinstance(doc.get("id"), str):
             plan_ids.add(doc["id"])
     return plan_ids
@@ -298,6 +354,7 @@ def validate_tree(root: Path | str | None = None) -> list[ValidationError]:
                 _check(validators["provider_models"], doc, rel, errors)
                 _check_provider_ref(doc, "provider", provider_id, rel, errors)
                 _validate_model_plan_refs(doc, plan_ids, rel, errors)
+                _reject_anthropic_models(_model_checks_from_models_doc(doc), rel, errors)
 
         # privacy.yaml
         privacy_path = provider_dir / "privacy.yaml"
@@ -322,6 +379,8 @@ def validate_tree(root: Path | str | None = None) -> list[ValidationError]:
                 _validate_id(doc, path.stem, "id", rel, errors)
                 _check_provider_ref(doc, "provider", provider_id, rel, errors)
                 _validate_nested_plan_refs(doc, plan_ids, rel, errors)
+                if isinstance(doc, dict):
+                    _reject_anthropic_models([("model", doc.get("model"))], rel, errors)
 
     # 5. data/changes/ — repository-native history: parse check only.
     changes_dir = data_dir / "changes"

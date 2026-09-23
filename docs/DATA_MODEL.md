@@ -245,6 +245,8 @@ effective_until: null        # 下线时设 status: deprecated/discontinued + ef
 
 ## Models（`models.yaml`，Provider-specific）
 
+> **个人偏好**：本仓库永不记录 Anthropic 系模型（无论哪个 Provider 提供），见 [AGENTS.md](../AGENTS.md)。
+
 ```yaml
 provider: xiaomi             # = 目录名
 notes: null

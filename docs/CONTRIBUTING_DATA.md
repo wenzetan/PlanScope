@@ -28,6 +28,12 @@ Research Xiaomi plans and update: data/providers/xiaomi/
 
 ## 不变规则
 
+> **个人偏好（写入本项目 AGENTS.md，validate 强制）**：本仓库**永不记录 Anthropic 系模型**，
+> 无论该模型由哪个 Provider 提供（官方 / OpenRouter / 聚合商均不记录）。
+> `model_id`、alias、Plan 的 `models` / `model_multipliers`、benchmark / community 的 `model`
+> 出现 `claude` / `anthropic`（含 `xxx/claude-...` 命名空间）即校验失败。
+> 直接不记录即可，不要写"已移除"占位条目。详见 [AGENTS.md](../AGENTS.md)。
+
 ### 1. 一个 Plan 一个文件；变体拆独立记录
 
 `data/providers/<provider>/plans/<plan-id>.yaml`。不要把一个 Provider 的所有套餐塞进单一 YAML。

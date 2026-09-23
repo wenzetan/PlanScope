@@ -167,6 +167,7 @@ cd site && npm ci && npm run build   # pure static output in site/dist/ (HTML/CS
 - Data changes as vendor policies change and **no real-time correctness is guaranteed**; every record carries `checked_at` — verify against official sources.
 - Not investment, consumer, or legal advice. Vendor marketing claims are never accepted as the sole source of truth.
 - CNY conversions are approximate comparison figures, not real-time payment or settlement rates.
+- **Personal preference statement**: by the author's personal preference, this repository **never records Anthropic models** — regardless of which provider offers them. Rules and detection: [AGENTS.md](AGENTS.md).
 
 ---
 
