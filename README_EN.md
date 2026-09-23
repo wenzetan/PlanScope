@@ -81,7 +81,8 @@ See [docs/SOURCES.md](docs/SOURCES.md) and the site's Methodology page.
 ## Data principles
 
 - **Repository as database**: no PostgreSQL / MySQL / SQLite / Redis / Supabase or any hosted database. All research data is structured YAML in Git — directly viewable, diffable, reviewable, versionable.
-- **Provider-centric**: `data/providers/<provider>/` is the data boundary; 1 plan = 1 YAML file; the filesystem is the provider registry (no second index).
+- **Provider-centric**: `data/providers/<provider>/` is the data boundary; 1 plan = 1 YAML file; the filesystem is the provider registry (no second index); privacy is split per scope (consumer / business / api).
+- **Comparable-record grouping**: `record_kind` distinguishes real subscriptions (`subscription` / `legacy_subscription`), PAYG comparison baselines (`payg_baseline`), and contract offers (`enterprise_contract`) — account tiers, seat counts, and regional quotes are NOT plans; the site's Plans page shows subscription records by default.
 - **Variants are separate records**: personal vs team (`audience`), China vs global (`region`), and sub-platforms (`market`, e.g. BigModel vs Z.ai) are always split into independent plan records — never stuffed into note fields.
 - **Raw facts first**: store raw facts, then derive. Prices keep their original currency; CNY is derived; promotions never overwrite standard prices; any derived unit price must be traceable back to original price, currency, quota, and multipliers.
 - **Unknown stays unknown**: unverified → `null` / `unknown`; vague vendor wording (`Unlimited`, `Fair Use`, …) recorded verbatim; plans that cannot be converted to a unit price are marked `not directly comparable` — never force an estimate.
@@ -114,15 +115,16 @@ See [.github/workflows/daily-refresh.yml](.github/workflows/daily-refresh.yml).
 ```text
 PlanScope/
 ├── README.md / README_EN.md   # project introduction (entry point)
+├── AGENTS.md                  # agent / collaborator rules + handover status (read first)
 ├── config/
 │   └── exchange_rate.yaml     # single FX config: usd_cny (updated by daily CI)
 ├── data/                      # ← source of truth (no database)
 │   ├── providers/<provider>/
-│   │   ├── provider.yaml      # provider metadata
+│   │   ├── provider.yaml      # provider metadata + quota_policies (per generation)
 │   │   ├── sources.yaml       # shared official source registry (plans use source_refs)
-│   │   ├── models.yaml        # models as actually exposed by this provider
-│   │   ├── privacy.yaml       # privacy & data policy (per-field sources)
-│   │   ├── plans/*.yaml       # 1 plan = 1 file
+│   │   ├── models.yaml        # models as actually exposed (per-plan availability)
+│   │   ├── privacy/           # privacy policy, one file per scope (consumer / business / api)
+│   │   ├── plans/*.yaml       # 1 plan = 1 file (grouped by record_kind: subscription / payg baseline / contract)
 │   │   ├── benchmarks/*.yaml
 │   │   └── community/*.yaml
 │   ├── changes/<year>/<month>/  # structured change records
@@ -135,6 +137,8 @@ PlanScope/
 ├── docs/                      # DATA_MODEL / SOURCES / CONTRIBUTING_DATA / ROADMAP
 └── .github/workflows/         # validate.yml + daily-refresh.yml
 ```
+
+**Agents / collaborators: read [AGENTS.md](AGENTS.md) first** (absolute rules, data rules, change workflow, and current handover status); field-level details in [docs/DATA_MODEL.md](docs/DATA_MODEL.md).
 
 ---
 

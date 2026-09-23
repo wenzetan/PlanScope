@@ -81,7 +81,8 @@ GitHub Issues、Reddit、Discord、Telegram、论坛、博客、用户实际报�
 ## 数据原则
 
 - **Repository as database**：不引入 PostgreSQL / MySQL / SQLite / Redis / Supabase 等任何数据库；所有研究数据都是 Git 中的结构化 YAML，可直接查看、diff、review、版本控制。
-- **Provider-centric**：`data/providers/<provider>/` 是数据边界；1 个 Plan = 1 个 YAML 文件；文件系统即 Provider 注册表（无第二份索引）。
+- **Provider-centric**：`data/providers/<provider>/` 是数据边界；1 个 Plan = 1 个 YAML 文件；文件系统即 Provider 注册表（无第二份索引）；隐私按 scope 拆文件（consumer / business / api）。
+- **可比较对象分组**：`record_kind` 区分真订阅（`subscription` / `legacy_subscription`）、PAYG 比较基线（`payg_baseline`）与合同型 Offer（`enterprise_contract`）—— 账户 tier、seat 数量、地区报价都不是 Plan；站点 Plans 页默认只显示订阅类记录。
 - **变体拆独立记录**：同一 Provider 的个人/团队（`audience`）、中国/海外（`region`）、不同子平台（`market`，如 BigModel / Z.ai）套餐全部拆成独立 Plan 记录，**不塞进备注字段**。
 - **Raw facts first**：先存原始事实再算派生值。价格保留原始币种，人民币是派生值；促销价不覆盖标准价；可推导的单价必须能追溯到原始价格、币种、额度与倍率。
 - **未知不编造**：未查证写 `null` / `unknown`；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录；无法换算单价标记 `not directly comparable`，不强行估算。
@@ -114,15 +115,16 @@ Daily Research / Refresh → Validate → Test → Build site → Commit data �
 ```text
 PlanScope/
 ├── README.md / README_EN.md   # 项目介绍（入口）
+├── AGENTS.md                  # Agent / 协作者规则 + 交接状态（先读这份）
 ├── config/
 │   └── exchange_rate.yaml     # 唯一汇率配置：usd_cny（每日 CI 更新）
 ├── data/                      # ← source of truth（无数据库）
 │   ├── providers/<provider>/
-│   │   ├── provider.yaml      # Provider 元数据
+│   │   ├── provider.yaml      # Provider 元数据 + quota_policies（按代系）
 │   │   ├── sources.yaml       # 常用官方来源注册表（Plan 用 source_refs 引用）
-│   │   ├── models.yaml        # 该 Provider 实际暴露的模型能力
-│   │   ├── privacy.yaml       # 隐私与数据政策（逐字段带来源）
-│   │   ├── plans/*.yaml       # 1 plan = 1 file
+│   │   ├── models.yaml        # 该 Provider 实际暴露的模型能力（per-plan availability）
+│   │   ├── privacy/           # 隐私政策，按 scope 一文件一记录（consumer / business / api）
+│   │   ├── plans/*.yaml       # 1 plan = 1 file（record_kind 分组：订阅 / PAYG 基线 / 合同）
 │   │   ├── benchmarks/*.yaml
 │   │   └── community/*.yaml
 │   ├── changes/<year>/<month>/  # 结构化变更记录
@@ -135,6 +137,8 @@ PlanScope/
 ├── docs/                      # DATA_MODEL / SOURCES / CONTRIBUTING_DATA / ROADMAP
 └── .github/workflows/         # validate.yml + daily-refresh.yml
 ```
+
+**Agent / 自动化协作者请先读 [AGENTS.md](AGENTS.md)**（绝对规则、数据规则、修改流程与当前交接状态）；字段级细节见 [docs/DATA_MODEL.md](docs/DATA_MODEL.md)。
 
 ---
 

@@ -92,3 +92,20 @@ pytest
 - 来源与证据等级：`docs/SOURCES.md`
 - 贡献与检查清单：`docs/CONTRIBUTING_DATA.md`
 - 阶段规划：`docs/ROADMAP.md`
+
+## 6. 当前状态与交接
+
+（截至 2026-09-23；新会话续接请先读本节 + `docs/DATA_MODEL.md`，然后跑 `planscope validate && pytest` 确认全绿）
+
+- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 18 条含 openai 结构模板）：
+  - 大陆旧会员 ×4（`legacy_subscription`）→ 大陆新会员 ×4（`subscription`）→ `cn-business`（按席位年订）
+  - API 系列 ×4：CN/Global × PAYG 基线/企业合同（`record_kind` 分组；官方无订阅制 API Plan）
+  - 海外个人 ×4（moderato/allegretto/allegro/vivace）为 **draft 占位**：数值全 `null`、`research_status: draft`，等数据段
+- **隐私按 scope 三份**：`consumer`（可训练+opt-out）/ `business`（不训练+隔离）/ `api`（不训练、不为训练持久化、ZDR unknown）；Training / Retention / ZDR 三字段独立
+- **数据机制已就绪并有测试覆盖（82 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）
+- **待办**：
+  1. 补官方 URL → `sources.yaml`（目前为空）+ 隐私字段 source（official 徽标）
+  2. 海外个人 4 条 draft 等数据段；`moonshot/` 空模板去留待定
+  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价）
+  4. GitHub Pages 一次性设置：Settings → Pages → Source = **GitHub Actions**（推送已自动触发 `validate.yml` 构建；每日 UTC 02:17 的 `daily-refresh` 负责部署）
+- **下一家 Provider：GLM / 智谱 / Z.ai（在新会话处理）**——用 `market: bigmodel/zai` + `region: cn/global` + `record_kind` 从第一天拆清国内外与 API/企业线；起手读本文档 + `docs/DATA_MODEL.md` 的拆分规则表。

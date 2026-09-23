@@ -13,6 +13,7 @@ PlanScope 分阶段演进。**长期架构决策：不使用数据库，Git 仓�
 - [x] GitHub Pages 静态站点（Astro）：Overview / Providers / Plans / Models / Pricing / Privacy / Reliability / Changes / Sources / Methodology，响应式布局，客户端 filter / search / sort
 - [x] pytest + `validate.yml`（push / PR：schema validation + tests + site build）
 - [x] `daily-refresh.yml`（单一 schedule、无 retry、成功才 deploy、数据变更 commit）
+- [x] 首批 Provider 数据：**Kimi 17 条**（13 条 `verified_initial` + 4 条海外 `draft` 占位），含会员两代 / Business 按席位 / API 双地区四系列
 
 ## Phase 2 — Data collection
 
