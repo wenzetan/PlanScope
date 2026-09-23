@@ -131,5 +131,8 @@ pytest
   5. **audience 类目待统一（搁置，最后一起做）**：现网存在 `team`（GLM 团队版）、`business`（Kimi/OpenAI/Google）、
      `enterprise`、`api`；AGENTS 词汇表只列 `personal/team/enterprise`。等后续 Provider 调研完再整体收敛，
      **在此之前不单独改任何一条**。
+  6. **依赖更新（Dependabot）**：`.github/dependabot.yml` 已配置 npm（`/site`）+ pip（`/`）+ github-actions（`/`），
+     周更、minor/patch 分组、`chore(deps)` 前缀；有测试锁定。站点依赖 `astro` 已升级到 7.x
+     （连带 `sharp`/`esbuild`/`vite`），13 条安全告警清零。改依赖后必须 `cd site && npm ci && npm run build` 通过。
 - **下一步**：本轮 16 Provider 首批数据已足够跑 Pages / Schema / Diff；继续按 Provider 补 URL 与 unknown，
   不追求 `research_status: complete`（统一保持 `verified_initial`，逐字段升级 origin）。

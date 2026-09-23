@@ -3,6 +3,8 @@
 There are no scheduled jobs: deployment is push-triggered (``deploy.yml``) or
 manual ``workflow_dispatch``; ``validate.yml`` only validates/builds. These
 tests lock that in and guard the invalid plain-scalar colon regression.
+The trailing test covers ``.github/dependabot.yml`` (not a workflow — it must
+not contain a cron deploy, but it must exist so Dependabot pushes update PRs).
 """
 
 from pathlib import Path
@@ -72,3 +74,26 @@ def test_no_colon_inside_plain_run_scalars(repo_root: Path) -> None:
             assert ": " not in value, (
                 f"{name}:{lineno} run 的普通标量中含 ': '（YAML 非法），请改写文案或改用引号: {stripped}"
             )
+
+
+def test_dependabot_covers_every_dependency_surface(repo_root: Path) -> None:
+    """Dependabot 配置必须齐全，否则版本更新 PR 一个都不会推送。
+
+    npm 站点在 site/（不是仓库根），pip 与 github-actions 在仓库根。
+    这是 Dependabot "不推送" 的常见原因，锁定防止再被删/漏配。
+    """
+    path = repo_root / ".github" / "dependabot.yml"
+    assert path.is_file(), "缺少 .github/dependabot.yml —— Dependabot 不会推送版本更新 PR"
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(data, dict) and data.get("version") == 2
+
+    entries = {(u["package-ecosystem"], u["directory"]) for u in data["updates"]}
+    assert ("npm", "/site") in entries, "npm 站点在 site/，directory 必须是 /site"
+    assert ("pip", "/") in entries
+    assert ("github-actions", "/") in entries
+
+    for update in data["updates"]:
+        assert update["schedule"]["interval"] == "weekly", "保持低噪：只允许 weekly"
+        assert update["open-pull-requests-limit"] >= 1
+

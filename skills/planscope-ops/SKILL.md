@@ -40,10 +40,28 @@ test -f site/dist/index.html
   + `workflow_dispatch`；流程 validate → test → export → build → configure-pages → upload → deploy-pages。
   普通 push 只跑 validate，不会让线上出现半成品。
 - **本项目没有定时任务 / cron**：数据由人工或 Agent 调研后提交，部署由 push 或手动 dispatch 触发。
+  （Dependabot 的周更不是 workflow、也不部署，见下节。）
 - **踩坑记录（必须记住）**：`run: echo "Phase 2: x"` 这种**未加引号且值内含 `: ` 的普通标量是非法 YAML**——
   GitHub 解析不了整个 workflow（0-job 占位失败 run）。
   `tests/test_workflows.py` 已锁定：workflow 必须可解析、触发器形状、普通标量禁 `: `。
 - 查看运行：`gh run list` / `gh api /repos/<owner>/<repo>/actions/runs`。
+
+## Dependabot（依赖更新 / 安全告警）
+
+- 配置 `.github/dependabot.yml`（**不是** workflow，不进 `tests/test_workflows.py` 扫描）：
+  - `npm` → `directory: /site`（Astro 站点不在仓库根）
+  - `pip` → `/`（`pyproject.toml`）
+  - `github-actions` → `/`（`.github/workflows/*` 里 pin 的 action）
+  - 均为 **weekly（周一 02:00 Asia/Shanghai）**、`open-pull-requests-limit: 5`、
+    minor/patch 分组为一个 PR，major 单独出 PR。commit 前缀 `chore(deps)`。
+- 没有 `dependabot.yml` 时：安全更新（security updates）仍会开告警，但**版本更新 PR 一个都不会推**——
+  这就是"Dependabot 不推送"的典型原因。
+- 排障：告警/PR 走 API——`gh api 'repos/<o>/<r>/dependabot/alerts?per_page=100'`、
+  `gh pr list`、`git ls-remote origin 'refs/heads/dependabot/*'`。
+- 真正修复告警要**升依赖并重跑构建**（不能只关告警）：升级后必须
+  `cd site && npm ci && npm run build` 通过，并在推送 lockfile 后让 GitHub 重算依赖图，告警会自动关闭。
+- 本项目 `site/` 依赖面很小（仅 `astro` + 其传递依赖），一次 major 升级即可清掉一批陈年告警；
+  站点是纯静态展示层，升级后用上面的构建命令验证即可。
 
 ## GitHub Pages
 

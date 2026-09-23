@@ -1,0 +1,71 @@
+# Dependabot configuration.
+#
+# Scope: keep the repository's few dependency surfaces current without noise.
+# This is NOT a GitHub Actions workflow (no cron/deploy here) — it only opens
+# update pull requests. See docs/ROADMAP.md and skills/planscope-ops for the
+# "no scheduled jobs" CI rule, which is about deploys, not dependency updates.
+#
+# Ecosystems in this repo:
+#   - npm: the Astro static site lives in site/ (not the repo root)
+#   - pip: the planscope package itself (pyproject.toml at the root)
+#   - github-actions: the action versions pinned in .github/workflows/*
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/site"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "02:00"
+      timezone: Asia/Shanghai
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - dependencies
+    groups:
+      # Batch low-risk bumps into one PR; majors stay separate so they can be
+      # reviewed/tested on their own.
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "02:00"
+      timezone: Asia/Shanghai
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - dependencies
+    groups:
+      pip-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "02:00"
+      timezone: Asia/Shanghai
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - dependencies
+    groups:
+      actions:
+        patterns:
+          - "*"
