@@ -43,11 +43,11 @@ jobs:
 
       # 9. Phase 2: official pricing / model-list / privacy extraction.
       - name: Refresh provider research data
-        run: echo "Phase 2: provider adapters not yet implemented — data refresh is manual for now"
+        run: echo "Phase 2 - provider adapters not yet implemented (data refresh is manual for now)"
 
       # 10. Phase 3: snapshots + diff -> data/changes/.
       - name: Generate change records and snapshots
-        run: echo "Phase 3: snapshot diff not yet implemented — change records are manual for now"
+        run: echo "Phase 3 - snapshot diff not yet implemented (change records are manual for now)"
 
       # 11-12.
       - name: Validate schemas
