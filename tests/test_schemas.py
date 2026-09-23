@@ -70,6 +70,13 @@ def test_price_origin_and_compat_enums_cover_provenance_levels(repo_root: Path) 
     compat_enum = schema["$defs"]["compatValue"]["enum"]
     assert "unsupported_by_plan" in compat_enum
     assert len(compat_enum) == 8  # 7 states + null
+    # 官方冲突留档 + 席位 + 平台/组织结构
+    for key in ("evidence_conflicts", "platforms", "organization", "enterprise_services"):
+        assert key in schema["properties"], f"缺少 {key}"
+    pricing = schema["$defs"]["pricing"]["properties"]
+    for key in ("seats", "discounts", "additional_seats", "tax", "invoices", "monthly_billing_available"):
+        assert key in pricing, f"pricing 缺少 {key}"
+    assert "business" in schema["properties"]["audience"]["enum"]
 
 
 def test_sources_schema_is_a_list_registry(repo_root: Path) -> None:

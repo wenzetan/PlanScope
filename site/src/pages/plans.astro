@@ -102,9 +102,13 @@ const rows = data.plans.map((plan) => {
             <td>{plan.region ? <span class="badge">{plan.region}</span> : "—"}</td>
             <td>{plan.audience ? <span class="badge">{plan.audience}</span> : "—"}</td>
             <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
-            <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
+            <td>
+              {money(plan.price_view.monthly, plan.price_view.currency)}
+              {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> /席</span>}
+            </td>
             <td>
               {cny(plan.price_view.monthly_cny)}
+              {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> /席</span>}
               {plan.price_view.currency && plan.price_view.monthly !== null && plan.price_view.monthly_cny === null && (
                 <div class="small muted">not directly comparable</div>
               )}
@@ -112,7 +116,10 @@ const rows = data.plans.map((plan) => {
             <td>
               {plan.price_view.annual_shown !== null
                 ? <>
-                    {money(plan.price_view.annual_shown, plan.price_view.currency)} / {cny(plan.price_view.annual_cny)}
+                    {money(plan.price_view.annual_shown, plan.price_view.currency)}
+                    {plan.price_view.billing_model === "per_seat" && <span class="small muted"> /席</span>}
+                    {" / "}{cny(plan.price_view.annual_cny)}
+                    {plan.price_view.billing_model === "per_seat" && <span class="small muted"> /席</span>}
                     {plan.price_view.annual_derived && (
                       <div class="small muted">
                         derived: {cny(plan.price_view.annual_effective_monthly)}/月 × 12
@@ -125,6 +132,13 @@ const rows = data.plans.map((plan) => {
               {display(plan.quota_view.token, "—")}{" "}
               {(plan.quota_view.rolling_windows || []).length > 0 && (
                 <span class="mono small">[{(plan.quota_view.rolling_windows || []).join(", ")}]</span>
+              )}
+              {plan.quota_view.refresh_period && (
+                <div class="small muted">
+                  quota refresh: {plan.quota_view.refresh_period}
+                  {plan.quota_view.allocation_scope ? ` · ${plan.quota_view.allocation_scope}` : ""}
+                  {plan.price_view.billing_model === "per_seat" && " · 年付≠年度发额度"}
+                </div>
               )}
               {plan.quota_view.shared_pool_enabled && (
                 <div class="small muted">

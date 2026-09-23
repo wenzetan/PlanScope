@@ -15,9 +15,10 @@ output_retention:
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
 log_retention_days:
-  value: null
+  value: null                       # 公开资料未披露保留天数（public: false），不猜
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
+  note: 企业条款可通过销售获取（contractual_privacy_terms 为 via sales），公开页未给出。
 used_for_training:
   value: false
   source: null
@@ -33,13 +34,15 @@ opt_out_supported:
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
 zero_data_retention:
-  value: null
+  value: null                       # 未公开 —— **不因「不训练」推导 ZDR = true**，两者完全不同
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开资料未披露，保持 unknown。URL 待补。
 enterprise_data_isolation:
-  value: null
+  value: true
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
+  note: 企业独立 Workspace，个人空间与业务空间隔离（Business 官方专页）。URL 待补。
 third_party_model_routing:
   value: null
   source: null
@@ -98,9 +101,9 @@ coding_agent_tools_restricted:
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
 notes: >-
-  本记录仅含已核验的两条企业版差异事实（不用于训练、与消费版实质不同），
-  其余字段（保留期、ZDR、数据地区、subprocessor、跨境、席位/账号限制等）待完整数据段核验。
-  官方企业版数据政策 / 服务条款 URL 待补。
+  本记录含已核验的企业版事实：不用于模型训练（官方承诺）、个人/业务 Workspace 隔离、
+  企业数据隔离。ZDR 与保留期未公开 —— **绝不因「不训练」推导 ZDR=true**。
+  席位/账号类限制见 plan 的 organization 块；官方 URL 待补。
 checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

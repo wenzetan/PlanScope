@@ -53,6 +53,8 @@
       "description": "Legacy/generation availability flags —— 老套餐身份的关键部分。",
       "properties": {
         "new_purchase": { "type": ["boolean", "null"], "description": "是否仍可新购（legacy 通常 false）。" },
+        "online_purchase": { "type": ["boolean", "null"], "description": "是否可在线自助购买。" },
+        "sales_assisted_purchase": { "type": ["boolean", "null"], "description": "是否需要销售协助/线下合同购买。" },
         "existing_subscription_use": { "type": ["boolean", "null"], "description": "存量订阅者是否可继续使用。" },
         "existing_subscription_renewal": { "type": ["boolean", "null"], "description": "存量订阅者是否可续费。" },
         "legacy_upgrade_path": { "type": ["boolean", "null"], "description": "是否可在老套餐体系内部升级。" }
@@ -72,8 +74,8 @@
     },
     "audience": {
       "type": ["string", "null"],
-      "enum": ["personal", "team", "enterprise", null],
-      "description": "Who the plan targets. Personal / team / enterprise variants are separate plan records."
+      "enum": ["personal", "team", "enterprise", "business", null],
+      "description": "Who the plan targets (personal / team / enterprise / business). 变体拆独立记录；按 seat 线性扩展不是变体。"
     },
 
     "coding": {
@@ -186,6 +188,58 @@
       }
     },
 
+    "platforms": {
+      "type": ["object", "null"],
+      "description": "平台可用性（web / desktop / mobile / cli / ide …），各平台 {supported, note}。很多 Plan 会出现 Web 有、CLI 有、Mobile 无的差异。",
+      "additionalProperties": {
+        "type": ["object", "null"],
+        "additionalProperties": false,
+        "properties": {
+          "supported": { "type": ["boolean", "null"] },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "organization": {
+      "type": ["object", "null"],
+      "description": "组织/席位管理能力（roles、邀请、成员移除、席位释放等），按原文自由结构记录。",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "object", "array", "null"]
+      }
+    },
+    "enterprise_services": {
+      "type": ["object", "null"],
+      "description": "企业服务（线下合同、专属支持、合规材料等），自由结构记录。",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "object", "array", "null"]
+      }
+    },
+    "evidence_conflicts": {
+      "type": ["array", "null"],
+      "description": "官方资料互相冲突时记录双方与裁决理由 —— 防止每日 CI 被旧页面改回旧值（如 Kimi 2 席 vs 5 席起购）。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "selected_value", "resolution"],
+        "properties": {
+          "field": { "type": "string", "minLength": 1 },
+          "selected_value": { "type": ["string", "number", "boolean", "null"] },
+          "selected_source": { "type": ["string", "null"] },
+          "conflicting_value": { "type": ["string", "number", "boolean", "null"] },
+          "conflicting_source": { "type": ["string", "null"] },
+          "resolution": {
+            "type": ["object", "null"],
+            "required": ["reason"],
+            "additionalProperties": false,
+            "properties": {
+              "reason": { "type": "string", "minLength": 1 },
+              "decided_at": { "$ref": "#/$defs/iso8601OrNull" }
+            }
+          }
+        }
+      }
+    },
+
     "source_refs": {
       "type": ["array", "null"],
       "items": { "type": "string" },
@@ -228,6 +282,20 @@
       }
     },
 
+    "priceOrigin": {
+      "type": ["string", "null"],
+      "enum": ["official", "verified_public_report", "derived", "unknown", null]
+    },
+    "seatBound": {
+      "type": ["object", "null"],
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": ["integer", "null"], "minimum": 0 },
+        "origin": { "$ref": "#/$defs/priceOrigin" },
+        "note": { "type": ["string", "null"] }
+      }
+    },
     "priceValue": {
       "type": ["object", "null"],
       "required": ["amount"],
@@ -271,6 +339,66 @@
         "annual": { "$ref": "#/$defs/priceValue" },
         "first_purchase": { "$ref": "#/$defs/priceValue" },
         "renewal": { "$ref": "#/$defs/priceValue" },
+        "monthly_billing_available": {
+          "type": ["boolean", "null"],
+          "description": "是否提供月付（如 Kimi Business 仅年付 → false）。"
+        },
+        "seats": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "description": "按席位计价时的席位边界（seat count 是 pricing quantity，不是 plan tier）。",
+          "properties": {
+            "minimum": { "$ref": "#/$defs/seatBound" },
+            "maximum_per_purchase": { "$ref": "#/$defs/seatBound" },
+            "minimum_order": {
+              "type": ["object", "null"],
+              "required": ["amount"],
+              "additionalProperties": false,
+              "properties": {
+                "amount": { "type": ["number", "null"], "minimum": 0 },
+                "currency": { "type": ["string", "null"] },
+                "origin": { "$ref": "#/$defs/priceOrigin" },
+                "note": { "type": ["string", "null"] }
+              }
+            }
+          }
+        },
+        "discounts": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "publicly_available": { "type": ["boolean", "null"] },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "additional_seats": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "description": "订阅期内增购席位规则（ChatGPT Business / Gemini Workspace / Claude Team 等同结构可复用）。",
+          "properties": {
+            "supported": { "type": ["boolean", "null"] },
+            "prorated": { "type": ["boolean", "null"] },
+            "proration_basis": { "type": ["string", "null"], "description": "e.g. remaining_days." },
+            "expiry_alignment": { "type": ["string", "null"], "description": "e.g. original_subscription_end（与原订阅统一到期）." },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "tax": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "included": { "type": ["boolean", "string", "null"], "enum": [true, false, "unknown", null] },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "invoices": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "supported": { "type": ["boolean", "null"] },
+            "types": { "type": ["array", "null"], "items": { "type": "string" } }
+          }
+        },
         "promotion": {
           "type": ["string", "null"],
           "description": "Temporary promotion description. Promotions must NOT overwrite standard prices."
@@ -313,6 +441,23 @@
         "weekly_quota_enabled": {
           "type": ["boolean", "null"],
           "description": "该 Plan 是否存在 weekly/7 日额度：旧体系 true、新体系 false（Kimi 官方当前文档）。新旧机制的关键差别。"
+        },
+        "allocation_scope": {
+          "type": ["string", "null"],
+          "description": "额度分配范围，如 per_member（按成员）/ shared（共享池）。"
+        },
+        "refresh_enabled": { "type": ["boolean", "null"] },
+        "refresh_period": {
+          "type": ["string", "null"],
+          "description": "额度刷新周期，如 monthly。**年付 ≠ 年度一次性发额度**：billing 与 quota refresh 分开记录。"
+        },
+        "new_member_full_quota": {
+          "type": ["boolean", "null"],
+          "description": "新成员是否获得当前周期完整额度（不按加入日期按比例缩减）。"
+        },
+        "removed_member_immediate_loss": {
+          "type": ["boolean", "null"],
+          "description": "成员被移除后是否立即失去权益。"
         },
         "rolling_windows": {
           "type": ["array", "null"],

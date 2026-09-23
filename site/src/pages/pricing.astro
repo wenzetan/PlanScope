@@ -9,6 +9,9 @@ const rows = data.plans.map((plan) => ({
   sortCny: plan.price_view.monthly_cny ?? Number.POSITIVE_INFINITY,
 }));
 rows.sort((a, b) => a.sortCny - b.sortCny);
+
+// 席位计价的 Plan：seat_count 是数量不是档位，成本 = 单席年价 × N（展示层派生，绝不建多档文件）。
+const perSeatPlans = data.plans.filter((p) => p.price_view && p.price_view.billing_model === "per_seat");
 ---
 
 <Base title="Pricing" current="pricing/">
@@ -39,7 +42,7 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
       </thead>
       <tbody>
         {rows.map(({ plan }) => {
-          const comparable = plan.token_rules && plan.token_rules.directly_comparable;
+          const perSeat = plan.price_view.billing_model === "per_seat";
           const inputCost = plan.token_rules && plan.token_rules.directly_comparable === false
             ? "not directly comparable"
             : "—";
@@ -47,14 +50,19 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
             <tr>
               <td>{display(plan.provider_name, plan.provider)}</td>
               <td class="wrap-cell">{display(plan.name)}</td>
-              <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
-              <td>{cny(plan.price_view.monthly_cny)}</td>
-              <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
-              <td>{cny(plan.price_view.monthly_cny)}</td>
+              <td>
+                {money(plan.price_view.monthly, plan.price_view.currency)}
+                {perSeat && <span class="small muted"> /席</span>}
+              </td>
+              <td>
+                {cny(plan.price_view.monthly_cny)}
+                {perSeat && <span class="small muted"> /席</span>}
+              </td>
               <td>
                 {plan.price_view.annual_shown !== null ? (
                   <>
                     {money(plan.price_view.annual_shown, plan.price_view.currency)}
+                    {perSeat && <span class="small muted"> /席</span>}
                     {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
                   </>
                 ) : "—"}
@@ -63,6 +71,7 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
                 {plan.price_view.annual_shown !== null ? (
                   <>
                     {cny(plan.price_view.annual_cny)}
+                    {perSeat && <span class="small muted"> /席</span>}
                     {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
                   </>
                 ) : "—"}
@@ -80,10 +89,94 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
 
   {rows.length === 0 && <div class="empty">暂无价格数据。</div>}
 
+  {perSeatPlans.length > 0 && (
+    <section>
+      <h2>席位成本计算器（Seat calculator）</h2>
+      <div class="note small">
+        seat 是 <strong>pricing quantity（计价数量），不是 plan tier</strong> —— 不会为 2 席 / 5 席 / 20 席
+        建立不同的 Plan 文件。所有团队成本均由
+        <span class="mono">annual_cost = 单席年价 × seat_count</span> 在展示层派生。
+        另外注意：<strong>billing 按年 ≠ 年度一次性发额度</strong> —— 企业席位的成员额度按月刷新（见 Plans 页 quota 列）。
+      </div>
+
+      {perSeatPlans.map((plan) => {
+        const pv = plan.price_view;
+        const seats = (pv.seats && typeof pv.seats === "object") ? pv.seats : {};
+        const minSeats = (seats.minimum && seats.minimum.value) || 1;
+        const maxSeats = seats.maximum_per_purchase && seats.maximum_per_purchase.value;
+        const minOrder = seats.minimum_order && seats.minimum_order.amount;
+        const discounts = plan.pricing && plan.pricing.discounts;
+        const annualPerSeat = pv.annual_shown;
+        return (
+          <div class="card" data-seat-calculator data-annual={annualPerSeat} data-min={minSeats} data-max={maxSeats ?? ""}>
+            <strong>{display(plan.provider_name, plan.provider)} · {display(plan.name)}</strong>
+            <div class="mono small">
+              {pv.currency} {annualPerSeat} /席/年
+              {pv.annual_effective_monthly != null && <>（月均 {pv.currency} {pv.annual_effective_monthly} /席）</>}
+              {" · "}月付: {pv.monthly_billing_available === false ? "不支持" : "见原始价格"}
+            </div>
+            <div class="toolbar">
+              <label class="small">
+                席位数{" "}
+                <input
+                  class="seat-input"
+                  type="number"
+                  value={minSeats}
+                  min={minSeats}
+                  max={maxSeats ?? undefined}
+                  style="width: 90px"
+                />
+              </label>
+              <span class="seat-output"></span>
+            </div>
+            <div class="small muted">
+              最低 {minSeats} 席
+              {maxSeats ? ` · 单次最多 ${maxSeats} 席` : ""}
+              {minOrder ? ` · 最低订单 ¥${minOrder.toLocaleString("en-US")}/年` : ""}
+              {" · "}折扣: {discounts && discounts.publicly_available === false ? "官方暂无公开折扣" : "见原始数据"}
+              {" · "}增购按剩余天数 prorate、与原订阅统一到期
+            </div>
+          </div>
+        );
+      })}
+
+      <script>
+        function fmt(n) {
+          return "¥" + Math.round(n).toLocaleString("en-US");
+        }
+        for (const box of document.querySelectorAll("[data-seat-calculator]")) {
+          const annual = parseFloat(box.dataset.annual || "0");
+          const min = parseInt(box.dataset.min || "1", 10);
+          const maxRaw = box.dataset.max;
+          const max = maxRaw ? parseInt(maxRaw, 10) : null;
+          const input = box.querySelector(".seat-input");
+          const output = box.querySelector(".seat-output");
+          const update = () => {
+            if (!input || !output) return;
+            let seats = parseInt(input.value || String(min), 10);
+            if (Number.isNaN(seats)) seats = min;
+            const bounded = Math.min(Math.max(seats, min), max ?? seats);
+            const annualCost = annual * bounded;
+            const monthlyCost = annualCost / 12;
+            output.innerHTML =
+              `年成本 <strong>${fmt(annualCost)}</strong> · 月均团队成本 <strong>${fmt(monthlyCost)}</strong>` +
+              (seats !== bounded ? `（已按 ${min}${max ? `–${max}` : "+"} 席范围计算）` : "");
+          };
+          if (input) {
+            input.addEventListener("input", update);
+            update();
+          }
+        }
+      </script>
+    </section>
+  )}
+
   <ul class="plain small muted">
     <li>原始价格与币种永不被覆盖；促销价单独记录，不写入标准价字段。</li>
     <li>人民币列全部为派生值，可由原始价格 + 配置汇率重新计算。</li>
+    <li>官方数字（official）、多源报道核验（verified_public_report）、本项目计算（derived）三者用 origin 标注区分。</li>
     <li>无法换算为每百万 Token 单价时标记 <span class="mono">not directly comparable</span>，不强行估算。</li>
     <li>Effective Token Cost 需要已核实的 Token 额度与模型倍率；数据不完整时显示 —，不猜测。</li>
+    <li>席位边界（最少/最多席位、最低订单）是原始事实；任意席位数的团队成本是派生值。</li>
   </ul>
 </Base>

@@ -154,6 +154,33 @@ def test_write_site_data_json(repo_root: Path, tmp_path: Path) -> None:
     assert "结构示例" in out.read_text(encoding="utf-8") or "示例" in out.read_text(encoding="utf-8")
 
 
+def test_per_seat_plan_exports_and_single_plan_rule() -> None:
+    """Kimi Business：seat 是数量不是档位；billing 年付与额度刷新分开导出。"""
+    data = build_site_data(Path(__file__).resolve().parents[1])
+    business = next(p for p in data["plans"] if p["id"] == "cn-business")
+    pv = business["price_view"]
+    assert pv["billing_model"] == "per_seat"
+    assert pv["monthly_billing_available"] is False
+    assert pv["annual"] == 4200 and pv["annual_effective_monthly"] == 350
+    assert pv["seats"]["minimum"]["value"] == 2
+    assert pv["seats"]["maximum_per_purchase"]["value"] == 150
+    assert pv["seats"]["minimum_order"]["amount"] == 8400
+
+    quota = business["quota_view"]
+    assert quota["refresh_period"] == "monthly"       # 年付 ≠ 年度发额度
+    assert quota["allocation_scope"] == "per_member"
+
+    # 单一 Plan × seats：不按席位数拆文件
+    kimi_ids = [p["id"] for p in data["plans"] if p["provider"] == "kimi"]
+    assert "cn-business" in kimi_ids
+    assert not any(i.startswith("cn-business-") for i in kimi_ids)
+
+    # models: null = 矩阵未公开 ≠ [] = 明确无可用模型
+    assert business["models"] is None
+    go = next(p for p in data["plans"] if p["id"] == "cn-personal-go")
+    assert go["models"] == []
+
+
 def test_changes_and_community_present(repo_root: Path) -> None:
     data = build_site_data(repo_root)
     assert data["changes"], "data/changes/ 应被导出"

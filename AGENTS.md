@@ -41,6 +41,10 @@
 - **记录缺口要显式**：用 `missing_fields: [...]` 列出未核实项，用 `confidence: high|medium|low` 标注整体置信度，防止被当作数据已完整。
 - **官方没给的价就不推算**：即使能由月价反推，年价官方未公布 → `annual: {amount: null, origin: unknown, note: ...}`，不写 ×12 结果（只有官方给了折合月价才允许派生）。
 - **后台消耗单独记录**：`background_consumption: [{resource, rate, unit, condition}]` —— 不要假定额度消耗都来自主动请求（如 Kimi Claw 云主机驻留 ~0.6%/天）。速度/消耗倍率进 `models.yaml` 的 `speed_multiplier` / `quota_usage_multiplier`，不留备注。
+- **seat 是数量不是档位**：按席位计价用 `pricing.billing_model: per_seat` + `pricing.seats {minimum / maximum_per_purchase / minimum_order}` + `additional_seats`（prorate 规则）；**单一 Plan × N seats**，绝不为不同席位数或虚构档位建文件（`cn-business-2-seat` 禁止）。不同产品线分开调研（Kimi Business ≠ Kimi API Enterprise，后者单独建 plan）。**billing 与额度刷新分开**：`pricing` 按年 ≠ `quota.refresh_period` 按月发额度，页面必须分别显示。
+- **官方冲突留档 `evidence_conflicts`**：官方文档互相矛盾时记录 `selected_value/selected_source` vs `conflicting_value/conflicting_source` + `resolution.reason`（如专页 2 席 vs API 概览旧文案 5 席，专页优先），防止每日 CI 被旧页面回改。
+- **不训练 ≠ ZDR**：企业「不用于模型训练」承诺不能推导 `ZDR = true` 或保留期 —— 逐字段保持 `unknown`（见 `privacy/business.yaml`）。隐私按 scope 拆文件：`privacy/consumer.yaml` / `privacy/business.yaml`，绝不合并。
+- **可用性三值**：`models: []` = 明确无可用模型（如 Go 无 Kimi Code）；`models: null` = 矩阵未公开；第三方 agent / API Key 未核实时 compat **显式写 `unknown`**，不继承个人版的 `officially_supported`。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。

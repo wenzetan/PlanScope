@@ -1,0 +1,295 @@
+# Kimi Business —— 中国大陆**单一**企业套餐，按席位线性扩展。
+# seat count 是 pricing quantity，不是 plan tier：绝不创建 cn-business-2-seat 等档位文件。
+# 与 Kimi API 系列（PAYG / 企业合同）分属不同产品线，后续独立调研，不并入本文件。
+id: cn-business
+name: Kimi Business
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan             # subscription → plan_family；team 维度 → audience: business
+status: active
+plan_family: business
+generation: current
+positioning: null           # 业务套餐，不属于个人会员 everyday..premium 档位梯子
+region: cn
+market: null
+audience: business          # 用户类型：team / business（按席位供团队使用）
+purchase_url: null
+
+availability:
+  new_purchase: true
+  online_purchase: true
+  sales_assisted_purchase: true
+
+pricing:
+  currency: CNY
+  monthly: null                        # 仅年付，无月付
+  annual:
+    amount: 4200                       # ¥4,200 / 席 / 年（billing_model: per_seat）
+    origin: official
+    billing_period: year
+    billing_model: per_seat
+    effective_monthly: 350             # 月均等效 ¥350 / 席 / 月
+    effective_monthly_origin: official
+    note: 单价按席位计；团队总成本 = 4200 × seat_count（派生，见 Pricing 页计算器）
+  monthly_billing_available: false     # 官方明确：不支持月付
+  seats:
+    minimum:
+      value: 2                         # 2 席起购（见 evidence_conflicts：旧文案写 5 席）
+      origin: official
+    maximum_per_purchase:
+      value: 150
+      origin: official
+    minimum_order:
+      amount: 8400
+      currency: CNY
+      origin: official
+      note: 2 席 × 4200 = ¥8,400/年（官方专页直出）
+  discounts:
+    publicly_available: false          # 官方称暂无折扣
+    note: null
+  additional_seats:
+    supported: true                    # 订阅期内可增购
+    prorated: true
+    proration_basis: remaining_days    # 按购买日至现有订阅到期日的剩余天数计价
+    expiry_alignment: original_subscription_end   # 新增席位与原订阅统一到期
+  tax:
+    included: unknown                  # 税费是否含入价内：未核实
+  invoices:
+    supported: true
+    types:
+      - china_vat_general
+      - china_vat_special
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: false             # 企业版面向企业开发（区别于个人会员的仅限个人开发）
+  enterprise_use_allowed: true
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null                    # 企业版 Agent / Swarm 绝对额度未公开
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: per_member         # 额度按成员分配
+  refresh_enabled: true
+  refresh_period: monthly              # 年付 ≠ 年度一次性发额度：billing 按年、额度按月刷新
+  new_member_full_quota: true          # 新成员获得当期完整额度，不按加入日期按比例缩减
+  removed_member_immediate_loss: true  # 成员移除后立即失去权益（席位下一计费周期释放）
+  shared_pool_enabled: null            # 是否跨功能共享池：未核实
+  shared_pool_refresh: null
+  shared_pool_rollover: null
+  accounting_basis: null               # 未在公开资料确认，不沿用个人版 token_usage
+  weekly_quota_enabled: null           # Business 的 Kimi Code 是否有周额度：未核实
+  rolling_windows: null                # 滚动窗口机制未核实（missing_fields: exact_kimi_code_quota）
+  daily: null
+  weekly: null
+  monthly: null                        # exact monthly credit 未公开（public: false）
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    计费按年（pricing.annual），额度按成员每月刷新（refresh_period: monthly）——
+    两个概念必须分开显示。席位移除进入 pending release、下一计费周期释放（见 organization）。
+    Kimi Code 在企业版的额度/窗口/模型矩阵均未公开核实，全部保持 null/unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null                   # 企业版共享语义未核实，不沿用个人版 true
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                           # ≠ []：不是「无可用模型」，而是逐模型矩阵未公开（unknown）
+
+benefits:                              # 官方 Business 专页权益原文
+  kimi_chat:
+    included: true
+  kimi_work:
+    included: true
+  kimi_code:
+    included: true                     # 官方列为企业版权益 + 企业开发流程一部分
+  agent:
+    included: true
+    exact_quota: null
+  agent_swarm:
+    included: true
+    exact_quota: null
+    exact_parallelism: null
+  goal_mode:
+    included: true
+  dashboard:
+    included: true
+  plugins:
+    included: true
+  professional_data_sources:
+    included: true
+  long_context:
+    max_tokens: 1000000
+    scope: product_experience          # 产品体验权益，≠ 模型 context_window 矩阵
+  technical_support:
+    dedicated: true
+
+platforms:                             # 所有 Plan 可复用的平台可用性结构
+  web:
+    supported: true
+  desktop:
+    supported: true
+  mobile:
+    supported: false
+    note: 当前移动端仅支持个人会员，不能进入企业空间
+
+organization:
+  workspace_isolation:
+    enabled: true
+  personal_and_business_space_separated: true
+  roles:
+    - admin
+    - member
+  admin_capabilities:
+    - purchase_seats
+    - invite_members
+    - remove_members
+    - manage_seats
+    - view_orders
+  member_capabilities:
+    - use_business_benefits
+    - view_personal_quota
+  invitations:
+    supported: true
+    expiration_options_days:
+      - 2
+      - 7
+  max_organizations_per_user: 10
+  seat_reassignment:
+    removed_member_seat_immediately_reusable: false
+    release_at_next_billing_cycle: true
+
+enterprise_services:
+  offline_contract:
+    supported: true
+  dedicated_support:
+    supported: true
+  custom_compliance_materials:
+    contact_sales: true
+
+compatibility:
+  kimi_code_cli: unknown                # 企业席位能否创建普通 Kimi Code API Key 接入第三方工具：官方未公开说明
+  kimi_code_vscode: unknown
+  claude_code: unknown                 # 明确的 valuable unknown —— 不继承个人版 officially_supported
+  opencode: unknown
+  codex: unknown
+  roo_code: unknown
+  hermes: unknown
+  openai_compatible_api: unknown        # 企业版是否提供兼容端点：未核实
+  anthropic_compatible_api: unknown
+
+endpoints:
+  openai_compatible: null               # 企业版端点 URL 未知（个人版 URL 不得继承）
+  anthropic_compatible: null
+
+api_keys:
+  membership_api_key: null              # supported: unknown —— 显式保留未知
+  max_keys: null
+  shared_quota_across_keys: null
+  shared_quota_across_devices: null
+
+confidence: high
+missing_fields:                         # 11 项显式缺口
+  - exact_business_monthly_credit
+  - exact_agent_quota
+  - exact_agent_swarm_quota
+  - exact_kimi_code_quota
+  - business_kimi_code_model_matrix
+  - business_kimi_code_third_party_agent_support
+  - business_kimi_code_api_key_support
+  - data_retention_period
+  - zero_data_retention
+  - overseas_business_availability
+  - overseas_business_pricing
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Kimi Business 官方专页（价格/席位边界/权益；URL 待补）
+  seat_limits:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Business 专页 + Business FAQ，与实际购买页一致
+  benefits:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Business 专页权益列表
+  privacy_no_training:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 企业数据不用于模型训练（官方承诺；URL 待补）
+  model_access:
+    authority: unknown
+  third_party_agent_access:
+    authority: unknown
+
+evidence_conflicts:                     # 官方资料冲突留档，防每日 CI 被旧页面改回旧值
+  - field: pricing.seats.minimum.value
+    selected_value: 2
+    selected_source: official_business_page
+    conflicting_value: 5
+    conflicting_source: official_api_overview
+    resolution:
+      reason: >-
+        Kimi Business 专页与 Business FAQ 是专门文档，最近更新且与实际购买页一致；
+        API 产品概览仍写「5 座起售」属旧文案未同步。以专页为准（2 席），
+        保留冲突记录，后续 CI 抓到任一来源都不得无故回改。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+source_refs: []                         # 官方 URL 待补后建立引用
+sources: []
+
+notes: >-
+  ① **单一 Plan × seat 数量**：seat 是 pricing quantity 不是 tier —— 不创建
+  business-2-seat / business-5-seat 等文件；2/5/10/20/50/150 席成本全部由
+  4200 × N 在展示层派生（Pricing 页席位计算器）。
+  ② **Business 系列 ≠ API 系列**：Kimi Business（席位、给员工/团队）与
+  Kimi API（PAYG / 企业合同、给业务系统）是不同产品线；Kimi API Enterprise
+  后续单独调研，不并入本文件，也不做「Kimi Enterprise 下挂两 tier」的结构。
+  ③ **不训练 ≠ ZDR**：企业承诺不用于训练是官方事实，但 ZDR / 保留期 /
+  subprocessor 未公开 —— 保持 unknown，绝不从「不训练」推导 ZDR=true
+  （见 privacy/business.yaml）。
+  ④ **Kimi Code 谨慎处理**：权益 included + 企业用途 supported 是官方事实；
+  但第三方 agent（Claude Code / OpenCode / Codex / Hermes）、API Key、
+  逐模型矩阵全部 unknown —— 不继承个人版数据（missing_fields 显式列出）。
+  ⑤ **年付 ≠ 年度发额度**：billing 按年、成员额度 monthly refresh，页面需分开显示。
+  ⑥ 席位增购按剩余天数 prorate、与原订阅统一到期；移除成员席位下一计费周期释放。
+  ⑦ 各来源 URL 待补（Business 专页 / FAQ / 权益与价格页）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -46,6 +46,13 @@ PLAN_VIEW_KEYS = (
     "shared_pool_refresh",
     "shared_pool_rollover",
     "accounting_basis",
+    "allocation_scope",
+    "refresh_enabled",
+    "refresh_period",
+    "new_member_full_quota",
+    "removed_member_immediate_loss",
+    "weekly_quota_enabled",
+    "weekly_applies_to_legacy_plans",
     "rolling_windows",
     "daily",
     "weekly",
@@ -87,6 +94,9 @@ def plan_price_view(plan: dict, rate: float) -> dict:
     monthly = block("monthly")
     annual = block("annual")
 
+    # Seat-based pricing: billing_model lives on the period that exists (usually annual).
+    billing_model = annual.get("billing_model") or monthly.get("billing_model")
+
     annual_amount = annual.get("amount")
     effective_monthly = annual.get("effective_monthly")
     if is_num(annual_amount):
@@ -99,6 +109,9 @@ def plan_price_view(plan: dict, rate: float) -> dict:
 
     return {
         "currency": currency,
+        "billing_model": billing_model,
+        "monthly_billing_available": pricing.get("monthly_billing_available"),
+        "seats": pricing.get("seats"),
         "monthly": monthly.get("amount"),
         "monthly_origin": monthly.get("origin"),
         "monthly_cny": to_cny(monthly.get("amount"), currency, rate),
