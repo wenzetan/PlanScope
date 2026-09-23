@@ -1,0 +1,20 @@
+# Zhipu AI / BigModel 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: coding-pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: GLM Coding Plan 档位价格与积分额度
+#
+# 需要补的入口：
+#   coding-pricing       GLM Coding Plan 价格 / 三档积分额度
+#   coding-docs          Coding Plan 接入文档（endpoints / 支持工具 / MCP）
+#   credit-rules         积分公式 / 模型系数 / 高峰非高峰 / 估算 Token 区间
+#   promotions           限时活动（GLM-5.3-Flash ZCode、全日非高峰）
+#   trial                5 天体验 Plan
+#   privacy-consumer     个人版隐私 / 数据政策
+#   terms                使用条款 / 风控
+#
+# 未查证的条目不要填写，不要猜测 URL。

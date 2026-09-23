@@ -60,7 +60,84 @@
               "exact_amount_public": { "type": ["boolean", "null"] }
             }
           },
+          "credit_system": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "description": "积分制（credits）换算机制：同一 Provider 各 Plan 共用，Plan 的 quota.windows 只写具体窗口数值。",
+            "properties": {
+              "enabled": { "type": ["boolean", "null"] },
+              "accounting_unit": { "type": ["string", "null"], "description": "如 credits。" },
+              "formula": { "type": ["string", "null"], "description": "原文公式，如 (input*in_m + cached*cached_m + output*out_m) / 10000。" },
+              "formula_divisor": { "type": ["number", "null"], "minimum": 0 },
+              "model_credit_multipliers": {
+                "type": ["array", "null"],
+                "description": "按模型的积分系数（可多组件：输入 / 缓存输入 / 输出）。",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["model"],
+                  "properties": {
+                    "model": { "type": "string", "minLength": 1 },
+                    "input": { "type": ["number", "null"], "minimum": 0 },
+                    "cached_input": { "type": ["number", "null"], "minimum": 0 },
+                    "output": { "type": ["number", "null"], "minimum": 0 },
+                    "note": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "off_peak_multiplier": { "type": ["number", "null"], "minimum": 0, "description": "非高峰时段积分倍率，如 0.5。" },
+              "peak_window": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                  "timezone": { "type": ["string", "null"], "description": "如 UTC+8。" },
+                  "weekdays": { "type": ["array", "null"], "items": { "type": "string" } },
+                  "start": { "type": ["string", "null"], "description": "如 '14:00'。" },
+                  "end": { "type": ["string", "null"], "description": "如 '18:00'。" }
+                }
+              },
+              "mcp_credit_costs": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["tool"],
+                  "properties": {
+                    "tool": { "type": "string", "minLength": 1 },
+                    "credits_per_call": { "type": ["number", "null"], "minimum": 0 },
+                    "note": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "note": { "type": ["string", "null"] }
+            }
+          },
           "note": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "promotions": {
+      "type": ["array", "null"],
+      "description": "限时活动 / 促销（带 effective_from / effective_until），绝不覆盖标准 Plan 规则。跨档位的活动记录在 Provider 层，Plan 的 pricing.promotion 只写本记录内的促销描述。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+          "description": { "type": "string", "minLength": 1 },
+          "status": { "type": ["string", "null"], "enum": ["scheduled", "active", "expired", "unknown", null] },
+          "product": { "type": ["string", "null"], "description": "适用产品 / 模型，如 glm-5.3-flash。" },
+          "channel": { "type": ["string", "null"], "description": "如 zcode / all_agents。" },
+          "effective_from": { "$ref": "#/$defs/iso8601OrNull" },
+          "effective_until": { "$ref": "#/$defs/iso8601OrNull" },
+          "benefits": {
+            "type": ["object", "null"],
+            "additionalProperties": { "type": ["string", "number", "boolean", "object", "array", "null"] }
+          },
+          "source_refs": { "type": ["array", "null"], "items": { "type": "string" } },
+          "note": { "type": ["string", "null"] },
+          "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
         }
       }
     },

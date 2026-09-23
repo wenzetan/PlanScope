@@ -172,6 +172,45 @@
         "type": ["string", "number", "boolean", "object", "array", "null"]
       }
     },
+    "estimated_weekly_tokens": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "厂商给出的**估算**型周 Token 区间（不是硬额度）。硬额度在 quota（如 credits）。范围上下限通常来自高峰/非高峰或缓存命中率假设，必须写进 basis。",
+      "properties": {
+        "basis": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "cache_hit_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "估算假设的缓存命中率，如 0.95。" },
+            "source": { "type": ["string", "null"], "description": "official / verified_public_report / community_reported / estimated / unknown。" },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "models": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["model"],
+            "properties": {
+              "model": { "type": "string", "minLength": 1 },
+              "minimum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
+              "maximum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "note": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    },
+    "restrictions": {
+      "type": ["object", "null"],
+      "description": "使用限制 / 风控（订阅本人使用、禁止共享/转售、仅限官方支持的 Coding 工具、Coding endpoint 不得当通用 API 用等），原文结构记录。与 benefits（正向权益）分开。",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "object", "array", "null"]
+      }
+    },
     "background_consumption": {
       "type": ["array", "null"],
       "description": "非主动请求产生的额度消耗（驻留/后台资源）。不要假定所有额度消耗都来自主动请求。",
@@ -559,6 +598,10 @@
         "shared_pool_refresh": { "type": ["string", "null"], "description": "e.g. monthly / weekly / daily." },
         "shared_pool_rollover": { "type": ["boolean", "null"], "description": "未用完额度是否结转。" },
         "accounting_basis": { "type": ["string", "null"], "description": "e.g. token_usage / requests." },
+        "unit": {
+          "type": ["string", "null"],
+          "description": "额度计量 / 展示单位（credits / tokens / requests）。与 accounting_basis 配套：accounting_basis 说明计量口径，unit 说明页面展示单位。"
+        },
         "weekly_applies_to_legacy_plans": {
           "type": ["boolean", "null"],
           "description": "周期性额度是否仅适用于旧套餐（如 Kimi 官方文档：7 日额度只适用于 Andante/Moderato/Allegretto/Allegro）。"
@@ -588,6 +631,25 @@
           "type": ["array", "null"],
           "items": { "type": "string" },
           "description": "Rolling windows verbatim, e.g. ['3 hours', '5 hours']."
+        },
+        "windows": {
+          "type": ["array", "null"],
+          "description": "结构化多层额度窗口（如 5 小时 + 7 天并行，GLM Coding Plan 积分制）——硬额度按窗口记录。与 rolling_windows（厂商原话字符串）互补：有明确数值的窗口写这里，rolling_windows 仅保留原话。",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["amount"],
+            "properties": {
+              "label": { "type": ["string", "null"], "description": "厂商原文窗口标签，如 '5 hours' / '7 days'。" },
+              "duration_hours": { "type": ["number", "null"], "minimum": 0 },
+              "duration_days": { "type": ["number", "null"], "minimum": 0 },
+              "amount": { "$ref": "#/$defs/quotaValue" },
+              "unit": { "type": ["string", "null"], "description": "该窗口的计量单位，如 credits / tokens。" },
+              "reset_mode": { "type": ["string", "null"], "description": "e.g. rolling_after_consumption." },
+              "reset_anchor": { "type": ["string", "null"], "description": "e.g. subscription_activation." },
+              "note": { "type": ["string", "null"] }
+            }
+          }
         },
         "daily": { "$ref": "#/$defs/quotaValue" },
         "weekly": { "$ref": "#/$defs/quotaValue" },

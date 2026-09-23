@@ -1,12 +1,100 @@
 id: zhipu
-name: Zhipu
+name: Zhipu AI
 legal_name: null
-website: null
+website: null                 # 官方 URL 待补（不猜 URL）
 docs: null
 purchase_url: null
-status: unknown
-regions: null
-notes: 结构示例模板。未填入任何已核实的价格、额度、政策或模型列表。
-checked_at: "2026-09-23T10:30:00+08:00"
+status: active
+regions:
+  - mainland_china            # 本目录首批仅记录大陆 BigModel 体系；海外 Z.ai 后续按 market: zai 另建记录
+quota_policies:
+  - generation: current       # GLM Coding Plan 现行积分制（credits）体系
+    coding_weekly_limit:
+      enabled: true
+      window_days: 7
+      note: 官方当前文档：Lite / Pro / Max 三档均为 5 小时 + 7 天双层窗口
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: true   # 三档 5 小时积分额度官方直接公布
+    credit_system:
+      enabled: true
+      accounting_unit: credits
+      formula: >-
+        credits = (input_tokens * input_multiplier
+        + cached_input_tokens * cached_input_multiplier
+        + output_tokens * output_multiplier) / 10000
+      formula_divisor: 10000
+      model_credit_multipliers:
+        - model: glm-5.3
+          input: 6.9
+          cached_input: 1.7
+          output: 24
+        - model: glm-5.3-flash
+          input: 2.3
+          cached_input: 0.56
+          output: 8
+      off_peak_multiplier: 0.5     # 非高峰 0.5×，即同等积分理论容量约 2×
+      peak_window:
+        timezone: UTC+8
+        weekdays:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+        start: "14:00"
+        end: "18:00"
+      mcp_credit_costs:
+        - tool: web_search
+          credits_per_call: 1.2
+        - tool: web_reader
+          credits_per_call: 1.2
+        - tool: zread
+          credits_per_call: 1.2
+        - tool: vision_understanding
+          credits_per_call: null
+          note: 走 GLM-5.3-Flash 的积分体系，官方未给单次固定积分
+      note: >-
+        高峰（周一至周五 14:00–18:00 UTC+8）按 1× 计；其他时间为非高峰 0.5×。
+        旧版按 prompts / 旧价格计量，另行 legacy 记录，不与本代系混写。
+    note: 现行 credit 制：5 小时滚动窗口 + 7 天窗口，两窗口并行
+promotions:
+  - id: glm-5-3-flash-zcode-unlimited
+    description: GLM-5.3-Flash ZCode 活动：每日 23:00–09:00 ZCode 内不限量，其他 agent 额度 2×
+    status: active
+    product: glm-5.3-flash
+    channel: zcode
+    effective_from: "2026-09-03T00:00:00+08:00"
+    effective_until: "2026-10-07T00:00:00+08:00"
+    benefits:
+      zcode_glm_5_3_flash_unlimited: true
+      other_agents_quota_multiplier: 2
+      daily_window:
+        start: "23:00"
+        end: "09:00"
+    source_refs: []
+    note: 日期为公告口径；具体时分未公开。绝不覆盖标准 Plan 额度规则。
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - id: all-day-off-peak
+    description: 全日非高峰折扣：全时段按 0.5× 积分计（已公告，尚未开始）
+    status: scheduled
+    product: null
+    channel: null
+    effective_from: "2026-09-25T00:00:00+08:00"
+    effective_until: "2026-10-07T00:00:00+08:00"
+    benefits:
+      model_credit_multiplier: 0.5
+      applies_all_day: true
+    source_refs: []
+    note: 截至 2026-09-23 尚未生效（effective_from 2026-09-25）。临时活动，覆盖正常高峰/非高峰规则但不改 Plan 标准值。
+    checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  Zhipu AI / BigModel（中国大陆）。首批记录：GLM Coding Plan 个人版当前积分制三档
+  （Lite / Pro / Max）。一次性短期体验（5 天）不入统计、不建 Plan。
+  provider 级 quota_policies 存跨档位通用机制（credit 公式、模型系数、高峰/非高峰、MCP 积分成本）；
+  Plan 只在 quota.windows 写具体窗口数值。
+  官方来源 URL 待补（不猜 URL）；个人版隐私承诺未在公开页明确，见 privacy/consumer.yaml。
+checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

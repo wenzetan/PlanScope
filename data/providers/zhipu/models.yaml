@@ -1,0 +1,90 @@
+# Zhipu AI / BigModel 实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
+# context_window = 模型上限（model_max）；套餐实际生效上下文写 availability[].effective_context_window。
+# 当前个人 Coding Plan 三档模型权限相同：GLM-5.3 + GLM-5.3-Flash。
+# 历史别名按官方说明路由：glm-5.2 / glm-5.1 → glm-5.3；glm-4.7 → glm-5.3-flash（不再单列四个模型）。
+# 积分系数（input / cached_input / output）是 Provider 级 credit 机制，记在 provider.yaml 的
+# quota_policies[].credit_system.model_credit_multipliers，不重复写进每个 model。
+provider: zhipu
+notes: 来源（官方模型 / Coding 文档）URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: glm-5.3
+    display_name: GLM-5.3
+    model_family: GLM-5
+    underlying_model: null
+    speed_tier: standard
+    speed_multiplier: null
+    quota_usage_multiplier: null         # 积分消耗是多组件系数（input/cached/output），见 provider quota_policies
+    reasoning_effort: null
+    context_window: 1048576
+    max_output: null
+    input_modalities: null               # 未核实，不猜
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: true
+    agent_suitability: null
+    cache_support: null                  # 积分公式含 cached_input，但能力表未明确，保持 unknown
+    structured_output: null
+    status: active
+    aliases:
+      - glm-5.2
+      - glm-5.1
+    multipliers: null
+    availability:
+      - plan: cn-personal-coding-lite
+        available: true
+        effective_context_window: 1048576
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: 1048576
+      - plan: cn-personal-coding-max
+        available: true
+        effective_context_window: 1048576
+    rate_limits: null
+    notes: 官方别名路由：glm-5.2 / glm-5.1 → glm-5.3。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: glm-5.3-flash
+    display_name: GLM-5.3-Flash
+    model_family: GLM-5
+    underlying_model: null
+    speed_tier: standard
+    speed_multiplier: null
+    quota_usage_multiplier: null
+    reasoning_effort: null
+    context_window: 1048576
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: true
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: active
+    aliases:
+      - glm-4.7
+    multipliers: null
+    availability:
+      - plan: cn-personal-coding-lite
+        available: true
+        effective_context_window: 1048576
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: 1048576
+      - plan: cn-personal-coding-max
+        available: true
+        effective_context_window: 1048576
+    rate_limits: null
+    notes: 官方别名路由：glm-4.7 → glm-5.3-flash。MCP 图像理解走本模型的积分体系。
+    checked_at: "2026-09-23T00:00:00+08:00"

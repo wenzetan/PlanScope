@@ -115,3 +115,93 @@ def test_plan_variant_codes_must_not_be_prose(repo_root: Path) -> None:
 
     prose_market = {**doc, "market": "BigModel 国内平台"}
     assert any("market" in str(e.path) for e in validator.iter_errors(prose_market))
+
+
+# --- Zhipu / GLM Coding Plan（积分制）数据形状 ---------------------------------
+
+
+def _load_zhipu_plan(repo_root: Path, plan_id: str) -> dict:
+    path = repo_root / "data" / "providers" / "zhipu" / "plans" / f"{plan_id}.yaml"
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def test_zhipu_credit_plans_keep_hard_credits_separate_from_token_estimates(repo_root: Path) -> None:
+    """硬额度是 credits（quota.windows）；官方 Token 区间是估算（estimated_weekly_tokens）。"""
+    lite = _load_zhipu_plan(repo_root, "cn-personal-coding-lite")
+    assert lite["quota"]["unit"] == "credits"
+    assert lite["quota"]["accounting_basis"] == "credits"
+    windows = {w["label"]: w for w in lite["quota"]["windows"]}
+    assert windows["5 hours"]["amount"] == 2000
+    assert windows["7 days"]["amount"] == 10000
+    assert "estimated_weekly_tokens" not in lite["quota"]
+    assert lite["estimated_weekly_tokens"]["basis"]["cache_hit_rate"] == 0.95
+    assert lite["estimated_weekly_tokens"]["models"][0]["minimum_million_tokens"] == 48
+
+
+def test_zhipu_credit_tiers_scale_from_lite(repo_root: Path) -> None:
+    expected = {
+        "cn-personal-coding-lite": (2000, 10000),
+        "cn-personal-coding-pro": (12000, 60000),
+        "cn-personal-coding-max": (28000, 140000),
+    }
+    for plan_id, (five_hour, seven_day) in expected.items():
+        plan = _load_zhipu_plan(repo_root, plan_id)
+        windows = {w["label"]: w for w in plan["quota"]["windows"]}
+        assert windows["5 hours"]["amount"] == five_hour
+        assert windows["7 days"]["amount"] == seven_day
+
+
+def test_zhipu_short_term_trial_is_not_recorded(repo_root: Path) -> None:
+    """短期体验不入统计：不得存在 trial 类 Plan 记录。"""
+    plans_dir = repo_root / "data" / "providers" / "zhipu" / "plans"
+    ids = {p.stem for p in plans_dir.glob("*.yaml")}
+    assert ids == {"cn-personal-coding-lite", "cn-personal-coding-pro", "cn-personal-coding-max"}
+    assert not any("trial" in plan_id for plan_id in ids)
+
+
+def test_plan_schema_accepts_structured_windows(repo_root: Path) -> None:
+    validator = _schema(repo_root, "plan.schema.json")
+    doc = _plan_doc(repo_root)
+    doc["quota"] = {
+        "unit": "credits",
+        "windows": [
+            {"label": "5 hours", "duration_hours": 5, "amount": 2000, "unit": "credits"},
+            {"label": "7 days", "duration_days": 7, "amount": 10000, "unit": "credits"},
+        ],
+    }
+    assert not list(validator.iter_errors(doc))
+
+
+def test_plan_windows_require_amount(repo_root: Path) -> None:
+    validator = _schema(repo_root, "plan.schema.json")
+    doc = _plan_doc(repo_root)
+    doc["quota"] = {"windows": [{"label": "5 hours"}]}
+    assert any("amount" in str(e.message) for e in validator.iter_errors(doc))
+
+
+def test_zhipu_models_route_historical_aliases(repo_root: Path) -> None:
+    doc = yaml.safe_load(
+        (repo_root / "data" / "providers" / "zhipu" / "models.yaml").read_text(encoding="utf-8")
+    )
+    by_id = {m["model_id"]: m for m in doc["models"]}
+    assert by_id["glm-5.3"]["aliases"] == ["glm-5.2", "glm-5.1"]
+    assert by_id["glm-5.3-flash"]["aliases"] == ["glm-4.7"]
+
+
+def test_zhipu_credit_system_lives_at_provider_level(repo_root: Path) -> None:
+    """跨 Plan 的 credit 机制（公式 / 系数 / 高峰 / MCP）放 Provider quota_policies。"""
+    provider = yaml.safe_load(
+        (repo_root / "data" / "providers" / "zhipu" / "provider.yaml").read_text(encoding="utf-8")
+    )
+    current = next(p for p in provider["quota_policies"] if p["generation"] == "current")
+    credit = current["credit_system"]
+    assert credit["formula_divisor"] == 10000
+    assert credit["off_peak_multiplier"] == 0.5
+    assert credit["peak_window"]["start"] == "14:00"
+    multipliers = {m["model"]: m for m in credit["model_credit_multipliers"]}
+    assert multipliers["glm-5.3"]["output"] == 24
+    assert multipliers["glm-5.3-flash"]["cached_input"] == 0.56
+    # 限时活动单独记录，不覆盖标准规则
+    promo_ids = {p["id"] for p in provider["promotions"]}
+    assert "all-day-off-peak" in promo_ids
+    assert all(p["status"] in {"scheduled", "active", "expired", "unknown"} for p in provider["promotions"])

@@ -1,0 +1,219 @@
+# GLM Coding Plan Max —— 中国大陆个人版，当前积分制（credits）新体系最高档。
+# 与 Lite / Pro 模型权限相同；差异在额度 / 并发 / 生成速度 / 新品优先级 / 高峰资源保障。
+id: cn-personal-coding-max
+name: GLM Coding Plan Max
+provider: zhipu
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: credits
+generation: current
+positioning: premium
+region: cn
+market: bigmodel
+audience: personal
+service_domain: open.bigmodel.cn
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+coding:
+  included: true
+  product: GLM Coding Plan
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+endpoints:
+  openai_compatible: https://open.bigmodel.cn/api/coding/paas/v4
+  anthropic_compatible: https://open.bigmodel.cn/api/anthropic
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 1078
+    origin: official
+    billing_period: month
+  annual: null                    # 官方未公布年价 —— 不推算
+  first_purchase: null
+  renewal: null
+  promotion: >-
+    官方页面当前展示 ¥862.4（划线 ¥1078）；抓取页未可靠说明该价格对应的结算周期
+    （月 / 季 / 年），不绑定为月付成交价，也不覆盖标准月价。
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: true
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 28000
+      unit: credits
+      reset_mode: rolling_after_consumption
+    - label: "7 days"
+      duration_days: 7
+      amount: 140000
+      unit: credits
+      reset_anchor: subscription_activation
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: dynamic
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    积分制硬额度：5 小时窗口 28,000 credits + 7 天窗口 140,000 credits 并行，约为 Lite 的 14×。
+    模型系数 / 高峰非高峰 / MCP 积分成本见 provider.yaml 的 quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: 积分公式与模型系数见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - glm-5.3
+  - glm-5.3-flash
+
+compatibility:
+  zcode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  cline: officially_supported
+  factory_droid: officially_supported
+  kilo_code: officially_supported
+  roo_code: officially_supported
+  crush: officially_supported
+  goose: officially_supported
+  cursor: officially_supported
+  gemini_cli: officially_supported
+  grok_cli: officially_supported
+  cherry_studio: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+  mcp: officially_supported
+
+benefits:
+  latest_model_priority_access: true
+  first_access_to_flagship_features: true
+  peak_resource_priority: true
+  mcp:
+    vision_understanding: included
+    web_search: included
+    web_reader: included
+    zread: included
+    curated_mcp_tools: included
+    exact_monthly_call_quota: null
+  performance:
+    faster_generation_than_lite: true
+    peak_resource_priority: true
+    exact_speed_multiplier: null
+  concurrency:
+    relative_to_pro: higher
+    recommended_concurrent_projects:
+      minimum: 2
+
+estimated_weekly_tokens:
+  basis:
+    cache_hit_rate: 0.95
+    source: official
+    note: 官方在 95% cache hit 假设下给出的每周 Token 参考区间；下限=全部高峰，上限=全部非高峰。
+  models:
+    - model: glm-5.3
+      minimum_million_tokens: 676
+      maximum_million_tokens: 1352
+    - model: glm-5.3-flash
+      minimum_million_tokens: 2047
+      maximum_million_tokens: 4095
+  note: 官方估算，不是硬配额；硬配额见 quota.windows（credits）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+restrictions:
+  subscriber_only: true
+  account_sharing: prohibited
+  supported_tools_only: true
+  general_api_use: prohibited
+  resale: prohibited
+  coding_endpoint_only_for_coding: true
+  risk_control:
+    enabled: true
+    possible_actions:
+      - rate_limit
+      - freeze
+      - ban
+    repeated_violation_ban_threshold:
+      value: 3
+      relation: greater_than
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 常规月价来自官方页面；展示低价（¥862.4）结算周期未知
+  quota:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+  models:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+  privacy:
+    authority: unknown
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - exact_discount_billing_period
+  - exact_quarterly_total
+  - exact_annual_total
+  - exact_concurrency
+  - exact_generation_speed
+  - exact_individual_privacy_training_policy
+  - retention_period
+  - zero_data_retention
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  购买需实名认证。个人套餐禁止账号共享、转售；仅限官方支持的 Coding 工具，Coding endpoint
+  不得用作通用 API 额度。个人版隐私承诺未明确，不继承团队版 —— 见 privacy/consumer.yaml。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

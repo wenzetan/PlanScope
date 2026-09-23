@@ -45,9 +45,9 @@
 - **官方冲突留档 `evidence_conflicts`**：官方文档互相矛盾时记录 `selected_value/selected_source` vs `conflicting_value/conflicting_source` + `resolution.reason`（如专页 2 席 vs API 概览旧文案 5 席，专页优先），防止每日 CI 被旧页面回改。
 - **不训练 ≠ ZDR**：企业「不用于模型训练」承诺不能推导 `ZDR = true` 或保留期 —— 逐字段保持 `unknown`（见 `privacy/business.yaml`）。隐私按 scope 拆文件：`privacy/consumer.yaml` / `privacy/business.yaml`，绝不合并。
 - **可用性三值**：`models: []` = 明确无可用模型（如 Go 无 Kimi Code）；`models: null` = 矩阵未公开；第三方 agent / API Key 未核实时 compat **显式写 `unknown`**，不继承个人版的 `officially_supported`。
-- **`record_kind` 区分语义**：`subscription` / `legacy_subscription` = 真订阅套餐；`payg_baseline` = 比较基线（Kimi 官方明确开放平台**无订阅制 API Plan**）；`enterprise_contract` = 合同型 Offer；另有 `prepaid_package / token_plan / credits_plan`。**账户 tier（API Tier 1/2/3）、seat 数量、地区报价都不是 Plan**，分别放 `rate_limits` / `pricing.seats` / 独立 region 文件。Pages 按 record_kind 分组（Plans 默认只显示订阅类）。
+- **`record_kind` 区分语义**：`subscription` / `legacy_subscription` = 真订阅套餐；`payg_baseline` = 比较基线（Kimi 官方明确开放平台**无订阅制 API Plan**）；`enterprise_contract` = 合同型 Offer；另有 `prepaid_package / token_plan / credits_plan`。**账户 tier（API Tier 1/2/3）、seat 数量、地区报价都不是 Plan**，分别放 `rate_limits` / `pricing.seats` / 独立 region 文件。**短期体验不入统计、不建 Plan 记录**。Pages 按 record_kind 分组（Plans 默认只显示订阅类）。
 - **CN 与 Global 是两套报价体系**：分文件、分币种（`region: cn`+CNY vs `region: global`+USD）保存，绝不折算回写；地区溢价 `regional_price_ratio` 是 derived analysis，只在展示层按 `config/exchange_rate.yaml` 计算。API 侧模型 id（`kimi-k3`…）与会员侧 id（`k3`…）分开记录，不合并、不假设别名。
-- **试用 ≠ free tier**：赠券写 `trial.voucher`（一次性、有期限、适用限制如 K3 不可用），不写 `free_tier: true`。产品三线隔离写 `product_isolation`（API Open Platform / Kimi Code / Membership 的 key、balance、benefits、billing 互不相通），**不写可兑换字段**。
+- **试用 ≠ free tier**：赠券写 `trial.voucher`（一次性、有期限、适用限制如 K3 不可用），不写 `free_tier: true`。**短期体验（一次性限时，如 5 天体验）不入统计、不建 Plan 记录**。产品三线隔离写 `product_isolation`（API Open Platform / Kimi Code / Membership 的 key、balance、benefits、billing 互不相通），**不写可兑换字段**。
 - **draft 占位记录**：尚未调研的记录用 `research_status: draft` + `status: unknown` + 显式 `missing_fields` + 数值全 `null`（如海外 `global-personal-*`），收到数据段再补齐，**绝不套用大陆/其他体系数值**。首轮核验完成但仍有 unknown 时标 `research_status: verified_initial` + `priority`，不要标 `verified_complete`。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
@@ -99,17 +99,26 @@ pytest
 
 （截至 2026-09-23；新会话续接请先读本节 + `docs/DATA_MODEL.md`，然后跑 `planscope validate && pytest` 确认全绿）
 
-- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 18 条含 openai 结构模板）：
+- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 21 条含 openai 结构模板 + zhipu 3 条）：
   - 大陆旧会员 ×4（`legacy_subscription`）→ 大陆新会员 ×4（`subscription`）→ `cn-business`（按席位年订）
   - API 系列 ×4：CN/Global × PAYG 基线/企业合同（`record_kind` 分组；官方无订阅制 API Plan）
   - 海外个人 ×4（moderato/allegretto/allegro/vivace）为 **draft 占位**：数值全 `null`、`research_status: draft`，等数据段
+- **Zhipu / BigModel（GLM Coding Plan 大陆个人版）已入库 3 条**（`market: bigmodel`，积分制）：
+  - `cn-personal-coding-lite/pro/max`（5h + 7d credits：2,000/10,000、12,000/60,000、28,000/140,000；
+    常规月价 ¥118 / ¥538 / ¥1078，页面另示低价但结算周期未知 → 只进 `pricing.promotion`，不绑定）
+  - credit 公式 / 模型积分系数 / 高峰非高峰 / MCP 积分成本 → Provider `quota_policies[].credit_system`；
+    官方估算区间 → `estimated_weekly_tokens`（**绝不进 `quota`**）；历史别名 → `models.yaml` 的 `aliases`
+  - 个人版隐私全 unknown（`privacy/consumer.yaml`），不继承团队版「不训练」；团队版下一批处理
+  - 一次性 5 天体验**不入统计、不建 Plan**（短期体验规则）
 - **隐私按 scope 三份**：`consumer`（可训练+opt-out）/ `business`（不训练+隔离）/ `api`（不训练、不为训练持久化、ZDR unknown）；Training / Retention / ZDR 三字段独立
-- **数据机制已就绪并有测试覆盖（82 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）
+- **数据机制已就绪并有测试覆盖（87 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）与估算 Token（`estimated_weekly_tokens`）分离
 - **待办**：
-  1. 补官方 URL → `sources.yaml`（目前为空）+ 隐私字段 source（official 徽标）
+  1. 补官方 URL → `sources.yaml`（Kimi 与 zhipu 目前均为注释空表）+ 隐私字段 source（official 徽标）
   2. 海外个人 4 条 draft 等数据段；`moonshot/` 空模板去留待定
-  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价）
+  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价 / GLM 低价结算周期与个人版隐私）
   4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
      站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
      `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
-- **下一家 Provider：GLM / 智谱 / Z.ai（在新会话处理）**——用 `market: bigmodel/zai` + `region: cn/global` + `record_kind` 从第一天拆清国内外与 API/企业线；起手读本文档 + `docs/DATA_MODEL.md` 的拆分规则表。
+- **下一家 Provider：GLM Coding Plan 大陆团队版（标准版 + 高级版）**——精确 Token 上限、团队管理、
+  超额 PAYG、固定 IP、数据默认不用于训练；用 `audience: business` + `market: bigmodel` + 独立 `privacy/business.yaml`。
+  之后才是 GLM 海外 Z.ai（`market: zai` + `region: global`）与 API/企业线。

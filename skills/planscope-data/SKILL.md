@@ -27,6 +27,11 @@ updated: 2026-09-23
    | 日期 `"2026-09-23"` | ISO 8601 `"2026-09-23T00:00:00+08:00"` |
    | `unsupported_by_plan` / `officially_supported` | 原样入七态兼容枚举 |
    | 权益表相对倍率（quota_multiplier 2/4/14） | 只存相对值，**不可反推绝对额度** |
+   | `generation: current_credit_based` / `legacy_prompt_based` | `generation: current` / `legacy`（枚举只有两值）；credit 制写 `quota.accounting_basis: credits` + `quota.unit` |
+   | `quota.unit` / 5h+7d 双层额度 | `quota.unit: credits` + `quota.windows[]`（label/duration_hours/duration_days/amount/unit/reset_mode/reset_anchor）；跨 Plan 的积分公式放 Provider `quota_policies[].credit_system` |
+   | 厂商「≈ N M tokens/week」估算 | `estimated_weekly_tokens`（带 basis.cache_hit_rate），**绝不写进 `quota`** |
+   | 5 天体验 / 短期限时体验（一次性） | **不建 Plan、不入统计**（不是 `free_tier`，也不是订阅档位） |
+   | 限时活动 / 促销 | Provider `promotions[]`（effective_from/until），**绝不覆盖标准价或标准额度** |
 4. **转换红线速查**（详见 AGENTS.md）：
    - 未知 → `null`/`unknown`，**绝不编造**；官方没给的价不推算（哪怕 ×12 算得出来）
    - 每个价格周期标 `origin`：official / verified_public_report / derived / unknown

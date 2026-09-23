@@ -87,6 +87,13 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 - Provider 级 `quota_policies` 按代系维护通用额度机制（旧：月池+7 日+5h；新：月池+5h）
 - 隐私按 scope 三份：`privacy/consumer.yaml`（可训练+opt-out）、`privacy/business.yaml`（不训练+隔离）、
   `privacy/api.yaml`（不训练、不为训练持久化、ZDR unknown）—— Training / Retention / ZDR 三字段独立
+- Zhipu AI / BigModel 个人 GLM Coding Plan（`market: bigmodel`，**积分制**）：
+  `cn-personal-coding-lite` / `-pro` / `-max`（5h + 7d 双层 credits：2,000/10,000、12,000/60,000、
+  28,000/140,000）。credit 公式 / 模型积分系数 / 高峰非高峰 / MCP 积分成本在 Provider 级
+  `quota_policies.credit_system`；`estimated_weekly_tokens` 只存官方**估算**区间，绝不与 `quota` 硬额度混写。
+  三档模型权限相同（`glm-5.3` + `glm-5.3-flash`），历史别名路由写 `models.yaml` 的 `aliases`。
+  个人版隐私未明确 → `privacy/consumer.yaml` 全 unknown，不继承团队版「不训练」。
+  一次性短期体验（5 天）**不入统计、不建 Plan**。
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -140,6 +147,9 @@ docs: null
 purchase_url: null
 status: unknown             # active / beta / invite_only / deprecated / unknown
 regions: null
+quota_policies: null        # 按代系维护的跨 Plan 通用额度机制；credit 制的公式 / 模型积分系数 /
+                            # 高峰非高峰 / MCP 积分成本都放这里（见 provider.schema.json credit_system）
+promotions: null            # 限时活动（effective_from / effective_until），绝不覆盖标准 Plan 规则
 notes: null
 checked_at: "..."
 ```
@@ -176,6 +186,7 @@ market: null                 # bailian / bigmodel / zai —— 子平台变体�
 audience: null               # personal / team / enterprise / business / api —— 人群/用途变体拆独立记录
 record_kind: subscription    # subscription / legacy_subscription / payg_baseline / enterprise_contract /
                               # prepaid_package / token_plan / credits_plan —— 不是每个记录都是订阅
+                              # 短期体验（一次性限时）不入统计、不建 Plan 记录
 service_domain: null         # 平台域名（platform.kimi.com vs platform.kimi.ai = 两套报价体系）
 priority: null               # p0 / p1 / p2 / p3 —— 调研优先级
 research_status: null        # draft / verified_initial / verified_complete / stale —— 有 unknown 时不要标 complete
@@ -196,6 +207,10 @@ extra_usage: null            # {supported, subscribers_only, currency, minimum_t
                              #  bypass_monthly_limit, bypass_weekly_limit, bypass_rolling_window_limit,
                              #  shared_with_web, enterprise_supported} —— 绕过粒度按实际已知记录
 benefits: null               # 官方权益原文（approximate_* = 厂商估算，不是硬配额）
+estimated_weekly_tokens: null # 厂商**估算**型周 Token 区间：{basis: {cache_hit_rate, source, note},
+                             #   models: [{model, minimum_million_tokens, maximum_million_tokens}]}
+                             # 绝不写进 quota（硬额度）—— 如 GLM 官方 95% cache hit 下的 48M–97M
+restrictions: null           # 使用限制 / 风控（禁止共享 / 转售 / 通用 API 用途 / risk_control），原文结构
 background_consumption: null # 后台/驻留消耗：[{resource, rate, unit, condition, note}] —— 不假定消耗都来自主动请求
 confidence: null             # high / medium / low —— 本记录整体研究置信度
 missing_fields: null         # 明确列出未核实的字段缺口，如 exact_weekly_kimi_code_quota
@@ -232,10 +247,14 @@ quota:
   shared_pool_enabled: null       # 多功能共享额度池
   shared_pool_refresh: null       # monthly / billing_cycle（原话记录）
   shared_pool_rollover: null      # 未用完是否结转
-  accounting_basis: null          # e.g. token_usage
+  accounting_basis: null          # e.g. token_usage / credits
+  unit: null                      # 额度计量 / 展示单位：credits / tokens / requests
   weekly_quota_enabled: null      # 旧体系 true / 新体系 false（新旧机制的关键差别）
   weekly_applies_to_legacy_plans: null  # 7 日额度仅限旧套餐时为 true
-  rolling_windows: []        # ["3 hours", "5 hours"]
+  rolling_windows: []        # ["3 hours", "5 hours"]（厂商原话字符串）
+  windows: []                # 结构化多层窗口（含数值）：[{label, duration_hours, duration_days,
+                             #   amount, unit, reset_mode, reset_anchor, note}]
+                             # 如 GLM：5h → 2000 credits（rolling）+ 7d → 10000 credits（subscription_activation）
   daily: null
   weekly: null
   monthly: null

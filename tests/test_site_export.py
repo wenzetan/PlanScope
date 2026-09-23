@@ -135,6 +135,21 @@ def test_quota_view_keeps_approximate_agent_tasks() -> None:
     assert view["actual_limit_known"] is False
 
 
+def test_quota_view_exports_structured_credit_windows(repo_root: Path) -> None:
+    """credit 制 Plan：quota.windows / unit 要进入站点派生数据。"""
+    data = build_site_data(repo_root)
+    plan = next(p for p in data["plans"] if p["id"] == "cn-personal-coding-lite")
+    view = plan["quota_view"]
+    assert view["unit"] == "credits"
+    assert view["accounting_basis"] == "credits"
+    windows = {w["label"]: w for w in view["windows"]}
+    assert windows["5 hours"]["amount"] == 2000
+    assert windows["7 days"]["amount"] == 10000
+    # 官方估算 Token 与硬额度分离
+    assert plan["estimated_weekly_tokens"]["models"][0]["minimum_million_tokens"] == 48
+    assert "estimated_weekly_tokens" not in view
+
+
 def test_sources_are_flattened_with_provenance(repo_root: Path) -> None:
     data = build_site_data(repo_root)
     assert len(data["sources"]) >= 2

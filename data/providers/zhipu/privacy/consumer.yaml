@@ -1,0 +1,86 @@
+# GLM Coding Plan 个人版（中国大陆）隐私 / 数据政策 —— scope: consumer
+# 关键结论：**个人版公开页面没有团队版「数据默认不用于模型训练」的同等明确承诺**，
+# 因此 Training / Retention / ZDR 一律保持 unknown，绝不继承团队版政策。
+# 团队版（business）将另建 privacy/business.yaml。
+id: consumer
+provider: zhipu
+scope: consumer
+region: cn
+policy_document_url: null       # 官方 URL 待补（不猜 URL）
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人 Coding Plan 公开文档未给出明确保留期
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+used_for_training:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开个人版页面未明确训练用途；不得由团队版「不训练」推导
+training_default_opt_in:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未核实，不等于 false；ZDR 与「不训练」是两件事
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+business_consumer_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 已知存在实质差异：团队版官方明确「数据默认不用于模型训练」，个人版无同等承诺 —— 待补双方官方 URL 后置 value=true
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+notes: >-
+  个人 Coding Plan 的隐私承诺尚未核验：不能因为团队版「不训练」就自动继承到 Lite / Pro / Max。
+  missing：training_use、retention_period、zero_data_retention、opt_out。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null
