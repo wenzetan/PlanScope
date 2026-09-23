@@ -45,5 +45,12 @@
   "common.perSeatPerYear": " /seat/year",
   "common.derived": "(derived)",
   "common.notDirectlyComparable": "not directly comparable",
+  "badge.official": "official",
+  "badge.unknown": "unknown",
+  "badge.measured": "measured",
+  "badge.estimated": "estimated",
+  "badge.communityReported": "community reported",
+  "badge.communitySignal": "community signal",
+  "badge.officialFact": "official fact",
   "common.noData": "No data yet."
 }

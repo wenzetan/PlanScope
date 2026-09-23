@@ -35,9 +35,9 @@ const FIELDS = [
   <p class="lead"><T k="privacy.lead" /></p>
 
   <ul class="plain small">
-    <li><span class="badge official">official fact</span> — <T k="privacy.state.official" /></li>
-    <li><span class="badge unknown">unknown</span> — <T k="privacy.state.unknown" /></li>
-    <li><T k="privacy.state.communityBefore" /><a href={href("reliability/")}>community signal</a><T k="privacy.state.communityAfter" /></li>
+    <li><span class="badge official"><T k="badge.officialFact" /></span> — <T k="privacy.state.official" /></li>
+    <li><span class="badge unknown"><T k="badge.unknown" /></span> — <T k="privacy.state.unknown" /></li>
+    <li><T k="privacy.state.communityBefore" /><a href={href("reliability/")}><T k="badge.communitySignal" /></a><T k="privacy.state.communityAfter" /></li>
   </ul>
 
   <div class="table-scroll">
@@ -60,7 +60,7 @@ const FIELDS = [
               return (
                 <td>
                   {value === null || value === undefined ? (
-                    <span class="badge unknown">unknown</span>
+                    <span class="badge unknown"><T k="badge.unknown" /></span>
                   ) : (
                     <span>
                       {display(value)}
@@ -68,7 +68,7 @@ const FIELDS = [
                         <>
                           {" "}
                           <a href={entry.source} rel="noopener" title={entry.source}>
-                            <span class="badge official">official</span>
+                            <span class="badge official"><T k="badge.official" /></span>
                           </a>
                         </>
                       )}

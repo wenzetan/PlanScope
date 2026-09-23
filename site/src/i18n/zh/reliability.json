@@ -17,6 +17,7 @@
   "reliability.col.reproduced": "可复现",
   "reliability.col.link": "链接",
   "reliability.benchmarks.empty": "暂无 benchmark 数据。",
+  "reliability.benchmarks.heading": "基准测试",
   "reliability.community.heading": "429 / 速率限制 / 账号与响应异常（社区反馈）",
   "reliability.community.source": "来源",
   "reliability.community.empty": "暂无社区反馈记录。",

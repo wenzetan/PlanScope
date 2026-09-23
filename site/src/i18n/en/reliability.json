@@ -17,6 +17,7 @@
   "reliability.col.reproduced": "Reproduced",
   "reliability.col.link": "Link",
   "reliability.benchmarks.empty": "No benchmark data yet.",
+  "reliability.benchmarks.heading": "Benchmarks",
   "reliability.community.heading": "429 / Rate limit / Account &amp; response issues (community reports)",
   "reliability.community.source": "source",
   "reliability.community.empty": "No community reports yet.",

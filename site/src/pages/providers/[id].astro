@@ -167,7 +167,7 @@ const POLICY_FIELDS = [
                     <td><T k={labelKey} /></td>
                     <td>
                       {value === null || value === undefined
-                        ? <span class="badge unknown">unknown</span>
+                        ? <span class="badge unknown"><T k="badge.unknown" /></span>
                         : <span>{display(value)} {isOfficial && <span class="badge official"><T k="providers.detail.officialFact" /></span>}</span>}
                     </td>
                     <td>{entry && entry.source ? <a href={entry.source} rel="noopener"><T k="providers.detail.source" /></a> : "—"}</td>

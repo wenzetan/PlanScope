@@ -61,7 +61,7 @@ const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]))
                   <td class="wrap-cell">
                     {availability.length
                       ? availability.map((a) => <div class="mono small">{model.provider}/{a.plan}</div>)
-                      : <span class="badge unknown">unknown</span>}
+                      : <span class="badge unknown"><T k="badge.unknown" /></span>}
                   </td>
                   <td>{display(model.context_window)}</td>
                   <td>{display(model.max_output)}</td>

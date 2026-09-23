@@ -45,5 +45,12 @@
   "common.perSeatPerYear": " /席/年",
   "common.derived": "（派生）",
   "common.notDirectlyComparable": "无法直接比较（not directly comparable）",
+  "badge.official": "官方",
+  "badge.unknown": "未知",
+  "badge.measured": "实测",
+  "badge.estimated": "估算",
+  "badge.communityReported": "社区反馈",
+  "badge.communitySignal": "社区信号",
+  "badge.officialFact": "官方事实",
   "common.noData": "暂无数据。"
 }

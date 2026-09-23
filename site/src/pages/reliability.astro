@@ -20,13 +20,13 @@ function provenance(record) {
   <p class="lead"><T k="reliability.lead" /></p>
 
   <ul class="plain small">
-    <li><span class="badge measured">measured</span> — <T k="reliability.provenance.measured" /></li>
-    <li><span class="badge official">official</span> — <T k="reliability.provenance.official" /></li>
-    <li><span class="badge community_reported">community reported</span> — <T k="reliability.provenance.communityReported" /></li>
-    <li><span class="badge estimated">estimated</span> — <T k="reliability.provenance.estimated" /></li>
+    <li><span class="badge measured"><T k="badge.measured" /></span> — <T k="reliability.provenance.measured" /></li>
+    <li><span class="badge official"><T k="badge.official" /></span> — <T k="reliability.provenance.official" /></li>
+    <li><span class="badge community_reported"><T k="badge.communityReported" /></span> — <T k="reliability.provenance.communityReported" /></li>
+    <li><span class="badge estimated"><T k="badge.estimated" /></span> — <T k="reliability.provenance.estimated" /></li>
   </ul>
 
-  <h2>Benchmarks</h2>
+  <h2><T k="reliability.benchmarks.heading" /></h2>
   <div class="table-scroll">
     <table>
       <thead>
@@ -48,7 +48,7 @@ function provenance(record) {
             <td class="mono">{display(record.plan)}</td>
             <td class="mono">{display(record.model)}</td>
             <td class="mono">{display(record.metric)}</td>
-            <td>{record.value === null || record.value === undefined ? <span class="badge unknown">unknown</span> : record.value}</td>
+            <td>{record.value === null || record.value === undefined ? <span class="badge unknown"><T k="badge.unknown" /></span> : record.value}</td>
             <td>{display(record.unit)}</td>
             <td><span class={`badge ${provenance(record)}`}>{display(record.source_type, "unknown")}</span></td>
             <td><span class={`badge ${display(record.confidence, "unknown")}`}>{display(record.confidence, "unknown")}</span></td>
