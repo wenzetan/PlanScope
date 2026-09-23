@@ -168,6 +168,7 @@ cd site && npm ci && npm run build   # pure static output in site/dist/ (HTML/CS
 - Not investment, consumer, or legal advice. Vendor marketing claims are never accepted as the sole source of truth.
 - CNY conversions are approximate comparison figures, not real-time payment or settlement rates.
 - **Personal preference statement**: by the author's personal preference, this repository **never records Anthropic models** — regardless of which provider offers them. Rules and detection: [AGENTS.md](AGENTS.md).
+- **Trademark / official-relationship disclaimer**: all trademarks and product names used by this project (including but not limited to GLM, Kimi, Zhipu, Z.ai, OpenCode, OpenAI, Anthropic, Claude, Codex, etc.) are used **solely to identify the subjects being tracked**; trademark rights belong to their respective owners, and this project has **no affiliation, sponsorship, or endorsement with any official organization or company**. This is a **personal-use project** with no official relationship whatsoever. It only collects and records publicly offered plan and token quota information from providers — **this does not constitute infringement**, and this project **does not encourage or facilitate violating** any user manual, privacy policy, terms of use, or other usage guidelines when calling those services.
 
 ---
 
