@@ -1,0 +1,121 @@
+# ChatGPT Free —— 全球（美国 Web 美元基准价），个人 membership 档位。
+# Codex 包含于 Free/Go/Plus/Pro/Business/Enterprise；Free 仅提供轻量访问。
+id: global-personal-free
+name: ChatGPT Free
+provider: openai
+record_kind: subscription
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: chatgpt.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 0
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    美国 Web 美元基准价（$0）；其他国家/地区存在本地币种定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Free 档具体用量与任务量官方在本数据段未给出，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  codex: officially_supported
+
+benefits:
+  codex:
+    included: true
+    access_level: light
+    note: 官方称 Free 提供 Codex 轻量访问（light）。
+
+estimated_requests:
+  canonical: null
+  unit: tasks_per_window
+  sources: []
+  note: >-
+    官方 Codex 任务量估算（约 N 任务/时段）在本数据段未给出；canonical 保持 null，不编造数值。
+    访问级别见 benefits.codex.access_level。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - official_codex_task_estimates
+  - codex_specific_quota
+  - model_matrix
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  ChatGPT Free（美国 Web 美元基准价 $0）。Codex 包含于此档但仅轻量访问，具体额度与任务量估算未公开。
+  本轮不为中国大陆另建 cn-personal-* 记录。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

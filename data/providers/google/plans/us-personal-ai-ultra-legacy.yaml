@@ -1,0 +1,127 @@
+# Google AI Ultra（历史档）—— 原 $249.99/月，已被 $100 Ultra 5X + $200 Ultra 20X 取代。
+# status: deprecated（不再供给），保留历史记录，绝不用新价格覆盖旧价格。
+id: us-personal-ai-ultra-legacy
+name: Google AI Ultra (legacy)
+provider: google
+record_kind: legacy_subscription
+type:
+  - agent_plan
+  - coding_plan
+status: deprecated
+plan_family: membership
+generation: legacy
+positioning: premium
+region: global
+market: us
+audience: personal
+service_domain: gemini.google.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: false
+  existing_subscription_use: null
+  existing_subscription_renewal: null
+  legacy_upgrade_path: null
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 249.99
+    origin: official
+    billing_period: month
+    billing_model: flat
+    note: 历史标准价（$249.99/月）；已被现价档位取代，保留原始数值不覆盖。
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    美国美元基准价；不同国家/地区/币种与销售渠道存在本地定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 历史档权益细节本数据段未给出，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  antigravity: unknown
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+benefits:
+  cloud_storage_tb: null
+  note: 历史档权益本数据段未给出，保持 unknown。
+
+evidence_conflicts:
+  - field: ultra_tier_structure
+    selected_value: 100 USD (Ultra 5X) + 200 USD (Ultra 20X)
+    selected_source: null
+    conflicting_value: 249.99 USD single Ultra tier
+    conflicting_source: null
+    resolution:
+      reason: >-
+        原单一 Ultra 档 $249.99/月已由 $100 Ultra 5X 与 $200 Ultra 20X 两个档位取代；
+        旧价作为历史记录保留在 us-personal-ai-ultra-legacy，绝不用新价静默覆盖旧价。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - effective_until_date
+  - legacy_benefits_detail
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  Google AI Ultra 历史档（原 $249.99/月，status: deprecated）。已被 us-personal-ai-ultra-5x 与
+  us-personal-ai-ultra-20x 取代；保留历史不覆盖。不再供给，新购关闭。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

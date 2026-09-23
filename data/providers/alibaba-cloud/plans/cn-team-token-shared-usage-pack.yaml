@@ -1,0 +1,91 @@
+# 阿里云百炼 Token Plan 团队共享用量包（Shared Usage Pack）—— 预付包，不是订阅档位。
+# 一包 ¥5,000（official），625,000 credits，有效期 1 个月，可由整个团队共享。
+id: cn-team-token-shared-usage-pack
+name: Token Plan Team Shared Usage Pack
+provider: alibaba-cloud
+record_kind: prepaid_package
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: null
+region: cn
+market: bailian
+audience: team
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 5000
+    origin: official
+    billing_period: month
+    billing_model: flat
+    note: 一包价 ¥5,000（official）；团队共享，有效期 1 个月
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: true           # 整个团队共享
+  allocation_scope: team_shared
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: false              # 预付包一次性，不刷新
+  refresh_period: null
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: 625000
+      unit: credits
+      reset_anchor: purchase
+      note: 一包有效期 1 个月，团队共享
+  daily: null
+  weekly: null
+  monthly: 625000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: 预付包：¥5,000 / 包，625,000 credits，有效期 1 个月，可由整个团队共享。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+missing_fields:
+  - official_source_urls
+  - purchase_eligibility
+
+source_refs: []
+sources: []
+
+notes: >-
+  团队共享用量包：预付 ¥5,000 / 包（official），625,000 credits，有效期 1 个月，团队共享。
+  与按席位订阅分开记录（prepaid_package，非 subscription）。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

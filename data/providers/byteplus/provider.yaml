@@ -1,0 +1,24 @@
+# BytePlus（字节跳动海外主体）—— 本目录仅记录海外（region: global，USD）。
+# 与 data/providers/volcengine/（中国大陆，CNY）是两套报价体系，分文件、分币种，绝不合并。
+id: byteplus
+name: BytePlus
+aliases:
+  - 字节跳动海外
+  - BytePlus ModelArk
+  - 火山引擎海外
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - global
+quota_policies: null
+promotions: null
+notes: >-
+  BytePlus（字节跳动海外主体）。本目录首批记录 Coding Plan 个人版 Lite / Pro（USD）。
+  额度窗口公开静态页未暴露，quota 全 null，待结算页核验（needs_checkout_verification），
+  绝不复制中国大陆 Volcengine 的额度。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

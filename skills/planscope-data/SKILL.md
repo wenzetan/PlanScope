@@ -35,6 +35,13 @@ updated: 2026-09-23
    | 团队版：按席位、额度不共享、管理员开超额 | `pricing.monthly/annual.billing_model: per_seat` + `quota.allocation_scope: per_seat` + `shared_pool_enabled: false` + `extra_usage.admin_enable_required/budget_control` |
    | 团队 Key 与平台 API Key 不通用 | `product_isolation`（namespace: coding_plan_team），不塞进 `api_keys` |
    | 团队版「数据默认不用于训练」 | `privacy/business.yaml` 的 `used_for_training.value: false`；**ZDR / 保留期保持 unknown** |
+   | 同产品多市场/多地区报价（Xiaomi CN+Global、腾讯企业按 region） | 单 Plan + `pricing.offers: [{market/region, currency, amount, origin, ...}]` —— **不拆成 N 个 Plan**（权益相同才合并） |
+   | 活动价 / 首购价 / 展示价 | `pricing.current_offer`（结构）或 `pricing.promotion`（文字），**标准价 `pricing.monthly` 不被覆盖**；页面必须分列 |
+   | 多来源不一致的「约 N requests」 | `estimated_requests`（`canonical: null` + `sources[]` 全保留），**绝不写进 quota** |
+   | 模型动态目录（OpenCode Go 等） | `models: null` + `benefits.models_discovery: live`，不硬编码为永久权益 |
+   | 模型级隐私差异 | `models.yaml` 的 modelEntry `privacy`（training / retention_days / zdr / effective_until） |
+   | 跨境售卖主体拆分 | 用实际主体目录（`volcengine` CN / `byteplus` Global），**不建 `bytedance`** |
+   | beta 期免费工作区 | `record_kind: beta_workspace` + `status: beta` + `pricing.monthly.amount: 0`，不虚构未来定价 |
    | 限时活动 / 促销 | Provider `promotions[]`（effective_from/until），**绝不覆盖标准价或标准额度** |
 4. **转换红线速查**（详见 AGENTS.md）：
    - 未知 → `null`/`unknown`，**绝不编造**；官方没给的价不推算（哪怕 ×12 算得出来）

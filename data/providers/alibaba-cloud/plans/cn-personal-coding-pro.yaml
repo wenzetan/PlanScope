@@ -1,0 +1,137 @@
+# 阿里云百炼 Coding Plan Pro（个人版，current）—— 月付 ¥200（CNY, official）。
+# 额度为 model_calls 三层窗口：5 小时 6,000 / 周 45,000 / 月 90,000。
+# 促销冲突：中文页曾示新客首月 ¥39.90，英文最新版称该活动已结束 → first_purchase 标
+# verified_public_report 并加 evidence_conflicts，绝不覆盖标准月价。
+id: cn-personal-coding-pro
+name: Coding Plan Pro
+provider: alibaba-cloud
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: cn
+market: bailian
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: Coding Plan
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 200
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  first_purchase:
+    amount: 39.90
+    origin: verified_public_report
+    billing_period: month
+    note: 中文页曾展示新客首月 ¥39.90；英文最新版称该活动已结束，可能已结束，不能当长期价格
+  renewal: null
+  promotion: 中文页曾示新客首月 ¥39.90，英文最新版称已结束（英中文页面不同步）
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: model_calls
+  unit: model_calls
+  weekly_quota_enabled: true
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 6000
+      unit: model_calls
+      reset_mode: rolling_after_consumption
+    - label: "weekly"
+      duration_days: 7
+      amount: 45000
+      unit: model_calls
+      reset_anchor: subscription_activation
+    - label: "monthly"
+      duration_days: 30
+      amount: 90000
+      unit: model_calls
+      reset_anchor: subscription_month
+  daily: null
+  weekly: 45000
+  monthly: 90000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: 三层 model_calls 窗口；与 Token Plan 的 credits 计量不同，绝不互相换算。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - qwen3.7-plus
+  - qwen3.6-plus
+  - kimi-k2.5
+  - glm-5
+  - MiniMax-M2.5
+  - qwen3.5-plus
+  - qwen3-max-2026-01-23
+  - qwen3-coder-next
+  - qwen3-coder-plus
+  - glm-4.7
+
+compatibility:
+  openai_compatible_api: unknown      # 接入方式未核实，不继承其它 Provider 的 officially_supported
+  anthropic_compatible_api: unknown
+  mcp: unknown
+
+evidence_conflicts:
+  - field: first_month_promotion
+    selected_value: unknown
+    selected_source: 英文最新版页面称活动已结束
+    conflicting_value: "¥39.90 新客首月（中文页）"
+    conflicting_source: 中文页面仍展示新客首月价
+    resolution:
+      reason: >-
+        英中文页面不同步，不能当长期价格；标准月价以 ¥200 为准，活动价存 first_purchase，
+        CI 从实际购买页判定是否仍在进行。
+
+missing_fields:
+  - official_source_urls
+  - exact_reset_anchor_definition
+  - model_matrix_source
+
+source_refs: []
+sources: []
+
+notes: >-
+  个人版 Coding Plan Pro，月付 ¥200（official）。额度为 model_calls 三层窗口
+  5 小时 6,000 / 周 45,000 / 月 90,000。新客首月 ¥39.90 为中文页活动价，英文最新版称已结束，
+  存 first_purchase（verified_public_report）并加 evidence_conflicts，不覆盖标准月价。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

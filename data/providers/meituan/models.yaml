@@ -1,0 +1,27 @@
+# 美团 LongCat 实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
+# context_window = 模型上限；套餐实际生效上下文写在 availability[].effective_context_window。
+# 单价未公开，本批不写价格（不推算）。
+provider: meituan
+notes: 来源（官方 API 文档 / 模型页）URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: LongCat-2.0
+    display_name: LongCat-2.0
+    model_family: LongCat
+    underlying_model: null
+    speed_tier: null
+    context_window: 1048576
+    max_output: 131072
+    status: active
+    availability:
+      - plan: cn-token-pack
+        available: true
+        effective_context_window: null
+      - plan: api-payg
+        available: true
+        effective_context_window: null
+      - plan: api-payg-enterprise
+        available: true
+        effective_context_window: null
+    notes: 上下文 1,048,576 / 最大输出 131,072；单价未公开
+    checked_at: "2026-09-23T00:00:00+08:00"

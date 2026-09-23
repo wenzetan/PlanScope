@@ -137,6 +137,22 @@
           }
         },
         "rate_limits": { "type": ["string", "null"] },
+        "privacy": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "description": "模型级隐私差异（如 OpenCode 部分模型 no-training + 0 天保留、部分 30 天、contributor 模型允许训练）。按模型记录，不套用 Provider 统一政策。",
+          "properties": {
+            "used_for_training": { "type": ["boolean", "null"] },
+            "retention_days": { "type": ["number", "null"], "minimum": 0 },
+            "zero_data_retention": { "type": ["boolean", "null"] },
+            "effective_until": { "$ref": "#/$defs/iso8601OrNull" },
+            "note": { "type": ["string", "null"] }
+          }
+        },
+        "effective_until": {
+          "$ref": "#/$defs/iso8601OrNull",
+          "description": "该 model_id 停服/下线时间（如 Xiaomi v2.5 模型 2026-10-21 下线）。"
+        },
         "notes": { "type": ["string", "null"] },
         "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
       }

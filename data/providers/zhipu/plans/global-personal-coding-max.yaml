@@ -1,0 +1,131 @@
+# Z.ai / GLM Coding Plan 海外个人版 Max（region: global, market: zai, USD）。
+# 周额度官方只给相对倍率（14× Lite），未给绝对值 —— 不回推。
+id: global-personal-coding-max
+name: GLM Coding Plan Max (Global)
+provider: zhipu
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: credits
+generation: current
+positioning: premium
+region: global
+market: zai
+audience: personal
+service_domain: api.z.ai
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+coding:
+  included: true
+  product: GLM Coding Plan
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+endpoints:
+  openai_compatible: https://api.z.ai/api/coding/paas/v4
+  anthropic_compatible: https://api.z.ai/api/anthropic
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 168
+    origin: official
+    billing_period: month
+  annual: null
+  current_offer:
+    amount: 117.60
+    origin: official
+    billing_period: month
+    note: Z.ai 官方 ZCode 页面当前展示价（标价 $168，约 7 折）
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: true
+  windows:
+    - label: "7 days"
+      duration_days: 7
+      amount: null
+      unit: credits
+      note: 14× Lite；官方只给相对倍率，绝对值未公布 —— 不回推
+  weekly: null
+  limit_type: hard
+  actual_limit_known: false
+  note: >-
+    周额度 = Lite 的 14×（官方相对倍率，canonical absolute 未公布）。
+    积分系数 / 高峰非高峰 / MCP 成本见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  multiplier: null
+  model_multipliers: null
+  directly_comparable: false
+  note: 积分公式与模型系数见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - glm-5.3
+  - glm-5.3-flash
+
+compatibility:
+  zcode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  cline: officially_supported
+  roo_code: officially_supported
+  cursor: officially_supported
+  kilo_code: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+  mcp: officially_supported
+
+benefits:
+  quota_relative_to_lite: 14
+  latest_model_priority_access: true
+  mcp:
+    vision_understanding: included
+    web_search: included
+    web_reader: included
+    zread: included
+    exact_monthly_call_quota: null
+
+restrictions:
+  subscriber_only: true
+  account_sharing: prohibited
+  supported_tools_only: true
+  general_api_use: prohibited
+  resale: prohibited
+  coding_endpoint_only_for_coding: true
+
+missing_fields:
+  - exact_weekly_credits
+  - exact_5h_credit_window
+  - exact_annual_total
+  - exact_global_privacy_training_policy
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  Z.ai 海外个人版 Max。周额度为 Lite 的 14×（官方相对倍率）。展示价与标价分离
+  （current_offer $117.60 / standard $168）。官方来源 URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

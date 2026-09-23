@@ -1,0 +1,154 @@
+# 腾讯云 TokenHub 企业 Token Plan Enterprise Lite —— 合同型 Offer（record_kind: enterprise_contract）。
+# 最低采购量 50,000,000 tokens；按「50M tokens/月」为单位报价，分地域：
+#   广州 13.65 USD / 单位、新加坡 17.50 USD / 单位。
+# 支持多 Key 精细分配（把额度拆到不同 Key）。价格以官方报价页 / 控制台为准。
+id: enterprise-lite
+name: Tencent Cloud Token Plan Enterprise Lite
+provider: tencent-cloud
+record_kind: enterprise_contract
+type:
+  - token_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: null
+audience: enterprise
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+  sales_assisted_purchase: true
+  contact_sales: true
+
+pricing:
+  currency: USD
+  monthly: null
+  annual: null
+  current_offer: null
+  offers:
+    - market: null
+      region: guangzhou
+      currency: USD
+      amount: 13.65
+      origin: official
+      billing_period: month
+      billing_model: flat
+      unit: 50M_tokens_per_month
+      effective_monthly: null
+      note: 广州地域报价；每单位 50M tokens/月
+    - market: null
+      region: singapore
+      currency: USD
+      amount: 17.50
+      origin: official
+      billing_period: month
+      billing_model: flat
+      unit: 50M_tokens_per_month
+      effective_monthly: null
+      note: 新加坡地域报价；每单位 50M tokens/月
+  public_fixed_price: true
+  monthly_billing_available: null
+  volume_discount:
+    available: true
+    based_on:
+      - committed_volume
+    exact_value: null
+    exact_public: false
+    note: 批量 / 合同折扣以控制台或销售为准，官方未公开具体比例
+  seats: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    同一 Offer 分地域报价（广州 / 新加坡）；地域差异记在 offers[].region，不拆成独立 Plan。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: tokens
+  unit: tokens
+  weekly_quota_enabled: false
+  refresh_enabled: null
+  refresh_period: null
+  monthly: null
+  daily: null
+  weekly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    企业 Offer 额度按合同约定（custom）；单次最低采购 50,000,000 tokens
+    （见 benefits.minimum_tokens_per_purchase）。总价 = 单位价 × 采购单位数。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                            # 企业 Offer 可用模型矩阵未核实
+
+benefits:
+  minimum_tokens_per_purchase: 50000000
+  multi_key_allocation:
+    supported: true
+    note: 支持多 Key 精细分配，可将额度拆分到不同的 API Key。
+
+compatibility:
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+  tool_calling: unknown
+
+enterprise_services:
+  offline_contract:
+    supported: true
+  dedicated_support:
+    supported: unknown
+  custom_compliance_materials:
+    contact_sales: true
+
+enterprise_upgrade:
+  available: true
+  target: enterprise-professional
+  note: 更高承诺量 / 更多能力可升级到 Enterprise Professional（合同型）。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 企业报价页 / 控制台（URL 待补）
+  minimum_purchase:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方最低采购量说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_model_matrix
+  - exact_volume_discount
+  - exact_quota_per_unit
+  - contract_terms
+
+source_refs: []
+sources: []
+
+notes: >-
+  Enterprise Lite（企业，合同型）：按「50M tokens/月」为单位报价，广州 13.65 USD、
+  新加坡 17.50 USD（official）。单次最低采购 50,000,000 tokens，支持多 Key 精细分配。
+  批量折扣与精确额度以合同 / 控制台为准，未公开部分保持 null。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

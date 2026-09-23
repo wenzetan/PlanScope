@@ -1,0 +1,130 @@
+# Command Code Go —— 全球个人订阅最低档（USD）。
+# 硬额度 = 每月 $10 usage credits + 5h 窗口 $3 + 7d 窗口 $6（credits 是 usage credits，
+# 不是现金余额）。请求数仅为估算，见 estimated_requests，绝不当作硬额度。
+id: global-personal-go
+name: Command Code Go
+provider: commandcode
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 1
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  monthly_billing_available: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  allocation_scope: account
+  accounting_basis: credits
+  unit: usd_credits
+  refresh_enabled: true
+  refresh_period: monthly
+  rolling_windows: null
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 3
+      unit: usd_credits
+      reset_mode: rolling_after_consumption
+    - label: "7 days"
+      duration_days: 7
+      amount: 6
+      unit: usd_credits
+      reset_anchor: subscription_activation
+  monthly: 10
+  daily: null
+  weekly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    硬额度 = 每月 $10 usage credits + 5 小时窗口 $3 + 7 天窗口 $6；
+    credits 是 usage credits（非现金余额），单位为 usd_credits。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+estimated_requests:
+  canonical: null
+  unit: requests_per_month
+  sources:
+    - value: 15000
+      source: 调研估算（来源 URL 待补）
+      note: 约 15K requests/月，仅估算
+  note: >-
+    请求数只是估算，不是硬额度；硬额度是 monthly credits + 5h + 7d 窗口。
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+missing_fields:
+  - exact_model_list
+  - official_pricing_url
+  - request_estimate_source_url
+  - rate_limits
+
+source_refs: []
+sources: []
+
+notes: >-
+  Go 月费 $1，含 $10 usage credits（非现金余额），5h 窗口 $3、7d 窗口 $6。
+  请求数约 15K 仅为估算，记录在 estimated_requests，绝不当作硬额度。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

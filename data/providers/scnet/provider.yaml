@@ -1,12 +1,54 @@
+# SCNet（超算互联网 / 国家超算互联网）—— 中国大陆（region: cn）。
+# 首批记录：个人 Token Plan（Basic / Standard / Advanced / Flagship）与
+# 个人 Coding Plan（Lite / Pro）。Token Plan 专属 Key（sk-tp-），Coding Plan 专属 Key（sk-sp-）。
 id: scnet
-name: SCNet
+name: 超算互联网
+aliases:
+  - SCNet
+  - 国家超算互联网
+  - 超算互联网平台
 legal_name: null
-website: null
+website: null                 # 官方 URL 待补（不猜 URL）
 docs: null
 purchase_url: null
-status: unknown
-regions: null
-notes: 结构示例模板。未填入任何已核实的价格、额度、政策或模型列表。
-checked_at: "2026-09-23T10:30:00+08:00"
+status: active
+regions:
+  - cn
+quota_policies: null
+promotions:
+  - id: token-plan-activity
+    description: Token Plan 当前活动价（原价 ¥50/185/440/1274 → 活动 ¥30/130/310/899）
+    status: active
+    product: Token Plan
+    channel: null
+    effective_from: null
+    effective_until: null
+    benefits:
+      applies_to:
+        - cn-personal-token-basic
+        - cn-personal-token-standard
+        - cn-personal-token-advanced
+        - cn-personal-token-flagship
+    source_refs: []
+    note: 活动价非 MSRP；标准价保留在 pricing.monthly，活动价写 pricing.current_offer。
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - id: coding-plan-activity
+    description: Coding Plan 当前活动价（列表价 Lite ¥40 / Pro ¥200 → 活动 ¥20 / ¥100）
+    status: active
+    product: Coding Plan
+    channel: null
+    effective_from: null
+    effective_until: null
+    benefits:
+      applies_to:
+        - cn-personal-coding-lite
+        - cn-personal-coding-pro
+    source_refs: []
+    note: 活动价来自官方活动，非 MSRP；标准列表价保留在 pricing.monthly。
+    checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  SCNet（超算互联网，中国大陆）。个人 Token Plan 与 Coding Plan 均为个人交互式使用，
+  禁止应用后端 / 自动脚本 / 批量非交互调用。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

@@ -1,0 +1,20 @@
+# Command Code 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: 个人五档 / Team / Provider API 价格
+#
+# 需要补的入口：
+#   pricing           个人五档月费与 usage credits
+#   windows           5 小时 / 7 天窗口额度
+#   request-estimates 请求数估算（非硬额度）
+#   provider-api      Provider API 月费 / included credit / PAYG
+#   team-pro          Team Pro pooled usage 与席位
+#   enterprise        Enterprise 合同权益与旧 Docs 价格冲突
+#   privacy           隐私 / 保留期 / ZDR
+#
+# 未查证的条目不要填写，不要猜测 URL。

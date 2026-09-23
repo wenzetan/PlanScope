@@ -1,0 +1,145 @@
+# SCNet（超算互联网）个人版（Token Plan / Coding Plan）隐私 / 数据政策 —— scope: consumer。
+# 关键结论：公开页面未给出明确的训练 / 保留 / ZDR 承诺，因此全部字段保持 unknown（value: null），
+# 不推断、不继承任何其它 Provider 的政策。
+id: consumer
+provider: scnet
+scope: consumer
+region: cn
+policy_document_url: null       # 官方 URL 待补（不猜 URL）
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开文档未给出明确保留期
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+used_for_training:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开页面未明确训练用途
+training_default_opt_in:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未核实，不等于 false；ZDR 与「不训练」是两件事
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+api_web_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+business_consumer_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 本 Provider 首批仅有个人版记录，企业 / 团队版政策未调研
+sensitive_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+commercial_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+automated_agent_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 套餐限制层面禁止自动脚本 / 批量非交互，但隐私政策字段未单独核实
+account_sharing_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+proxy_forwarding_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+api_gateway_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+coding_agent_tools_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+training_persistent_storage:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+content_safety_review:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+transport_encryption:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+user_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+notes: >-
+  SCNet 个人版隐私政策尚未核验：training_use、retention_period、zero_data_retention、opt_out
+  等全部保持 unknown。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

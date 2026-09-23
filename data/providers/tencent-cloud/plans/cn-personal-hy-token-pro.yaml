@@ -1,0 +1,119 @@
+# 腾讯云 TokenHub Hy Token Plan Pro（个人版，current）—— 大陆站点，月付 ¥238（CNY, official）。
+# 独立积分系列：4,760 credits / 月（30 天，不结转）。支持 Hy3 / Hy4 preview。
+# 与通用 Token Plan 是**不同系列**，可同时持有，但额度互不相通、不可互相换算。
+id: cn-personal-hy-token-pro
+name: Tencent Cloud Hy Token Plan Pro
+provider: tencent-cloud
+record_kind: token_plan
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: null
+region: cn
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 238
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: 4760
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 4760
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    Hy Token Plan 独立系列，按订阅月发放固定 credits（30 天有效、不结转）；
+    与通用 Token Plan 的额度互不相通。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - hy3
+  - hy4-preview
+
+compatibility:
+  tool_calling: officially_supported
+  long_running_agent: unknown
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+product_isolation:
+  hy_token_plan: true
+  general_token_plan: false
+  note: >-
+    Hy Token Plan 与通用 Token Plan 是不同系列：可同时持有，但额度、计费互不相通，
+    不可互相折算或转移。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Hy Token Plan 官方价格页（URL 待补）
+  credit_quota:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方积分额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_model_ids
+  - credit_conversion_formula
+  - exact_reset_anchor_definition
+
+source_refs: []
+sources: []
+
+notes: >-
+  Hy Token Plan Pro（个人）：¥238/月（official），4,760 credits/月（30 天，不结转）。
+  支持 Hy3 / Hy4 preview，面向 Agent / Coding / 多步工具调用。属于与通用 Token Plan
+  **不同的独立系列**，可同时持有但额度互不相通。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -141,6 +141,19 @@ const rows = data.plans.map((plan) => {
             <td>
               {money(plan.price_view.monthly, plan.price_view.currency)}
               {plan.price_view.billing_model === "per_seat" && plan.price_view.monthly !== null && <span class="small muted"> <span class="i18n-zh" lang="zh-CN">/席</span><span class="i18n-en" lang="en">/seat</span></span>}
+              {plan.price_view.current_offer_amount !== null && plan.price_view.current_offer_amount !== undefined && (
+                <div class="small muted">
+                  offer: {money(plan.price_view.current_offer_amount, plan.price_view.currency)}
+                </div>
+              )}
+              {(plan.price_view.offers || []).map((o) =>
+                o && o.amount !== null && o.amount !== undefined ? (
+                  <div class="small muted">
+                    {o.market || o.region || "offer"}: {money(o.amount, o.currency)}
+                    {o.billing_model === "per_seat" ? " /seat" : ""}
+                  </div>
+                ) : null
+              )}
             </td>
             <td>
               {cny(plan.price_view.monthly_cny)}

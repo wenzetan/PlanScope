@@ -1,0 +1,20 @@
+# Xiaomi / MiMo 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: token-plan-pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: 个人 / 团队 Token Plan 价格与 credits 额度
+#
+# 需要补的入口：
+#   token-plan-pricing   个人 / 团队 Token Plan 价格（CN CNY + Global USD）
+#   token-plan-docs      接入文档（endpoints / 集群 / 团队 Key）
+#   credit-rules         credits 倍率（v2.6-pro / v2.6-flash）/ 夜间折扣
+#   model-matrix         个人版支持模型列表与下线时间
+#   privacy-consumer     个人版隐私 / 数据政策
+#   privacy-business     团队版隐私 / 数据政策
+#   terms                使用条款 / 风控
+#
+# 未查证的条目不要填写，不要猜测 URL。

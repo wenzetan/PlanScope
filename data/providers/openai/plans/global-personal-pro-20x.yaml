@@ -1,0 +1,139 @@
+# ChatGPT Pro 20X —— 全球（美国 Web 美元基准价），个人 membership 档位。
+# $200/月；自 2026-09-10 起暂停新购/升级，存量订阅者仍可使用与续费（status 仍为 active）。
+id: global-personal-pro-20x
+name: ChatGPT Pro 20X
+provider: openai
+record_kind: subscription
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: premium
+region: global
+market: null
+audience: personal
+service_domain: chatgpt.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: false              # 2026-09-10 起暂停新购/升级
+  online_purchase: null
+  public_self_service: null
+  existing_subscription_use: true
+  existing_subscription_renewal: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 200
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    美国 Web 美元基准价（$200/月）；其他国家/地区存在本地币种定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Pro 20X 档具体用量与任务量官方在本数据段未给出，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  codex: officially_supported
+
+benefits:
+  codex:
+    included: true
+    access_level: maximum
+    note: 官方称 Pro 提供 Codex 最大访问（maximum）；20X 为更高用量的 Pro 档。
+
+estimated_requests:
+  canonical: null
+  unit: tasks_per_window
+  sources: []
+  note: >-
+    官方 Codex 任务量估算（约 N 任务/时段）在本数据段未给出；canonical 保持 null，不编造数值。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+evidence_conflicts:
+  - field: pro_tier_structure
+    selected_value: 100 USD (Pro 5X) + 200 USD (Pro 20X)
+    selected_source: null
+    conflicting_value: 200 USD single Pro tier
+    conflicting_source: null
+    resolution:
+      reason: >-
+        当前官方结构为 $100 ChatGPT Pro 5X 与 $200 ChatGPT Pro 20X 两档，取代旧有单一 $200 Pro 档；
+        20X 自 2026-09-10 起暂停新购/升级，存量订阅者可续费。两档为独立 Plan，不合并。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - exact_pause_resumption_date
+  - official_codex_task_estimates
+  - codex_specific_quota
+  - model_matrix
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  ChatGPT Pro 20X（美国 Web 美元基准价 $200/月）。status 仍为 active，但自 2026-09-10 起
+  暂停新购/升级（availability.new_purchase: false），存量订阅者可继续使用并续费。
+  暂停属于可购性状态而非 Plan 有效期变化，故 effective_from / effective_until 保持 null，
+  暂停日期在 notes 与 evidence_conflicts 中留档，避免被日常抓取静默回改成可新购。
+  本轮不为中国大陆另建 cn-personal-* 记录。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,62 @@
+# Command Code 隐私与数据政策（consumer）。
+# 照实记录：默认 prompts / source_code 不用于训练；AI request content 最长保留 30 天。
+# ZDR 需显式启用（环境变量 CMD_ZDR 或请求头 x-cmd-zdr），启用后 enforced 且不做非 ZDR 回退。
+# 不训练 ≠ ZDR；保留期与 ZDR 是独立字段。URL 待补时 source 为 null + note。
+id: consumer
+provider: commandcode
+scope: consumer
+region: global
+policy_document_url: null
+terms_url: null
+prompt_retention:
+  value: 30
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: AI request content 最长保留 30 天（单位天）。URL 待补。
+output_retention:
+  value: 30
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: AI request content（含输出）最长保留 30 天。URL 待补。
+log_retention_days:
+  value: 30
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: AI request content 最长保留 30 天。URL 待补。
+used_for_training:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 默认 prompts / source_code 不用于模型训练。URL 待补。
+zero_data_retention:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: >-
+    仅在**显式启用**时成立 —— 环境变量 CMD_ZDR 设为 1，或请求头 x-cmd-zdr 设为 1；
+    启用后 enforced，且**不做非 ZDR 回退**（没有支持 ZDR 的上游时请求直接失败）。
+    默认未显式启用时不适用。URL 待补。
+training_persistent_storage:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 默认不用于训练，但保留期仍为最长 30 天。URL 待补。
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+transport_encryption:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  source_code 仅在 CLI 本地处理，不由 CLI 上传存储（source_code.stored_by_cli 为 false）。
+  AI request content 最长保留 30 天；ZDR 需显式启用（CMD_ZDR / x-cmd-zdr），启用后不做非 ZDR 回退。
+  官方隐私页 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

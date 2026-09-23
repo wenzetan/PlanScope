@@ -1,0 +1,157 @@
+# Xiaomi MiMo Team Token Plan Max（团队版）—— 按席位（最低 2 席），CN ¥659/席/月 + Global $100/席/月。
+# 额度 82B credits/席/月；无 5 小时上限、无周限制；年付仍按月刷新。
+# 团队专属 Key（ttp-xxxxx）；中国 / 新加坡 / 欧洲多集群 endpoints（URL 待补，先记结构）。
+id: team-token-max
+name: Xiaomi MiMo Team Token Plan Max
+provider: xiaomi
+record_kind: subscription
+type:
+  - token_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: null
+market: null
+audience: team
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 659
+    origin: official
+    billing_period: month
+    billing_model: per_seat
+  annual:
+    amount: 6948
+    origin: official
+    billing_period: year
+    billing_model: per_seat
+    effective_monthly: 579
+    effective_monthly_origin: derived
+    note: 年付 ¥6948/席/年（official）；折合 ¥579/席/月（derived，6948 ÷ 12）
+  current_offer: null
+  offers:
+    - market: global
+      region: null
+      currency: USD
+      amount: 100
+      origin: official
+      billing_period: month
+      billing_model: per_seat
+      unit: per_seat
+      effective_monthly: null
+      note: Global USD 月付 $100/席/月
+    - market: global
+      region: null
+      currency: USD
+      amount: 1056
+      origin: official
+      billing_period: year
+      billing_model: per_seat
+      unit: per_seat
+      effective_monthly: 88
+      effective_monthly_origin: derived
+      note: Global USD 年付 $1056/席/年（official）；折合 $88/席/月（derived）
+  monthly_billing_available: true
+  seats:
+    minimum:
+      value: 2
+      origin: official
+      note: 最低 2 席起购
+  discounts:
+    publicly_available: true
+    note: 年付低于月付合计（约 −12%，derived），额度仍按月刷新
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    CN ¥659/席/月 与 Global $100/席/月 为同权益的区域报价，分别保留原币种，不折算回写。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: false
+  allocation_scope: per_seat
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: month
+  windows:
+    - label: "monthly"
+      duration_days: 30
+      amount: 82000000000
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 82000000000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    团队版每席位 82B credits/月；无 5 小时上限、无周限制；年付仍按月刷新。
+    席位之间不共享、不可转移。夜间 00:00–08:00（UTC+8）0.8× 消耗见 provider quota_policies。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+endpoints:
+  openai_compatible_cn: null
+  anthropic_compatible_cn: null
+  openai_compatible_singapore: null
+  anthropic_compatible_singapore: null
+  openai_compatible_europe: null
+  anthropic_compatible_europe: null
+
+product_isolation:
+  team_api_key_prefix: ttp-
+  shared_with_platform_api: false
+  note: 团队专属 Key（ttp-xxxxx）与平台 API Key 不通用。
+
+models: null                            # 团队版模型矩阵未单独公开，保持 null（不猜）
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: MiMo Team Token Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方团队版额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - cluster_endpoint_urls
+  - team_model_matrix
+  - exact_reset_anchor_definition
+
+source_refs: []
+sources: []
+
+notes: >-
+  团队 Token Plan Max：CN ¥659/席/月、年付 ¥6948/席/年；Global $100/席/月、年付 $1056/席/年。
+  82B credits/席/月，最低 2 席，年付仍按月刷新，无 5h / 周限制。团队专属 Key（ttp-xxxxx）。
+  多集群 endpoints（中国 / 新加坡 / 欧洲）URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

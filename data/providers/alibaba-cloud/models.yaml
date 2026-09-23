@@ -1,0 +1,117 @@
+# 阿里云百炼（market: bailian）实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
+# context_window = 模型上限；套餐实际生效上下文写在 availability[].effective_context_window。
+# 本批仅记录 Coding Plan Pro 权益中列出的模型；能力细节官方未公开，一律 null（不猜）。
+provider: alibaba-cloud
+notes: 来源（官方模型矩阵 / Coding Plan 权益页）URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: qwen3.7-plus
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: qwen3.6-plus
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: qwen3.5-plus
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: qwen3-max-2026-01-23
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: qwen3-coder-next
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: qwen3-coder-plus
+    display_name: null
+    model_family: qwen
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: Coding Plan Pro 权益内模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: kimi-k2.5
+    display_name: null
+    model_family: kimi
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: 百炼托管的第三方模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: glm-5
+    display_name: null
+    model_family: glm
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: 百炼托管的第三方模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: glm-4.7
+    display_name: null
+    model_family: glm
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: 百炼托管的第三方模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: MiniMax-M2.5
+    display_name: null
+    model_family: minimax
+    status: active
+    context_window: null
+    availability:
+      - plan: cn-personal-coding-pro
+        available: true
+        effective_context_window: null
+    notes: 百炼托管的第三方模型；能力与上限未公开
+    checked_at: "2026-09-23T00:00:00+08:00"

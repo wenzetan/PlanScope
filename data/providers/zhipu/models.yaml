@@ -51,6 +51,15 @@ models:
       - plan: cn-team-coding-advanced
         available: true
         effective_context_window: 1048576
+      - plan: global-personal-coding-lite
+        available: true
+        effective_context_window: 1048576
+      - plan: global-personal-coding-pro
+        available: true
+        effective_context_window: 1048576
+      - plan: global-personal-coding-max
+        available: true
+        effective_context_window: 1048576
     rate_limits: null
     notes: 官方别名路由：glm-5.2 / glm-5.1 → glm-5.3。
     checked_at: "2026-09-23T00:00:00+08:00"
@@ -95,6 +104,15 @@ models:
         available: true
         effective_context_window: 1048576
       - plan: cn-team-coding-advanced
+        available: true
+        effective_context_window: 1048576
+      - plan: global-personal-coding-lite
+        available: true
+        effective_context_window: 1048576
+      - plan: global-personal-coding-pro
+        available: true
+        effective_context_window: 1048576
+      - plan: global-personal-coding-max
         available: true
         effective_context_window: 1048576
     rate_limits: null

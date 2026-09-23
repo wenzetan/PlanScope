@@ -1,0 +1,143 @@
+# Command Code Enterprise —— 合同型 Offer（全球）。价格定制，本记录不含任何推算价格。
+# 旧 Docs 曾出现 $5000+ 起点 → evidence_conflicts 留档，防止每日 CI 被旧页面回改。
+id: global-enterprise
+name: Command Code Enterprise
+provider: commandcode
+record_kind: enterprise_contract
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: null
+audience: enterprise
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  contact_sales: true
+  public_self_service: false
+  sales_assisted_purchase: true
+  online_purchase: false
+
+pricing:                              # 合同型 Offer：定制报价，无固定价
+  currency: USD
+  public_fixed_price: false
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  monthly_billing_available: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  allocation_scope: null
+  accounting_basis: credits
+  unit: usd_credits
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  windows: null
+  monthly: null
+  daily: null
+  weekly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Enterprise 为定制 credits / seats，公开不可得。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+organization:
+  custom_seats: true
+  unlimited_team_seats: true
+
+enterprise_services:
+  custom_credits: true
+  custom_seats: true
+  unlimited_team_seats: true
+  dedicated_support_engineer: true
+  sla: true
+  priority_infrastructure: true
+  training_onboarding: true
+
+benefits:
+  custom_credits: true
+  custom_seats: true
+  unlimited_team_seats: true
+  dedicated_support_engineer: true
+  sla: true
+  priority_infrastructure: true
+  training_onboarding: true
+
+evidence_conflicts:
+  - field: enterprise_price
+    selected_value: custom
+    selected_source: 现行官方页面（定制报价）
+    conflicting_value: "$5000+"
+    conflicting_source: 旧 Docs
+    resolution:
+      reason: >-
+        旧 Docs 曾出现 $5000+ 起点，现行企业页为定制报价；以定制为准并保留冲突记录，
+        防止每日 CI 被旧页面回改。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - custom_price_range
+  - exact_credits
+  - exact_seats
+  - sla_terms
+  - official_enterprise_url
+
+source_refs: []
+sources: []
+
+notes: >-
+  Enterprise 为合同型 Offer：custom credits / seats、unlimited team seats、
+  dedicated support engineer、SLA、priority infrastructure、training / onboarding。
+  价格定制，官方未公开固定价，不编造、不推算。旧 Docs 出现 $5000+ 起点，已记录在
+  evidence_conflicts。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

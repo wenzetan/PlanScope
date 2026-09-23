@@ -1,0 +1,55 @@
+id: alibaba-cloud
+name: Alibaba Cloud
+aliases:
+  - Alibaba Cloud
+  - 阿里云
+  - 百炼
+  - Model Studio
+  - Qwen
+  - 通义
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - mainland_china            # 本目录仅记录大陆百炼（market: bailian）体系；海外 Model Studio 后续另建 region: global 记录
+quota_policies:
+  - generation: current
+    monthly_shared_pool:
+      enabled: true
+      exact_amount_public: true
+      accounting_basis: credits
+      refresh: subscription_month
+      rollover: false
+    coding_weekly_limit:
+      enabled: true
+      window_days: 7
+      note: Coding Plan Pro 周窗口 45,000 model_calls；Token Plan 无周窗口，仅按订阅月单窗口刷新
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: true
+    note: >-
+      Coding Plan 采用 5 小时 / 周 / 月三层 model_calls 窗口（Pro 为 6,000 / 45,000 / 90,000）。
+      Token Plan（新体系）按订阅月发放固定 credits 额度、30 天有效、不结转、额度耗尽不自动转 PAYG
+      （可等待刷新、升级或购买额外 Usage Bundle）。两套体系的计量单位不同（model_calls vs credits），
+      绝不互相换算。
+promotions:
+  - id: coding-pro-first-month-39-90
+    description: 中文页曾展示 Coding Plan Pro 新客首月 ¥39.90；英文最新版称该活动已结束
+    status: unknown
+    product: Coding Plan Pro
+    channel: null
+    effective_from: null
+    effective_until: null
+    source_refs: []
+    note: 英中文页面不同步，不能当长期价格；CI 从实际购买页判定
+    checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  阿里云百炼（Model Studio）大陆体系。首批记录 Coding Plan（个人版 Lite legacy / Pro）与
+  Token Plan（个人版 4 档 + 团队版 3 档 + 团队共享包）。所有来源 URL 待维护者补充
+  （pricing / 模型矩阵 / 隐私政策 / 接入文档）；未知值一律 null / unknown，不推算。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

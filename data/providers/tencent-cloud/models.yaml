@@ -1,0 +1,65 @@
+# 腾讯云 TokenHub 实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
+# 通用 Token Plan 与 Coding Plan 的模型矩阵官方未公开 → 省略不登记（不猜名称）。
+# 仅登记 Hy Token Plan 系列明确提到的 Hy3 / Hy4（preview）；能力细节官方未公开，一律 null。
+provider: tencent-cloud
+notes: >-
+  仅 Hy Token Plan 系列有明确模型名（Hy3 / Hy4 preview）；通用 Token Plan / Coding Plan
+  的模型清单未核实，保持省略而非猜测。来源（官方模型矩阵）URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: hy3
+    display_name: Hy3
+    model_family: Hy
+    underlying_model: null
+    speed_tier: null
+    context_window: null
+    max_output: null
+    reasoning: null
+    tool_calling: null
+    vision: null
+    coding: null
+    status: active
+    aliases: null
+    availability:
+      - plan: cn-personal-hy-token-lite
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-standard
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-pro
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-max
+        available: true
+        effective_context_window: null
+    notes: Hy Token Plan 系列模型；能力与上下文上限官方未公开
+    checked_at: "2026-09-23T00:00:00+08:00"
+  - model_id: hy4-preview
+    display_name: Hy4 Preview
+    model_family: Hy
+    underlying_model: null
+    speed_tier: null
+    context_window: null
+    max_output: null
+    reasoning: null
+    tool_calling: null
+    vision: null
+    coding: null
+    status: beta
+    aliases: null
+    availability:
+      - plan: cn-personal-hy-token-lite
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-standard
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-pro
+        available: true
+        effective_context_window: null
+      - plan: cn-personal-hy-token-max
+        available: true
+        effective_context_window: null
+    notes: preview 版本；能力与上下文上限官方未公开
+    checked_at: "2026-09-23T00:00:00+08:00"

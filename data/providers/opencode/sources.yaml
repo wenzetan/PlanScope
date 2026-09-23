@@ -1,0 +1,19 @@
+# OpenCode 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Go 订阅价格 / 首月优惠
+#
+# 需要补的入口：
+#   pricing           Go 订阅标准价与首月优惠
+#   models            Go 动态模型目录（live discovery）
+#   model-privacy     模型级隐私（训练 / 保留期 / ZDR）
+#   zen-payg          Zen PAYG 计费 / auto reload / 支付手续费
+#   team-workspace    Team Workspace Beta 权益与席位管理
+#   privacy-consumer  个人版隐私 / 数据政策
+#
+# 未查证的条目不要填写，不要猜测 URL。

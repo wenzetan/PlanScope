@@ -1,0 +1,165 @@
+# Z.ai / GLM Coding Plan 海外个人版 Lite（region: global, market: zai, USD）。
+# 与大陆 BigModel 版结构相似但**独立 Plan**：CNY/open.bigmodel.cn vs USD/api.z.ai，绝不合并。
+id: global-personal-coding-lite
+name: GLM Coding Plan Lite (Global)
+provider: zhipu
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: credits
+generation: current
+positioning: everyday_use
+region: global
+market: zai
+audience: personal
+service_domain: api.z.ai
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+coding:
+  included: true
+  product: GLM Coding Plan
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+endpoints:
+  openai_compatible: https://api.z.ai/api/coding/paas/v4
+  anthropic_compatible: https://api.z.ai/api/anthropic
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 18
+    origin: official
+    billing_period: month
+  annual: null
+  current_offer:
+    amount: 12.60
+    origin: official
+    billing_period: month
+    note: Z.ai 官方 ZCode 页面当前展示价（标价 $18，约 7 折）；不覆盖标准月价
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: true
+  windows:
+    - label: "7 days"
+      duration_days: 7
+      amount: 10000
+      unit: credits
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    海外个人版周额度官方直接给出：10,000 credits / 周（Lite）。
+    积分系数 / 高峰非高峰 / MCP 成本见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: 积分公式与模型系数见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - glm-5.3
+  - glm-5.3-flash
+
+compatibility:
+  zcode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  cline: officially_supported
+  roo_code: officially_supported
+  cursor: officially_supported
+  kilo_code: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+  mcp: officially_supported
+
+benefits:
+  mcp:
+    vision_understanding: included
+    web_search: included
+    web_reader: included
+    zread: included
+    exact_monthly_call_quota: null
+
+restrictions:
+  subscriber_only: true
+  account_sharing: prohibited
+  supported_tools_only: true
+  general_api_use: prohibited
+  resale: prohibited
+  coding_endpoint_only_for_coding: true
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+  quota:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+  privacy:
+    authority: unknown
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - exact_5h_credit_window
+  - exact_annual_total
+  - exact_global_privacy_training_policy
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  Z.ai 海外个人版 Lite。周额度 10,000 credits（canonical，官方直出）；展示价与标价分离
+  （current_offer $12.60 / standard $18）。海外隐私政策未核实，不继承大陆/团队版结论。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

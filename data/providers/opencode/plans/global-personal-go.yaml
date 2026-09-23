@@ -1,0 +1,150 @@
+# OpenCode Go —— 全球个人订阅（`region: global`，USD）。
+# 可用模型是**动态发现列表**（live discovery）：models 保持 null，绝不把当前模型列表
+# 当成永久权益；模型级隐私差异见 models.yaml。价格标准价 $10/月，活动首月 $5。
+id: global-personal-go
+name: OpenCode Go
+provider: opencode
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: opencode.ai
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: OpenCode
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+endpoints: null
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 10
+    origin: official
+    billing_period: month
+    billing_model: flat
+  current_offer:
+    amount: 5
+    origin: official
+    billing_period: month
+    note: 首月 $5 的活动展示价，绝不覆盖标准价 monthly。
+  promotion: >-
+    首月 $5，之后 $10/月（首月优惠）。活动价与标准价分列展示，活动结束不覆盖 monthly。
+  annual: null
+  first_purchase: null
+  renewal: null
+  monthly_billing_available: true
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: true
+  refresh_period: monthly
+  rolling_windows: null
+  windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    官方未公布固定的 Token / 请求硬上限，额度随动态模型目录与平台计量变化，保持 unknown；
+    不把动态模型列表当成永久权益。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  opencode: officially_supported
+
+benefits:
+  models_discovery: live
+  model_list_is_dynamic: true
+  model_examples:
+    - Grok 4.6
+    - GLM-5.3
+    - GLM-5.3 Flash
+    - GPT-5.6 Luna
+    - Kimi K3
+    - LongCat-2.0
+    - MiMo
+    - MiniMax
+    - Qwen3.8
+    - DeepSeek V4.x
+    - Hy4 preview
+    - Hy3
+  note: >-
+    可用模型为动态发现列表（live discovery），随时增减，不写进 models 权益数组，
+    也不视为永久权益；model_examples 仅为调研时的示例快照。
+
+restrictions:
+  account_sharing_forbidden: null
+  resale: null
+
+missing_fields:
+  - exact_quota_limits
+  - dynamic_model_list_snapshot_url
+  - official_pricing_url
+  - model_level_privacy_urls
+  - provider_privacy_url
+
+source_refs: []
+sources: []
+
+notes: >-
+  Go 为 OpenCode 全球个人订阅：标准价 $10/月（official），活动首月 $5（current_offer）。
+  可用模型是动态目录（live discovery），因此 models 保持 null，模型级隐私见 models.yaml。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

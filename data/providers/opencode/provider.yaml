@@ -1,0 +1,21 @@
+id: opencode
+name: OpenCode
+aliases:
+  - OpenCode
+  - SST
+  - opencode.ai
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - global
+notes: >-
+  本轮录入 OpenCode 全球三条记录：个人订阅 Go、Zen PAYG 比较基线、Team Workspace Beta。
+  Go 的可用模型是**动态发现列表**（live discovery），因此 Plan 的 models 保持 null，
+  绝不把当前模型列表当成永久权益；模型级隐私差异（训练 / 保留期 / ZDR）记录在
+  models.yaml 的 modelEntry privacy。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

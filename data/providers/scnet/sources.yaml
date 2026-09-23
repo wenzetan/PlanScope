@@ -1,0 +1,20 @@
+# SCNet（超算互联网）常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: token-plan-pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Token Plan / Coding Plan 价格与 credits 额度
+#
+# 需要补的入口：
+#   token-plan-pricing    Token Plan 价格（原价 / 活动价）与 credits 额度
+#   coding-plan-pricing   Coding Plan 列表价 / 活动价与三层额度
+#   help-center           最新 Help 页（活动价 canonical 依据，130/310 等）
+#   promotion-618         较早 618 活动页（旧价 110/265，冲突留档）
+#   coding-docs           接入文档（endpoints / OpenClaw 实例 / 专属 Key）
+#   privacy-consumer      个人版隐私 / 数据政策
+#   terms                 使用条款 / 风控（个人交互式使用限制）
+#
+# 未查证的条目不要填写，不要猜测 URL。

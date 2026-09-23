@@ -69,7 +69,7 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 否则会把「中国老套餐」「海外套餐」「中国新体系」错误合并成同一个 Plan。
 文件名/`id` 一旦确定即为稳定标识，不因展示名或体系更替而重命名。
 
-首批实例（Kimi 17 条 + 模板；完整树见 §DATA_MODEL 实例说明）：
+首批实例（16 个 Provider、约 99 条 plan / offer / baseline 记录；完整树见 §DATA_MODEL 实例说明）：
 - 旧体系（`generation: legacy`、`status: legacy`、有 7 日额度）：
   `cn-personal-andante-legacy`（¥49）→ `cn-personal-moderato-legacy`（¥99）→
   `cn-personal-allegretto-legacy`（¥199，官方未给年价不推算）→ `cn-personal-allegro-legacy`（¥699）
@@ -101,6 +101,28 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
   超额 PAYG 由管理员开启（`extra_usage.admin_enable_required/budget_control`）；团队 Key 与平台 API Key
   不通用 → `product_isolation`；固定 IP / 集中账单 / VAT 发票 → `enterprise_services`。
   团队版隐私 `privacy/business.yaml`：`used_for_training: false`（官方），但 ZDR / 保留期仍 unknown
+- 其余首批 Provider（均 `research_status: verified_initial`，数值全带 origin，冲突写 `evidence_conflicts`）：
+  - `alibaba-cloud`（market: bailian）：Coding Plan `cn-personal-coding-pro`（¥200，model_calls 5h/周/月）
+    + Lite legacy（`deprecated`）；Token Plan 个人 ×4（11500/25500/45000/180000 credits/月，价格 null）
+    + 团队 ×4（per_seat，含 shared usage pack）；首客 ¥39.90 与 quota 7 日→月迁移均留冲突
+  - `volcengine`（CN）/ `byteplus`（Global）：Coding Plan Lite/Pro（CN ¥40/¥200；Global $10/$50）；
+    首购活动价多页不一致 → 只进 `current_offer`/`evidence_conflicts`；BytePlus 精确额度 unknown 不回填
+  - `tencent-cloud`：Coding Plan ×2、通用 Token Plan ×4、Hy Token Plan ×4、国际站 Token Plan ×4、企业 ×2
+    （旧 token 口径 → `quota.published_references`；国际站与 CN 额度不同，不得折算）
+  - `meituan`（LongCat）：Token Pack（prepaid_package）+ API PAYG（payg_baseline）+ 企业认证阶梯折扣
+    （`enterprise_contract`，base_pricing_reference 指向 PAYG）—— 事实模型 = PAYG + 认证 → 折扣
+  - `xiaomi`：个人 Token Plan ×4、团队 ×3（**单 Plan 存 CN CNY + Global USD offers**，不拆 8 条；
+    v2.5 模型 `effective_until` 2026-10-21 下线；团队无 5h/周限制、夜间 0.8×）
+  - `openai`：ChatGPT Personal ×5（Free/Go/Plus/Pro 5X/Pro 20X，20X 暂停新购）+
+    Business Standard/Premium seat ×2 + Enterprise + API PAYG
+  - `google`：Google AI Plus/Pro/Ultra 5X/Ultra 20X + Ultra $249.99 legacy（deprecated）+
+    Code Assist Team/Enterprise（license-hour 计价）
+  - `opencode`：Go（动态模型目录 `models_discovery: live`）+ Zen PAYG + Team Workspace Beta
+    （`beta_workspace`，$0）；模型级隐私写 `models.yaml` 的 `privacy`，DeepSeek ZDR `effective_until` 2026-09-30
+  - `scnet`：Token Plan ×4、Coding Plan ×2（标准价 vs 活动价分列；618 旧活动留冲突）
+  - `commandcode`：个人 ×5 + Provider API + Team Pro + Enterprise；
+    `estimated_requests.canonical: null` 多来源保留，硬额度只看 credits/month + 5h + 7d
+  - 跨境售卖主体拆分：字节用 `volcengine`（CN）与 `byteplus`（Global），**不建 bytedance 目录**
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -148,6 +170,7 @@ notes: null
 ```yaml
 id: xiaomi                  # = 目录名，稳定 slug
 name: Xiaomi                # 展示名称，可独立修改
+aliases: null               # 常见别名（如 Alibaba Cloud / 阿里云 / 百炼 / Qwen），仅检索展示，不建第二份索引
 legal_name: null
 website: null               # 官方网站
 docs: null
@@ -192,8 +215,8 @@ region: null                 # cn / global —— 区域变体拆独立记录（
 market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
 audience: null               # personal / team / enterprise / business / api —— 人群/用途变体拆独立记录
 record_kind: subscription    # subscription / legacy_subscription / payg_baseline / enterprise_contract /
-                              # prepaid_package / token_plan / credits_plan —— 不是每个记录都是订阅
-                              # 短期体验（一次性限时）不入统计、不建 Plan 记录
+                              # prepaid_package / token_plan / credits_plan / beta_workspace —— 不是每个记录都是订阅
+                              # beta_workspace = beta 期免费/无固定价的工作区；短期一次性体验不入统计、不建 Plan
 service_domain: null         # 平台域名（platform.kimi.com vs platform.kimi.ai = 两套报价体系）
 priority: null               # p0 / p1 / p2 / p3 —— 调研优先级
 research_status: null        # draft / verified_initial / verified_complete / stale —— 有 unknown 时不要标 complete
@@ -218,6 +241,8 @@ benefits: null               # 官方权益原文（approximate_* = 厂商估算
 estimated_weekly_tokens: null # 厂商**估算**型周 Token 区间：{basis: {cache_hit_rate, source, note},
                              #   models: [{model, minimum_million_tokens, maximum_million_tokens}]}
                              # 绝不写进 quota（硬额度）—— 如 GLM 官方 95% cache hit 下的 48M–97M
+estimated_requests: null     # 厂商/文档**估算**型请求量：{canonical, unit, sources: [{value, source, note}]}
+                             # 多来源不一致时 canonical 保持 null，全部保留；绝不覆盖 Credits/Token/窗口
 restrictions: null           # 使用限制 / 风控（禁止共享 / 转售 / 通用 API 用途 / risk_control），原文结构
 background_consumption: null # 后台/驻留消耗：[{resource, rate, unit, condition, note}] —— 不假定消耗都来自主动请求
 confidence: null             # high / medium / low —— 本记录整体研究置信度
@@ -238,6 +263,8 @@ pricing:
     effective_monthly_origin: null   # official / derived
     note: null
   first_purchase: null       # 同样接受 {amount, origin, ...} 结构或 null
+  current_offer: null        # 当前活动/展示价（{amount, origin, billing_period, note}）；必须与标准价分列，绝不覆盖 monthly/annual
+  offers: null               # 同一权益产品多市场/多地区报价 [{market, region, currency, amount, origin, billing_period, billing_model, unit, effective_monthly, note}]（如 Xiaomi CN+Global、腾讯企业按 region）
   renewal: null
   promotion: null            # 临时促销单独记录，绝不覆盖标准价
   regional_differences: null
@@ -299,7 +326,7 @@ token_rules:
   note: null
   checked_at: "..."
 
-models: []                   # 本 Plan 可用的 provider 级 model_id
+models: []                   # 本 Plan 可用的 provider 级 model_id（动态目录用 null + benefits.models_discovery: live）
 
 compatibility:               # 兼容 ≠ 完全兼容；任意 surface 键都可扩展
   opencode: unknown          # full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown

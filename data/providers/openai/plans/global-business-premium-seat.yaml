@@ -1,0 +1,144 @@
+# ChatGPT Business —— Premium Seat（全球，美国 Web 美元基准价，按席位）。
+# 与 Standard Seat 同属一个 Workspace，但额度约为 Standard 的 5×，且无 5h limit。
+id: global-business-premium-seat
+name: ChatGPT Business Premium Seat
+provider: openai
+record_kind: subscription
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: null
+audience: business
+service_domain: chatgpt.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 125
+    origin: official
+    billing_period: month
+    billing_model: per_seat
+  annual:
+    amount: null                    # 年总价官方未公布，不推算
+    origin: unknown
+    billing_period: year
+    billing_model: per_seat
+    effective_monthly: 100
+    effective_monthly_origin: official   # 官方给出年付折合 $100/席/月
+    note: 官方给出年付折合 $100/席/月；年总价官方未公布，保持 null（不 ×12 推算）。
+  seats:
+    minimum:
+      value: 2
+      origin: official
+      note: 最低 2 paid seats。
+    maximum_per_purchase:
+      value: 200
+      origin: official
+      note: 单一工作区最多 200 席；Standard 与 Premium 可混合购买。
+  monthly_billing_available: true
+  regional_differences: >-
+    美国 Web 美元基准价；其他国家/地区存在本地币种定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: false
+  allocation_scope: per_seat
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Premium Seat 额度约为 Standard 的 5×，且官方称无 5h 限额；绝对数值本数据段未给出。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  codex: officially_supported
+
+benefits:
+  workspace_products:
+    - ChatGPT
+    - ChatGPT Work
+    - Codex
+  seat_allocation: premium
+  allocation_relative_to_standard: "5x"
+  rolling_5h_limit: false
+  mixed_seats_allowed: true
+  note: 一个 Workspace 含 ChatGPT / ChatGPT Work / Codex；Premium 额度约为 Standard 的 5×，且无 5h limit。
+  codex:
+    included: true
+    allocation_relative_to_standard: "5x"
+
+estimated_requests:
+  canonical: null
+  unit: tasks_per_window
+  sources: []
+  note: 官方任务量估算本数据段未给出，canonical 保持 null。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - premium_seat_exact_allocation
+  - official_codex_task_estimates
+  - standard_seat_baseline_allocation
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  ChatGPT Business Premium Seat（美国 Web 美元基准价 $125/席/月；年付折合 $100/席/月）。
+  额度约为 Standard 的 5×，官方称无 5h limit；最低 2 paid seats、工作区最多 200 席。
+  相对倍率只存相对值，不反推绝对额度。与 global-business-standard-seat 拆为两条独立记录。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

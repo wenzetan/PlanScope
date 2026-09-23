@@ -1,12 +1,23 @@
 id: openai
 name: OpenAI
+aliases:
+  - OpenAI
+  - ChatGPT
+  - Codex
 legal_name: null
 website: https://openai.com
 docs: https://platform.openai.com/docs
 purchase_url: null
-status: unknown
-regions: null
-notes: 结构示例模板。未填入任何已核实的价格、额度、政策或模型列表。
-checked_at: "2026-09-23T10:30:00+08:00"
+status: active
+regions:
+  - global
+notes: >-
+  本轮录入 OpenAI 面向全球的 ChatGPT 个人订阅、Business 席位、Enterprise 合同与 API PAYG 基线。
+  价格均为**美国 Web 美元基准价（US baseline）**；其他国家/地区存在本地币种定价，本仓库只记录原始币种、
+  不折算回写、不声明为全球统一价，也不为中国大陆另建 cn-personal-* 记录。
+  Codex 包含于 Free / Go / Plus / Pro / Business / Enterprise。
+  `plans/example-coding-plan.yaml`、`models.yaml`、`privacy/example.yaml` 等结构模板保留。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

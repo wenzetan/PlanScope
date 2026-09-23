@@ -46,9 +46,11 @@
         "prepaid_package",
         "token_plan",
         "credits_plan",
+        "beta_workspace",
+        "trial",
         "legacy_subscription"
       ],
-      "description": "可比较对象的类别：真订阅档位 / PAYG 比较基线 / 合同型 Offer / 预付包等。Pages 按此分组（Plans 只显示真套餐，API Baselines / Enterprise 另列）。不是每个记录都是 subscription。"
+      "description": "可比较对象的类别：真订阅档位 / PAYG 比较基线 / 合同型 Offer / 预付包 / 免费 beta 工作区等。Pages 按此分组。不是每个记录都是 subscription。beta_workspace = beta 期免费/无固定价的工作区；trial 仅用于真正的试用产品，短期一次性体验不建记录。"
     },
     "service_domain": {
       "type": ["string", "null"],
@@ -198,6 +200,30 @@
               "model": { "type": "string", "minLength": 1 },
               "minimum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
               "maximum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "note": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    },
+    "estimated_requests": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "厂商/文档给出的**估算**型请求量（如「约 75K requests」）——绝不当作硬额度。多个来源不一致时全部保留，canonical 保持 null。",
+      "properties": {
+        "canonical": { "type": ["number", "null"], "description": "硬性 request 上限（官方明确给出时）；仅估算则为 null。" },
+        "unit": { "type": ["string", "null"], "description": "如 requests_per_month。" },
+        "sources": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value"],
+            "properties": {
+              "value": { "type": ["number", "null"] },
+              "source": { "type": ["string", "null"] },
               "note": { "type": ["string", "null"] }
             }
           }
@@ -483,6 +509,32 @@
         },
         "monthly": { "$ref": "#/$defs/priceValue" },
         "annual": { "$ref": "#/$defs/priceValue" },
+        "current_offer": {
+          "$ref": "#/$defs/priceValue",
+          "description": "当前官方页面展示的活动/优惠价（区别于标准价 monthly/annual）。Regular Price 与 Current Offer 必须分列展示，活动价绝不覆盖标准价。"
+        },
+        "offers": {
+          "type": ["array", "null"],
+          "description": "同一权益产品在多个市场/区域的独立报价（如 Xiaomi 个人 Token Plan 同页 CN CNY + Global USD；腾讯企业按 region 报价）。不同 Offer 不是不同 Plan —— 但若权益结构不同，仍须拆 Plan。",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["amount"],
+            "properties": {
+              "market": { "type": ["string", "null"], "description": "如 CN / global / us。" },
+              "region": { "type": ["string", "null"], "description": "更细的地区，如 guangzhou / singapore。" },
+              "currency": { "type": ["string", "null"] },
+              "amount": { "type": ["number", "null"], "minimum": 0 },
+              "origin": { "$ref": "#/$defs/priceOrigin" },
+              "billing_period": { "type": ["string", "null"], "enum": ["month", "year", null] },
+              "billing_model": { "type": ["string", "null"], "enum": ["per_seat", "flat", null] },
+              "unit": { "type": ["string", "null"], "description": "如 50M_tokens_per_month。" },
+              "effective_monthly": { "type": ["number", "null"], "minimum": 0 },
+              "effective_monthly_origin": { "$ref": "#/$defs/priceOrigin" },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
         "first_purchase": { "$ref": "#/$defs/priceValue" },
         "renewal": { "$ref": "#/$defs/priceValue" },
         "monthly_billing_available": {

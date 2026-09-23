@@ -1,12 +1,48 @@
+# Xiaomi / MiMo —— 个人 Token Plan 与团队 Token Plan（积分制 credits）。
+# 同一 Plan 官方同页给出 CN CNY 与 Global USD 两套报价、权益相同，因此单 Plan 记录
+# pricing.monthly（CN）+ pricing.offers（global USD），不拆 Plan。
 id: xiaomi
 name: Xiaomi
+aliases:
+  - 小米
+  - MiMo
+  - Xiaomi MiMo
 legal_name: null
-website: null
+website: null                 # 官方 URL 待补（不猜 URL）
 docs: null
 purchase_url: null
-status: unknown
-regions: null
-notes: 结构示例模板。未填入任何已核实的价格、额度、政策或模型列表。
-checked_at: "2026-09-23T10:30:00+08:00"
+status: active
+regions:
+  - cn
+  - global
+quota_policies:
+  - generation: current
+    credit_system:
+      enabled: true
+      accounting_unit: credits
+      model_credit_multipliers:
+        - model: mimo-v2.6-pro
+          input: 300
+          cached_input: 2.5
+          output: 600
+          note: cache miss 300 / cache hit 2.5 / output 600
+        - model: mimo-v2.6-flash
+          input: 100
+          cached_input: 2
+          output: 200
+          note: cache miss 100 / cache hit 2 / output 200
+      off_peak_multiplier: 0.8
+      note: >-
+        团队 Token Plan 专属规则：夜间 00:00–08:00（北京 UTC+8）按 0.8× Credits 消耗。
+        团队版无 5 小时上限、无周限制；个人版为 30 天 credits 窗口。
+        倍率字段映射：input = cache miss，cached_input = cache hit，output = output。
+    note: >-
+      个人版与团队版均以 credits 计量；具体月额度见各 Plan 的 quota.windows。
+notes: >-
+  Xiaomi / MiMo。个人 Token Plan（Lite / Standard / Pro / Max）与团队 Token Plan
+  （Standard / Pro / Max，按席位）同页给出 CN CNY 与 Global USD 两套报价，权益相同，
+  因此单 Plan 用 pricing.monthly（CN）+ pricing.offers（global USD）记录，不拆 Plan。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

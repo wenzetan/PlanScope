@@ -1,0 +1,120 @@
+# OpenCode Zen PAYG —— 全球开放平台**比较基线**（非订阅，`region: global`，USD）。
+# 支付手续费 4.4% + $0.30 / 笔单独放 additional_pricing，绝不并入模型 Token 价。
+# 模型单价未核实，model_pricing 保持 null（unknown），不猜测。
+id: global-zen-payg
+name: OpenCode Zen PAYG
+provider: opencode
+record_kind: payg_baseline
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: global
+market: null
+audience: api
+service_domain: opencode.ai
+purchase_url: null
+research_status: verified_initial
+confidence: low
+
+pricing:
+  currency: USD
+  public_fixed_price: null
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  monthly_billing_available: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing: null                 # 逐模型单价未核实，保持 unknown，不猜测
+
+additional_pricing:
+  payment_processing_fee:
+    rate_percent: 4.4
+    fixed_amount: 0.30
+    currency: USD
+    unit: per_transaction
+    note: 支付手续费 4.4% + $0.30 / 笔，单独记录，绝不并入模型 Token 价。
+
+payments:
+  auto_reload:
+    enabled: true
+    threshold_usd: 5
+    reload_amount_usd: 20
+  note: 余额低于 $5 自动充值 $20（auto reload threshold $5 / amount $20）。
+
+extra_usage:
+  supported: true
+  currency: USD
+  note: PAYG 按量计费；余额不足触发 auto reload（threshold $5 / amount $20）。
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: PAYG 无固定订阅额度，按预付余额扣费。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: 逐模型单价见 model_pricing（当前 unknown）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+missing_fields:
+  - model_pricing_per_model
+  - official_zen_pricing_url
+  - minimum_topup
+  - rate_limits
+
+source_refs: []
+sources: []
+
+notes: >-
+  Zen PAYG 为 OpenCode 全球开放平台比较基线（非订阅）：auto reload 阈值 $5、充值 $20；
+  支付手续费 4.4% + $0.30 / 笔单独放 additional_pricing。逐模型 Token 单价未核实，
+  model_pricing 保持 null。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,56 @@
+id: tencent-cloud
+name: Tencent Cloud
+aliases:
+  - Tencent
+  - 腾讯
+  - 腾讯云
+  - TokenHub
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - mainland_china            # 大陆站点（CNY）：Coding Plan / 通用 Token Plan / Hy Token Plan
+  - global                    # 国际站（USD）：Token Plan 与合同型 Enterprise Offer；额度口径与 CN 不同
+quota_policies:
+  - generation: current
+    credit_system:
+      enabled: true
+      accounting_unit: credits
+      formula: null            # 通用 Token Plan 的积分换算公式官方未公开，不猜
+      formula_divisor: null
+      model_credit_multipliers: null
+      note: >-
+        通用 Token Plan 自 2026-08-31 起改按积分（credits）计量；原 3,500 万 / 1 亿 /
+        3.2 亿 / 6.5 亿 tokens 口径（Lite / Standard / Pro / Max）已换算为积分，
+        旧值存各 Plan 的 quota.published_references（status: vendor_legacy_superseded）。
+        积分换算公式与模型系数官方未公开，保持 null。Hy Token Plan 为独立积分系列，
+        与通用 Token Plan 额度互不相通、不可互相换算。
+    coding_weekly_limit:
+      enabled: true
+      window_days: 7
+      note: >-
+        Coding Plan 采用 5 小时 / 周 / 月三层 model_calls 窗口：
+        Lite 1,200 / 9,000 / 18,000，Pro 6,000 / 45,000 / 90,000。
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: true
+    monthly_shared_pool:
+      enabled: true
+      exact_amount_public: true
+      accounting_basis: credits
+      refresh: subscription_month
+      rollover: false          # 月额度不结转
+    note: >-
+      Coding Plan 与 Token Plan 是不同产品线：Coding Plan 用 model_calls 三层窗口、
+      仅限交互式编码；通用 / Hy Token Plan 用 credits 订阅月额度，可接入多种 coding 工具。
+      两者计量单位不同，绝不互相换算。
+promotions: null
+notes: >-
+  腾讯云 TokenHub 记录。region: cn 为大陆站点（原币 CNY），region: global 为国际站
+  （原币 USD，额度口径本身不同，不得当作 CN 的折算价）。企业 Offer
+  （enterprise-lite / enterprise-professional）为合同型记录，价格以控制台或合同为准。
+  所有官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"

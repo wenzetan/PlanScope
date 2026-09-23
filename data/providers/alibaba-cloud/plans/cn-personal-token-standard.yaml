@@ -1,0 +1,102 @@
+# 阿里云百炼 Token Plan 个人版 Standard（新体系）—— 按订阅月固定月额度，30 天有效，不结转。
+# 价格全部 null：旧中文页价格对应旧体系，不绑定到本记录。
+id: cn-personal-token-standard
+name: Token Plan Standard
+provider: alibaba-cloud
+record_kind: token_plan
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: null
+region: cn
+market: bailian
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: null
+    origin: unknown
+    billing_period: month
+    note: 旧中文页价格对应旧体系，不绑定；当前价格未核实
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  shared_pool_rollover: false          # 月额度不结转
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: 45000
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 45000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    新体系按订阅月发放固定月额度（30 天，不结转）。额度耗尽不自动转 PAYG，
+    可等待刷新、升级或购买额外 Usage Bundle。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                           # 本档可用模型矩阵未核实
+
+compatibility:
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+evidence_conflicts:
+  - field: quota_window
+    selected_value: subscription_month
+    selected_source: 英文 FAQ（已迁移到按订阅月固定额度）
+    conflicting_value: legacy_7_day_window
+    conflicting_source: 中文 Overview 仍示旧版（Lite/Standard/Pro + 7 日窗口）
+    resolution:
+      reason: >-
+        英文 FAQ 已迁移到按订阅月固定额度，中文页未同步；以订阅月单窗口为准，
+        防止每日 CI 被旧中文页回改。
+
+missing_fields:
+  - current_price
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  个人版 Token Plan Standard：45,000 credits / 月（30 天，不结转，耗尽不自动转 PAYG）。
+  当前价格未核实，保持 null（旧中文页价格属旧体系，不绑定）。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

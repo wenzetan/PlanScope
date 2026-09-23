@@ -99,32 +99,36 @@ pytest
 
 （截至 2026-09-23；新会话续接请先读本节 + `docs/DATA_MODEL.md`，然后跑 `planscope validate && pytest` 确认全绿）
 
-- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 23 条含 openai 结构模板 + zhipu 5 条）：
-  - 大陆旧会员 ×4（`legacy_subscription`）→ 大陆新会员 ×4（`subscription`）→ `cn-business`（按席位年订）
-  - API 系列 ×4：CN/Global × PAYG 基线/企业合同（`record_kind` 分组；官方无订阅制 API Plan）
-  - 海外个人 ×4（moderato/allegretto/allegro/vivace）为 **draft 占位**：数值全 `null`、`research_status: draft`，等数据段
-- **Zhipu / BigModel（GLM Coding Plan 大陆）已入库 5 条**（`market: bigmodel`，积分制）：
-  - 个人版 3 条：`cn-personal-coding-lite/pro/max`（5h + 7d credits：2,000/10,000、12,000/60,000、28,000/140,000；
-    常规月价 ¥118 / ¥538 / ¥1078；页面低价疑似**包季 8 折**，待购买接口确认后再升级 `billing_period`）
-  - 团队版 2 条：`cn-team-coding-standard/advanced`（每席位 5h + 7d credits：15,000/66,000、35,000/155,000；
-    ¥598 / ¥1,198 每席每月，年付 9 折；2 席起购）
-  - credit 公式 / 模型积分系数 / 高峰非高峰 / MCP 积分成本 → Provider `quota_policies[].credit_system`；
-    官方估算区间 → `estimated_weekly_tokens`；团队页旧 Token 上限 → `quota.published_references` + `evidence_conflicts`
-  - 团队版：`allocation_scope: per_seat` + 不共享；超额 PAYG 管理员开启（`extra_usage`）；团队 Key `product_isolation`
-  - 隐私两份：个人 `privacy/consumer.yaml` 全 unknown；团队 `privacy/business.yaml` 不训练但 **ZDR/保留期 unknown**
-  - 一次性 5 天体验**不入统计、不建 Plan**（短期体验规则）
-- **隐私按 scope 三份**：`consumer`（可训练+opt-out）/ `business`（不训练+隔离）/ `api`（不训练、不为训练持久化、ZDR unknown）；Training / Retention / ZDR 三字段独立
+- **16 个 Provider 首批数据已入库（`planscope list plans` 共 99 条 plan/offer/baseline）**：
+  - `kimi`（17）：大陆旧会员 ×4（legacy）→ 新会员 ×4 → `cn-business`（按席位年订）；API ×4（CN/Global PAYG+企业合同）；海外个人 ×4 为 **draft 占位**（数值 null，等数据段）
+  - `zhipu`（8）：大陆个人 Coding ×3（credits 2,000/10,000、12,000/60,000、28,000/140,000）+ 大陆团队 ×2
+    （per_seat 15,000/66,000、35,000/155,000）+ 海外 Z.ai 个人 ×3（`market: zai`，USD，周额度 10,000 与 6×/14×）
+  - `alibaba-cloud`（10, market: bailian）：Coding Pro ¥200 + Lite legacy（deprecated）；Token 个人 ×4（价格 null）、团队 ×4
+  - `volcengine`（2, CN）/ `byteplus`（2, Global）：Coding Lite/Pro；首购活动价多页冲突，只进 current_offer/evidence_conflicts
+  - `tencent-cloud`（16）：Coding ×2、通用 Token ×4、Hy Token ×4、国际站 Token ×4、企业 ×2
+  - `meituan`（3）：Token Pack + LongCat API PAYG + 企业认证阶梯折扣（均非 Coding 订阅）
+  - `xiaomi`（7）：个人 Token ×4 + 团队 ×3（**单 Plan 存 CN CNY + Global USD offers**；v2.5 模型 2026-10-21 下线）
+  - `openai`（10）：ChatGPT Free/Go/Plus/Pro 5X/Pro 20X（20X 暂停新购）+ Business 两种 seat + Enterprise + API PAYG
+  - `google`（7）：Google AI Plus/Pro/Ultra 5X/Ultra 20X + Ultra $249.99 legacy（deprecated）+ Code Assist Team/Enterprise
+  - `opencode`（3）：Go（动态模型目录）+ Zen PAYG + Team Workspace Beta（beta_workspace, $0）
+  - `scnet`（6）：Token ×4 + Coding ×2（标准价/活动价分列）
+  - `commandcode`（8）：个人 ×5 + Provider API + Team Pro + Enterprise（estimated_requests.canonical 恒 null）
+  - 记录类型不再只有 subscription：`legacy_subscription / token_plan / prepaid_package / payg_baseline /
+    enterprise_contract / beta_workspace` 均已出现；字节拆 `volcengine` / `byteplus`，**不建 bytedance**
+- **隐私按 scope 拆**：`consumer`（个人）/ `business`（团队不训练+隔离）/ `api`（不训练、ZDR unknown）；
+  Training / Retention / ZDR 三字段独立；OpenCode 还有**模型级** privacy（`models.yaml` 的 `privacy`）
 - **数据机制已就绪并有测试覆盖（102 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席、credits vs tokens 防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）/ 估算 Token（`estimated_weekly_tokens`）/ 厂商并行旧口径（`quota.published_references`）三者分离
 - **待办**：
-  1. 补官方 URL → `sources.yaml`（Kimi 与 zhipu 目前均为注释空表）+ 隐私字段 source（official 徽标）
-  2. 海外个人 4 条 draft 等数据段；`moonshot/` 空模板去留待定
-  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价 / GLM 低价结算周期与个人版隐私 / 团队版超额费率与保留期）
+  1. 补官方 URL → 各 Provider `sources.yaml`（**目前全部为注释空表**）+ 隐私字段 source（official 徽标）
+  2. 等数据段：Kimi 海外个人 4 条 draft；BytePlus 精确 quota；LongCat Token Pack 规格与价格；
+     Alibaba 个人 Token 现价；OpenCode 模型官方 id；`moonshot/` 空模板去留
+  3. Daily CI 持续把 unknown → official（各档精确额度 / 并发与 TPM / 合同折扣 / retention & ZDR /
+     各国本地售价 / GLM 大陆个人低价结算周期）
   4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
      站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
      `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
-  5. **audience 类目待统一（搁置，最后一起做）**：现网同时存在 `team`（GLM 团队版）与 `business`
-     （`kimi/cn-business`），AGENTS 词汇表只列 `personal/team/enterprise`。等后续 Provider 调研完，
-     再整体决定是否收敛、以及是否引入新类目，避免现在反复改名。**在此之前不单独改任何一条。**
-- **下一家 Provider：GLM 海外 Z.ai 个人 Coding Plan（Lite / Pro / Max）**——`market: zai` + `region: global` +
-  USD 原币种，与大陆三档做区域价格/额度对照（`regional_price_ratio` 只在展示层派生）。
-  其后：GLM API / 企业线，以及大陆个人版低价的购买接口核验（升级 `billing_period` 为 quarterly）。
+  5. **audience 类目待统一（搁置，最后一起做）**：现网存在 `team`（GLM 团队版）、`business`（Kimi/OpenAI/Google）、
+     `enterprise`、`api`；AGENTS 词汇表只列 `personal/team/enterprise`。等后续 Provider 调研完再整体收敛，
+     **在此之前不单独改任何一条**。
+- **下一步**：本轮 16 Provider 首批数据已足够跑 Pages / Schema / 每日 Diff；继续按 Provider 补 URL 与 unknown，
+  不追求 `research_status: complete`（统一保持 `verified_initial`，逐字段升级 origin）。

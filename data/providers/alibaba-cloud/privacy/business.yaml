@@ -1,0 +1,74 @@
+# 阿里云百炼团队/企业版（Token Plan 团队版）隐私与数据政策 —— scope: business
+# 本批未获得官方团队版隐私条款的直接证据：所有字段保持 unknown。
+# **不训练 ≠ ZDR**：即便后续确认不用于训练，保留期与 ZDR 仍须独立核实。
+id: business
+provider: alibaba-cloud
+scope: business
+region: cn
+policy_document_url: null       # 官方 URL 待补（不猜 URL）
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方团队/企业版隐私条款未核实，保持 unknown
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未披露，不猜
+used_for_training:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 团队版是否用于训练未核实；未确认前不写 false
+training_default_opt_in:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 不因「不训练」推导 ZDR = true；官方未给出团队版 ZDR 承诺
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 团队席位管理能力已知；数据隔离细节未核实
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 百炼托管第三方模型，路由与隐私处理未核实
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+notes: >-
+  团队版隐私政策未核实，全部 unknown；官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

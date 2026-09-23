@@ -1,0 +1,134 @@
+# 美团 LongCat 企业认证 PAYG —— **合同型 Offer**，不是固定月费套餐。
+# 事实模型 = API PAYG + 企业认证 → 按累计用量阶梯折扣（CN / 海外两套门槛）。
+id: api-payg-enterprise
+name: LongCat API PAYG (Enterprise)
+provider: meituan
+record_kind: enterprise_contract
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: cn
+market: null
+audience: enterprise
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  public_self_service: false
+  contact_sales: null
+
+pricing:
+  currency: CNY
+  public_fixed_price: false         # 无固定月费；价格 = API PAYG 单价 × 阶梯折扣
+  base_pricing_reference: api-payg
+  monthly: null
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing: null                 # 无独立价格表：定价基准 = API PAYG 公开单价
+
+models:
+  - LongCat-2.0
+
+benefits:
+  enterprise_tiered_discount:
+    basis: cumulative_payg_spend_after_enterprise_verification
+    note: 企业认证后按累计 PAYG 消费金额享受阶梯折扣；不是固定月费套餐
+    cn:
+      currency: CNY
+      tiers:
+        - minimum_spend: 500
+          discount: 0.9
+          label: 9折
+        - minimum_spend: 2000
+          discount: 0.8
+          label: 8折
+        - minimum_spend: 8000
+          discount: 0.7
+          label: 7折
+        - minimum_spend: 40000
+          discount: 0.6
+          label: 6折
+    global:
+      currency: USD
+      tiers:
+        - minimum_spend: 75
+          discount: 0.9
+          label: 9折
+        - minimum_spend: 300
+          discount: 0.8
+          label: 8折
+        - minimum_spend: 1200
+          discount: 0.7
+          label: 7折
+        - minimum_spend: 6000
+          discount: 0.6
+          label: 6折
+
+payments:
+  billing: prepaid_balance_then_payg
+  note: 计费基础同 API PAYG（先预付余额、余额耗尽后按量计费），企业认证后叠加阶梯折扣
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 无固定配额；折扣按累计消费阶梯，非额度套餐。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+compatibility:
+  claude_code: officially_supported
+  opencode: officially_supported
+  codex: officially_supported
+  hermes: officially_supported
+  openclaw: officially_supported
+  kilo_code: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+missing_fields:
+  - exact_token_prices
+  - enterprise_verification_requirements
+  - contract_terms
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  事实模型 = API PAYG + 企业认证 → 阶梯折扣，**不是固定月费套餐**。企业认证后按累计 PAYG
+  消费享受折扣：大陆 ≥¥500 9折 / ≥¥2,000 8折 / ≥¥8,000 7折 / ≥¥40,000 6折；
+  海外 ≥$75 9折 / ≥$300 8折 / ≥$1,200 7折 / ≥$6,000 6折。定价基准见 api-payg
+  （base_pricing_reference），无独立价格表。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

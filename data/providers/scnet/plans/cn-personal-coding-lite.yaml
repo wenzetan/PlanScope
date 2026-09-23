@@ -1,0 +1,150 @@
+# SCNet Coding Plan Lite（个人版）—— 中国大陆，列表价 ¥40/月，当前活动价 ¥20/月（official）。
+# 三层额度：5 小时 1,200 / 周 9,000 / 月 18,000；含 OpenClaw 2C4G 云实例。专属 Key（sk-sp-...）。
+id: cn-personal-coding-lite
+name: SCNet Coding Plan Lite
+provider: scnet
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: everyday_use
+region: cn
+market: null
+audience: personal
+service_domain: api.scnet.cn
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: Coding Plan
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 40
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer:
+    amount: 20
+    origin: official
+    billing_period: month
+    note: 当前活动价 ¥20/月（来自官方活动，非 MSRP；列表价 ¥40 见 monthly）
+  first_purchase: null
+  renewal: null
+  promotion: 当前活动价 ¥20/月；列表价 ¥40/月。
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: null
+  unit: null
+  weekly_quota_enabled: true
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 1200
+      unit: null
+      reset_mode: rolling_after_consumption
+    - label: "weekly"
+      duration_days: 7
+      amount: 9000
+      unit: null
+    - label: "monthly"
+      duration_days: 30
+      amount: 18000
+      unit: null
+      reset_anchor: subscription_month
+  daily: null
+  weekly: 9000
+  monthly: 18000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    三层窗口（5 小时 / 周 / 月）。计量单位官方未在本数据段说明，unit 保持 null，
+    不猜测、不与 Token Plan 的 credits 换算。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+endpoints:
+  openai_compatible: https://api.scnet.cn/api/llm/v1
+  anthropic_compatible: https://api.scnet.cn/api/llm/anthropic
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+benefits:
+  included_instance:
+    product: OpenClaw
+    spec: 2C4G
+    note: Coding Plan 附赠 OpenClaw 2C4G 云实例
+
+restrictions:
+  personal_use_only: true
+  interactive_tools_only: true
+  automated_backend_forbidden: true
+  batch_non_interactive_forbidden: true
+  automatic_payg_after_exhaustion: false
+  note: >-
+    仅限个人使用与交互式工具调用；禁止用于应用后端 / 自动脚本 / 批量非交互调用。
+    额度耗尽后不自动转 PAYG。
+
+product_isolation:
+  api_key_prefix: sk-sp-
+  note: Coding Plan 专属 Key（sk-sp-...）；与 Token Plan 的 sk-tp-... 区分。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Coding Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - quota_unit_confirmation
+  - exact_reset_anchor_definition
+  - openclaw_instance_terms
+
+source_refs: []
+sources: []
+
+notes: >-
+  Coding Plan Lite（个人）：列表价 ¥40/月，当前活动价 ¥20/月（official），
+  5 小时 1,200 / 周 9,000 / 月 18,000，含 OpenClaw 2C4G 云实例。专属 Key（sk-sp-...）。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

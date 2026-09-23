@@ -135,10 +135,15 @@ def test_quota_view_keeps_approximate_agent_tasks() -> None:
     assert view["actual_limit_known"] is False
 
 
+def _plan(data: dict, provider: str, plan_id: str) -> dict:
+    """Plan id 只在 Provider 内唯一 —— 跨 Provider 查表必须带 provider。"""
+    return next(p for p in data["plans"] if p["provider"] == provider and p["id"] == plan_id)
+
+
 def test_quota_view_exports_structured_credit_windows(repo_root: Path) -> None:
     """credit 制 Plan：quota.windows / unit 要进入站点派生数据。"""
     data = build_site_data(repo_root)
-    plan = next(p for p in data["plans"] if p["id"] == "cn-personal-coding-lite")
+    plan = _plan(data, "zhipu", "cn-personal-coding-lite")
     view = plan["quota_view"]
     assert view["unit"] == "credits"
     assert view["accounting_basis"] == "credits"
@@ -153,7 +158,7 @@ def test_quota_view_exports_structured_credit_windows(repo_root: Path) -> None:
 def test_quota_view_exports_team_published_token_references(repo_root: Path) -> None:
     """团队版：credits 为 canonical，购买页 Token 上限作为并行参考进入派生数据。"""
     data = build_site_data(repo_root)
-    plan = next(p for p in data["plans"] if p["id"] == "cn-team-coding-standard")
+    plan = _plan(data, "zhipu", "cn-team-coding-standard")
     view = plan["quota_view"]
     assert view["unit"] == "credits"
     assert view["allocation_scope"] == "per_seat"
@@ -185,7 +190,7 @@ def test_write_site_data_json(repo_root: Path, tmp_path: Path) -> None:
 def test_per_seat_plan_exports_and_single_plan_rule() -> None:
     """Kimi Business：seat 是数量不是档位；billing 年付与额度刷新分开导出。"""
     data = build_site_data(Path(__file__).resolve().parents[1])
-    business = next(p for p in data["plans"] if p["id"] == "cn-business")
+    business = _plan(data, "kimi", "cn-business")
     pv = business["price_view"]
     assert pv["billing_model"] == "per_seat"
     assert pv["monthly_billing_available"] is False
@@ -205,21 +210,20 @@ def test_per_seat_plan_exports_and_single_plan_rule() -> None:
 
     # models: null = 矩阵未公开 ≠ [] = 明确无可用模型
     assert business["models"] is None
-    go = next(p for p in data["plans"] if p["id"] == "cn-personal-go")
+    go = _plan(data, "kimi", "cn-personal-go")
     assert go["models"] == []
 
 
 def test_api_baseline_records_keep_original_currencies() -> None:
     """API 系列：payg_baseline 分组、双报价体系分币种、逐模型单价原样保存。"""
     data = build_site_data(Path(__file__).resolve().parents[1])
-    by_id = {p["id"]: p for p in data["plans"]}
 
-    cn = by_id["cn-api-payg"]
-    gl = by_id["global-api-payg"]
+    cn = _plan(data, "kimi", "cn-api-payg")
+    gl = _plan(data, "kimi", "global-api-payg")
     assert cn["record_kind"] == "payg_baseline"
     assert gl["record_kind"] == "payg_baseline"
-    assert by_id["cn-enterprise-api"]["record_kind"] == "enterprise_contract"
-    assert by_id["cn-business"]["record_kind"] == "subscription"
+    assert _plan(data, "kimi", "cn-enterprise-api")["record_kind"] == "enterprise_contract"
+    assert _plan(data, "kimi", "cn-business")["record_kind"] == "subscription"
 
     # 无月费/年费（PAYG 本身是单价口径）
     assert cn["price_view"]["monthly"] is None and cn["price_view"]["annual"] is None
@@ -235,7 +239,7 @@ def test_api_baseline_records_keep_original_currencies() -> None:
     assert k3_gl["output"]["amount"] == 15.00
 
     # draft 占位：海外个人记录数值全 null、research_status draft
-    draft = by_id["global-personal-moderato"]
+    draft = _plan(data, "kimi", "global-personal-moderato")
     assert draft["research_status"] == "draft"
     assert draft["status"] == "unknown"
     assert draft["pricing"]["monthly"] is None

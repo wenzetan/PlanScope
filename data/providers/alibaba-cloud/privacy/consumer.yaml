@@ -1,0 +1,74 @@
+# 阿里云百炼个人版（Coding Plan / Token Plan）隐私与数据政策 —— scope: consumer
+# 本批未获得官方个人版隐私条款的直接证据：所有字段保持 unknown，绝不从团队版「不训练」推导。
+# ⚠ 各字段 source（官方 URL）待补。
+id: consumer
+provider: alibaba-cloud
+scope: consumer
+region: cn
+policy_document_url: null       # 官方 URL 待补（不猜 URL）
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方个人版隐私条款未核实，保持 unknown
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未披露，不猜
+used_for_training:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人版是否用于训练未核实；不从团队/企业政策推导
+training_default_opt_in:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 不因「不训练」推导 ZDR；官方未给出个人版 ZDR 承诺
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人版不涉及
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 百炼托管第三方模型（kimi / glm / minimax 等），路由与隐私处理未核实
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+notes: >-
+  个人版隐私政策未核实，全部 unknown；官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,14 @@
+# 美团 LongCat 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: LongCat API 单价与 Token 包
+#
+# 需要补的入口：pricing（LongCat API 单价）、token_pack（Token Pack 规格与价格）、
+# api_docs（OpenAI / Anthropic 兼容端点与接入）、enterprise（企业认证与阶梯折扣）、
+# privacy（API 隐私政策）、terms（使用条款）。
+# 未查证的条目不要填写，不要猜测 URL。

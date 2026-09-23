@@ -1,0 +1,130 @@
+# Command Code Provider API —— 全球订阅 + PAYG（USD）。
+# 月费 $15（另计 $1.01 卡手续费），含 $15 API credit；超出后按上游原价 PAYG，markup 0，
+# **无滚动限额**（refresh_enabled: false）。卡手续费单独放 additional_pricing，绝不并入模型价。
+id: global-provider-api
+name: Command Code Provider API
+provider: commandcode
+record_kind: subscription
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: global
+market: null
+audience: api
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 15
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  monthly_billing_available: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+additional_pricing:
+  card_processing_fee:
+    amount: 1.01
+    currency: USD
+    unit: per_month
+    note: 卡手续费 $1.01/月，单独记录，绝不并入模型 Token 价。
+
+endpoints:
+  openai_chat_completions: null
+  openai_responses: null
+  anthropic_messages: null
+  models: null
+
+benefits:
+  included_api_credit:
+    amount: 15
+    currency: USD
+    note: 每月含 $15 API credit。
+  payg_after_included:
+    markup: 0
+    pricing: upstream_original
+    note: 超出 included credit 后按上游原价 PAYG，markup 为 0。
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  accounting_basis: credits
+  unit: usd_credits
+  refresh_enabled: false             # 无滚动限额
+  refresh_period: null
+  rolling_windows: null
+  windows: null
+  monthly: null
+  daily: null
+  weekly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    无滚动限额（rolling limits disabled）；超出每月 $15 included credit 后按上游原价 PAYG。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: 逐模型单价按上游原价，未核实，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+missing_fields:
+  - endpoint_urls
+  - exact_model_pricing
+  - rate_limits
+  - official_provider_api_url
+
+source_refs: []
+sources: []
+
+notes: >-
+  Provider API 月费 $15，另计卡手续费 $1.01/月，含 $15 API credit；之后按上游原价 PAYG、
+  markup 0、无滚动限额。暴露端点包括 OpenAI Chat Completions、OpenAI Responses、
+  Anthropic Messages 兼容端点与 /models。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

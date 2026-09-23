@@ -1,0 +1,19 @@
+id: commandcode
+name: Command Code
+aliases:
+  - Command Code
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - global
+notes: >-
+  本轮录入 Command Code 全球八条记录：个人订阅五档（Go / GOAT / Pro / Max 10X / Max 20X）、
+  Provider API、Team Pro、Enterprise 合同。个人档与 Team 的硬额度是 usage credits（非现金余额）
+  加 5 小时 / 7 天双窗口；请求数仅为估算，记录在 estimated_requests，绝不当作硬额度。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

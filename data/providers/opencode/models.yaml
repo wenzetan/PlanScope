@@ -1,0 +1,149 @@
+# OpenCode 实际暴露的模型 —— Provider-specific，按 Provider 记录能力与隐私差异。
+# 注意：OpenCode 的可用模型是**动态发现列表**（live discovery），本文件记录当前可核实的条目，
+# 不代表永久权益；Plan 的 models 保持 null。
+# 模型级隐私是逐模型差异：多数开放模型 no training + 0 天保留；GPT-5.6 Luna / Grok 4.6
+# no training + 30 天；标注为 contributor 的模型允许训练。
+# DeepSeek 的 ZDR 是按月续约协议、公开页写到 2026-09-30，只在该 modelEntry 的
+# privacy.effective_until 标注，**不得永久标 ZDR true**。
+# model_id 按调研段给出的名称归一为 slug；官方 API 原始 id 待核验（URL 待补）。
+provider: opencode
+notes: >-
+  模型列表为动态目录，随时增减；部分模型（contributor 标注）允许训练，具体哪些 model
+  属 contributor 未逐一核实，保持记录在 notes 与 privacy/consumer.yaml，不猜测具体条目。
+  官方模型目录与隐私页 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: grok-4.6
+    display_name: Grok 4.6
+    model_family: Grok
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 30
+      zero_data_retention: null
+      note: no training + 30 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: glm-5.3
+    display_name: GLM-5.3
+    model_family: GLM-5
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: glm-5.3-flash
+    display_name: GLM-5.3 Flash
+    model_family: GLM-5
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: gpt-5.6-luna
+    display_name: GPT-5.6 Luna
+    model_family: GPT-5
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 30
+      zero_data_retention: null
+      note: no training + 30 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: kimi-k3
+    display_name: Kimi K3
+    model_family: Kimi
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: longcat-2.0
+    display_name: LongCat-2.0
+    model_family: LongCat
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: mimo
+    display_name: MiMo
+    model_family: MiMo
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: minimax
+    display_name: MiniMax
+    model_family: MiniMax
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: qwen3.8
+    display_name: Qwen3.8
+    model_family: Qwen
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: deepseek-v4
+    display_name: DeepSeek V4.x
+    model_family: DeepSeek
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: true
+      effective_until: "2026-09-30T00:00:00+08:00"
+      note: >-
+        ZDR 为按月续约协议，公开页写到 2026-09-30；到期后需复核续约状态，
+        不得永久标 ZDR true。no training + 0 天保留。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: hy4-preview
+    display_name: Hy4 Preview
+    model_family: Hy
+    status: beta
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留；若被标为 contributor 则为例外（允许训练）。
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: hy3
+    display_name: Hy3
+    model_family: Hy
+    status: active
+    privacy:
+      used_for_training: false
+      retention_days: 0
+      zero_data_retention: null
+      note: 开放模型，no training + 0 天保留；若被标为 contributor 则为例外（允许训练）。
+    checked_at: "2026-09-23T00:00:00+08:00"

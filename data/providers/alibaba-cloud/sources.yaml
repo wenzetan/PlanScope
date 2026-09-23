@@ -1,0 +1,14 @@
+# 阿里云百炼（Alibaba Cloud / Model Studio）常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Coding Plan / Token Plan 价格与额度
+#
+# 需要补的入口：pricing（Coding Plan / Token Plan 价格）、token_plan_faq（Token Plan 额度与刷新规则）、
+# coding_plan（Coding Plan 权益与三层窗口）、model matrix（各 Plan 可用模型）、team_console（团队席位与共享包）、
+# privacy（个人版 / 团队版隐私政策）、terms（使用条款）。
+# 未查证的条目不要填写，不要猜测 URL。

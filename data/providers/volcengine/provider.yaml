@@ -1,0 +1,61 @@
+# 火山引擎（Volcengine）—— 字节跳动旗下云与模型服务平台，本目录仅记录中国大陆（region: cn）。
+# 字节海外主体另建 data/providers/byteplus/（region: global），绝不合并为 bytedance。
+id: volcengine
+name: Volcengine
+aliases:
+  - 火山引擎
+  - 火山方舟
+  - Volcano Engine
+  - Ark
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - cn
+quota_policies:
+  - generation: current
+    coding_rolling_limit:
+      enabled: true
+      window_hours: 5
+      exact_amount_public: true     # 官方确认 Lite/Pro 三级限额关系（5h / 周 / 月）
+    coding_weekly_limit:
+      enabled: true
+      window_days: 7
+      note: Coding Plan 为 5 小时 + 周 + 月三层窗口；Lite 为 1× 限额，Pro 为 5× 限额
+    note: >-
+      官方确认 Lite 与 Pro 为 1×/5× 三级限额关系（5 小时 / 周 / 月）。
+      具体计量单位官方未在本数据段说明，Plan 的 quota.unit 保持 null。
+promotions:
+  - id: coding-first-purchase
+    description: Coding Plan 首购活动价（多个官方活动页金额不一致，标准价不受影响）
+    status: active
+    product: Coding Plan
+    channel: null
+    effective_from: null
+    effective_until: null
+    benefits:
+      applies_to:
+        - cn-personal-coding-lite
+        - cn-personal-coding-pro
+      observed_lite_prices_cny:
+        - 7.9
+        - 8.9
+        - 9.9
+      observed_pro_prices_cny:
+        - 39.9
+        - 45
+        - 49.9
+    source_refs: []
+    note: >-
+      首购活动价在多个官方活动页出现 ¥7.9/8.9/9.9（Lite）与 ¥39.9/45/49.9（Pro），
+      互不一致；绝不覆盖标准月价。CI 从结算页判定实际活动价。
+    checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  Volcengine（火山引擎 / 火山方舟，中国大陆）。本目录首批记录 Coding Plan 个人版
+  Lite / Pro 两档。字节海外主体 BytePlus 另建 data/providers/byteplus/，
+  region: global，两套报价体系绝不合并。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

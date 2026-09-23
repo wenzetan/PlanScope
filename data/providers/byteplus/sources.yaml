@@ -1,0 +1,18 @@
+# BytePlus（字节跳动海外）常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: coding-pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Coding Plan Lite / Pro 价格与额度
+#
+# 需要补的入口：
+#   coding-pricing       Coding Plan 价格（1 个月 / 3 个月）
+#   coding-checkout      结算页（5h / 周 / 月精确额度核验）
+#   coding-docs          接入文档（endpoints / 支持工具 / 模型矩阵）
+#   privacy-consumer     个人版隐私 / 数据政策
+#   terms                使用条款 / 风控
+#
+# 未查证的条目不要填写，不要猜测 URL。

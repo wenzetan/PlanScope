@@ -1,0 +1,23 @@
+# 腾讯云 / TokenHub 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: coding-pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Coding Plan 档位价格与三层 model_calls 额度
+#
+# 需要补的入口：
+#   coding-pricing        Coding Plan 价格 / 三层 model_calls 额度
+#   coding-docs           Coding Plan 接入文档（支持工具 / endpoint）
+#   token-pricing         通用 Token Plan 价格 / credits 额度 / 2026-08-31 积分体系
+#   token-docs            通用 Token Plan 接入与支持工具（OpenClaw / Claude Code / OpenCode / Cline / Cursor / Kilo Code / Codex CLI）
+#   hy-token-pricing      Hy Token Plan 价格 / credits 额度
+#   hy-token-docs         Hy Token Plan 模型（Hy3 / Hy4 preview）与接入
+#   global-token-pricing  国际站 Token Plan 价格 / credits 额度（USD）
+#   enterprise-pricing    企业 Offer 报价（广州 / 新加坡）与最低采购量
+#   enterprise-contract   企业合同条款 / 多 Key 分配 / 合同期
+#   terms                 使用条款 / 风控（Coding Plan 企业级用途限制）
+#
+# 未查证的条目不要填写，不要猜测 URL。

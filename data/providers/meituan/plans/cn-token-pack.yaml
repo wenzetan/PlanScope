@@ -1,0 +1,92 @@
+# 美团 LongCat Token Pack —— 一次性购买的预付 Token 包，30 自然日有效。
+# 包大小与价格官方公开文档未给 → amount / quota 全 null，不推算、不编造。
+id: cn-token-pack
+name: LongCat Token Pack
+provider: meituan
+record_kind: prepaid_package
+type:
+  - token_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: cn
+market: null
+audience: api
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: low
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: null
+    origin: unknown
+    billing_period: month
+    note: 包价官方未公开；一次性购买（非订阅），不按其它产品推算
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: false
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                       # 包内固定 Token 额度官方未公开
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: tokens
+  unit: tokens
+  weekly_quota_enabled: false
+  refresh_enabled: false            # 一次性购买，不刷新
+  refresh_period: null
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: null                  # 包内额度未公开
+      unit: tokens
+      reset_anchor: purchase
+      note: 一次性购买，30 自然日有效
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: false
+  note: 一次性购买的预付 Token 包，30 自然日有效；包大小与价格官方未公开。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - LongCat-2.0
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+missing_fields:
+  - package_size
+  - price
+  - purchase_url
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  美团 LongCat Token Pack：一次性购买的预付 Token 包，30 自然日有效。包大小与价格公开文档
+  未给出，amount / quota 全 null，不推算。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

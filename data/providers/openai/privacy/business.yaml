@@ -1,0 +1,135 @@
+# OpenAI Business / Enterprise 隐私与数据政策（scope: business）。
+# 与个人消费版分开：Business 数据默认不用于模型训练；但 **不训练 ≠ ZDR**，保留期/ZDR 仍为 unknown。
+# 每条字段自带 source 与 checked_at；URL 待补时 source 为 null 并在 note 说明。
+id: business
+provider: openai
+scope: business
+region: null
+policy_document_url: null
+terms_url: null
+
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Business/Enterprise 输入保留期公开资料未披露，保持 unknown。URL 待补。
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开资料未披露，保持 unknown。URL 待补。
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 保留天数未公开，不猜。URL 待补。
+
+used_for_training:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Business 数据默认不用于模型训练（官方业务条款）。URL 待补（source 待补）。
+training_default_opt_in:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Business 默认不用于训练。URL 待补。
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 默认不训练时是否仍提供开关未核实，不猜。
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未公开 —— **不因「不训练」推导 ZDR = true**，两者完全不同。URL 待补。
+
+enterprise_data_isolation:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Business/Enterprise 独立 Workspace，与个人空间隔离。URL 待补。
+user_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+api_web_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+business_consumer_policy_differs:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Business/Enterprise 数据默认不训练，与个人消费版存在差异。URL 待补。
+
+sensitive_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+commercial_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+automated_agent_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+account_sharing_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+proxy_forwarding_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_gateway_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_agent_tools_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+training_persistent_storage:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+content_safety_review:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+transport_encryption:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+notes: >-
+  Business/Enterprise 隐私记录，覆盖 global-business-*-seat 与 global-enterprise。
+  used_for_training 为 false（官方业务数据承诺不用于训练），但 ZDR 与保留期保持 unknown —— 不训练不等于 ZDR。
+  所有 source / policy URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

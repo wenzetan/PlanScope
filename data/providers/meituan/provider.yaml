@@ -1,0 +1,21 @@
+id: meituan
+name: Meituan
+aliases:
+  - Meituan
+  - 美团
+  - LongCat
+  - CatPaw
+legal_name: null
+website: null                 # 官方 URL 待补（不猜 URL）
+docs: null
+purchase_url: null
+status: active
+regions:
+  - mainland_china
+quota_policies: null          # 本 Provider 目前无订阅套餐额度机制；仅有预付 Token 包与 API PAYG
+notes: >-
+  美团 LongCat 公开收费形态为 Token Pack（预付包）/ API PAYG / 企业认证 PAYG 阶梯折扣，
+  **不存在虚构的 Coding 订阅套餐**。本目录仅记录大陆体系；未知值一律 null / unknown，不推算。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

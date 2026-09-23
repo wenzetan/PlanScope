@@ -1,0 +1,120 @@
+# OpenCode Team Workspace (Beta) —— 全球团队工作区，Beta 阶段免费。
+# 官方未公布任何团队固定月费 —— **不虚构 Team $X/月**；monthly $0 仅表示 Beta 免费。
+id: global-team-workspace-beta
+name: OpenCode Team Workspace (Beta)
+provider: opencode
+record_kind: beta_workspace
+type:
+  - agent_plan
+status: beta
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: null
+audience: team
+service_domain: opencode.ai
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: null
+  online_purchase: null
+  contact_sales: null
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 0
+    origin: official
+    billing_period: month
+    billing_model: flat
+    note: Beta 阶段免费（monthly $0）；官方未公布任何团队固定月费。
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: Beta 阶段免费
+  monthly_billing_available: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: null
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Beta 工作区额度未公开，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+benefits:
+  roles: true
+  member_management: true
+  model_allow_deny: true
+  per_member_spend_limits: true
+  byok: true
+
+organization:
+  roles: true
+  member_management: true
+  model_allow_deny: true
+  per_member_spend_limits: true
+  byok: true
+
+missing_fields:
+  - beta_graduation_pricing
+  - exact_member_limits
+  - official_team_workspace_url
+  - provider_privacy_url
+
+source_refs: []
+sources: []
+
+notes: >-
+  Team Workspace Beta：包含 roles、成员管理、模型 allow / deny、成员级消费限额、BYOK。
+  Beta 阶段免费（monthly $0）；官方**未公布任何团队固定月费，不虚构 Team $X/月**。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

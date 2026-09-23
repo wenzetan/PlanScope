@@ -1,0 +1,105 @@
+# ChatGPT Enterprise —— 合同型 Offer（全球）。价格需联系销售，本记录不含任何推算价格。
+id: global-enterprise
+name: ChatGPT Enterprise
+provider: openai
+record_kind: enterprise_contract
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: null
+audience: enterprise
+service_domain: openai.com
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  contact_sales: true
+  public_self_service: false
+  sales_assisted_purchase: true
+  online_purchase: false
+
+pricing: null                        # 合同型 Offer：官方未公开价格，不编造、不推算
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: null
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Enterprise 合同条款与额度需联系销售，公开不可得。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  codex: officially_supported
+
+benefits:
+  codex:
+    included: true
+    access_level: enterprise
+    note: Codex 包含于 Enterprise；具体权益与额度按合同。
+
+enterprise_upgrade:
+  available: false
+  target: null
+  note: 本记录本身即为 Enterprise 合同型 Offer，无更高一档可升级。
+
+missing_fields:
+  - contract_pricing
+  - exact_quota_terms
+  - privacy_and_data_terms
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  ChatGPT Enterprise 合同型 Offer（record_kind: enterprise_contract）。价格、额度与条款均需联系销售，
+  公开渠道不可得，pricing 保持 null，绝不编造或由其他档推算。
+  不同于 Business（有公开固定席位价）—— 两者独立记录。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,130 @@
+# Gemini Code Assist Standard —— 全球，Google Cloud 按 license-hour 报价（美国基准，USD）。
+# 所有订阅按月计费；两种承诺期单价不同（月承诺 / 12 个月承诺）。
+id: global-team-code-assist-standard
+name: Gemini Code Assist Standard
+provider: google
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: global
+market: us
+audience: business
+service_domain: cloud.google.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+pricing:
+  currency: USD
+  public_fixed_price: true
+  monthly: null
+  annual: null
+  monthly_billing_available: true
+  offers:
+    - market: us
+      region: null
+      currency: USD
+      amount: 0.031232877
+      origin: official
+      billing_period: month
+      billing_model: per_seat
+      unit: license-hour
+      note: 月承诺（monthly commitment）单价，按 license-hour；所有订阅按月计费。
+    - market: us
+      region: null
+      currency: USD
+      amount: 0.026027397
+      origin: official
+      billing_period: month
+      billing_model: per_seat
+      unit: license-hour
+      note: 12 个月承诺（12-month commitment）单价，按 license-hour；仍按月计费。
+  regional_differences: >-
+    美国美元基准价；不同国家/币种与销售渠道存在本地定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: per_seat
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: Standard 档具体调用/Agent Mode 限额本数据段未给出，保持 unknown。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  antigravity: unknown
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+benefits:
+  base_code_assistance: included
+  note: Standard 为 Gemini Code Assist 基础档；Enterprise 才有 code customization、知识库/仓库集成等。
+  code_customization: false
+  knowledge_base_repo_integration: false
+
+missing_fields:
+  - exact_agent_mode_limits
+  - exact_cli_limits
+  - seat_minimum
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  Gemini Code Assist Standard（audience: business）。Google Cloud 价 $0.031232877/license-hour（月承诺）、
+  $0.026027397/h（12 个月承诺）；所有订阅按月计费。价格按 license-hour 计，故用 pricing.offers 记录单位，
+  不用 monthly 字段（后者无 unit 维度）。
+  与 global-enterprise-code-assist-enterprise 是独立的两条 Plan。
+  该价格为美国基准，不声明为全球统一价。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

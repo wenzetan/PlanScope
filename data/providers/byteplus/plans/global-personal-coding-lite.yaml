@@ -1,0 +1,134 @@
+# BytePlus Coding Plan Lite（海外个人版，current）—— region: global，USD。
+# 价格：1 个月 $10（official）；3 个月一次性 $30（offers，非订阅月价）。
+# 5 小时 / 周 / 月精确额度公开静态页未暴露，quota 全 null，needs_checkout_verification；
+# 绝不复制中国大陆 Volcengine 的额度。
+id: global-personal-coding-lite
+name: BytePlus Coding Plan Lite
+provider: byteplus
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: Coding Plan
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 10
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  offers:
+    - market: null
+      region: null
+      currency: USD
+      amount: 30
+      origin: official
+      billing_period: null
+      billing_model: flat
+      unit: null
+      effective_monthly: null
+      note: 3 个月一次性 $30（非订阅月价，billing_period 不适用）
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: null
+  unit: null
+  weekly_quota_enabled: null
+  windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    5 小时 / 周 / 月精确额度公开静态页未暴露（needs_checkout_verification），全部保持 null。
+    绝不复制中国大陆 Volcengine 的额度。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                            # 精确模型矩阵未公开，保持 null（不猜）
+
+compatibility:
+  opencode: officially_supported
+  claude_code: officially_supported
+  cursor: officially_supported
+  cline: officially_supported
+  roo_code: officially_supported
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+benefits:
+  supported_model_families:
+    - Dola
+    - Seed
+    - DeepSeek V4 series
+    - GLM-5.2
+  supported_tools_note: >-
+    Claude Code / Cursor / Cline / Kilo Code / Roo Code / OpenCode
+    （Kilo Code 无对应 compatibility 键）。
+  model_availability_note: 可用模型因国家/地区而异，官方未给出精确矩阵。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Coding Plan 官方价格页（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_quota_windows
+  - quota_unit_confirmation
+  - exact_model_matrix
+  - exact_reset_anchor_definition
+  - enterprise_use_policy
+
+source_refs: []
+sources: []
+
+notes: >-
+  Coding Plan Lite（海外个人）：$10/月，或 3 个月一次性 $30（official）。
+  5 小时 / 周 / 月精确额度公开静态页未暴露，needs_checkout_verification，quota 全 null。
+  支持模型类别含 Dola / Seed / DeepSeek V4 series / GLM-5.2，因国家/地区而异。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,131 @@
+# 腾讯云 TokenHub Coding Plan Lite（个人版，current）—— 大陆站点，月付 ¥40（CNY, official）。
+# 额度为 model_calls 三层窗口：5 小时 1,200 / 周 9,000 / 月 18,000。
+# 定位交互式编码，官方明确**不支持企业级用途** —— 企业级需求应走模型服务 / Token Plan，
+# 不得采购个人 Coding Plan 承载团队业务（见 restrictions）。
+id: cn-personal-coding-lite
+name: Tencent Cloud Coding Plan Lite
+provider: tencent-cloud
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: cn
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: Coding Plan
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 40
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: model_calls
+  unit: model_calls
+  weekly_quota_enabled: true
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 1200
+      unit: model_calls
+      reset_mode: rolling_after_consumption
+    - label: "weekly"
+      duration_days: 7
+      amount: 9000
+      unit: model_calls
+      reset_anchor: subscription_activation
+    - label: "monthly"
+      duration_days: 30
+      amount: 18000
+      unit: model_calls
+      reset_anchor: subscription_month
+  daily: null
+  weekly: 9000
+  monthly: 18000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    三层 model_calls 窗口。Coding Plan 计量为 model_calls，与 Token Plan 的 credits 不同，
+    绝不互相换算。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                            # Coding Plan 的模型矩阵官方未公开，保持 null（不猜）
+
+compatibility:
+  openai_compatible_api: unknown        # Coding Plan 接入方式未核实，不继承 Token Plan
+  anthropic_compatible_api: unknown
+
+restrictions:
+  enterprise_use: false
+  interactive_coding_only: true
+  note: >-
+    官方明确 Coding Plan 面向交互式编码，不支持企业级用途。企业级需求应改用腾讯云模型服务
+    或通用 Token Plan（见 enterprise-*），不要用个人 Coding Plan 承载团队业务。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Coding Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Coding Plan 官方额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_model_matrix
+  - exact_reset_anchor_definition
+  - quota_unit_confirmation
+
+source_refs: []
+sources: []
+
+notes: >-
+  Coding Plan Lite（个人）：¥40/月（official），5 小时 1,200 / 周 9,000 / 月 18,000
+  model_calls。仅限交互式编码，不支持企业级用途。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

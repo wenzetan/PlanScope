@@ -1,0 +1,128 @@
+# Google AI Ultra 20X —— 美国（US）美元基准价，个人订阅。
+# Antigravity/Gemini 用量 ≈ Pro 的 20×（official）；含 30 TB 存储，Developer Program 云额度 $100/月。
+id: us-personal-ai-ultra-20x
+name: Google AI Ultra 20X
+provider: google
+record_kind: subscription
+type:
+  - agent_plan
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: premium
+region: global
+market: us
+audience: personal
+service_domain: gemini.google.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  public_self_service: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 200
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    美国美元基准价；不同国家/地区/币种与销售渠道存在本地定价，本记录不折算、不声明为全球统一价。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 具体用量上限官方以相对倍率表述，绝对数值本数据段未给出。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+compatibility:
+  antigravity: officially_supported
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+benefits:
+  gemini_antigravity_usage_multiplier:
+    multiplier: 20
+    relative_to: google_ai_pro
+    note: 官方称 Antigravity/Gemini 用量约为 Google AI Pro 的 20×。
+  ai_credits:
+    purchasable_at_cap: true
+    extends:
+      - Gemini
+      - Flow
+      - Antigravity
+    note: 达到用量上限后可另购 AI Credits。
+  included_cloud_credits:
+    amount: 100
+    currency: USD
+    period: month
+    program: Google Developer Program
+    note: Developer Program 云额度 $100/月（云资源额度，不是模型 Token 额度）。
+  cloud_storage_tb: 30
+
+missing_fields:
+  - exact_gemini_usage_baseline
+  - ai_credits_price
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  Google AI Ultra 20X（美国美元基准价 $200/月）。Antigravity/Gemini 用量约为 Pro 的 20×（相对倍率，不反推绝对值）；
+  含 30 TB 存储与 Developer Program 云额度 $100/月。到上限可另购 AI Credits。
+  与 $100 的 Ultra 5X 是两个独立档位，不合并。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

@@ -1,0 +1,153 @@
+# OpenAI API PAYG —— 全球开放平台**比较基线**（非订阅）。
+# 与 ChatGPT 订阅是相互独立的产品线：API PAYG 与订阅必须独立 record，不混类。
+id: global-api-payg
+name: OpenAI API PAYG
+provider: openai
+record_kind: payg_baseline
+type:
+  - api_plan
+status: active
+plan_family: api
+generation: current
+positioning: null
+region: global
+market: null
+audience: api
+service_domain: platform.openai.com
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+pricing:
+  currency: USD
+  public_fixed_price: true
+  monthly: null                      # 无订阅、无月付
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  monthly_billing_available: true
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+model_pricing:                       # 单位 MTok，原始币种原单位，绝不折算覆盖
+  - model: gpt-6-astra
+    context_window: null
+    input: { amount: 10, unit: MTok, origin: official }
+    input_cache_hit: { amount: 1, unit: MTok, origin: official }
+    output: { amount: 50, unit: MTok, origin: official }
+    note: 名称按调研段给出；官方 API model id 与上下文窗口待核验（missing_fields）。
+  - model: sol
+    context_window: null
+    input: { amount: 2, unit: MTok, origin: official }
+    input_cache_hit: { amount: 0.20, unit: MTok, origin: official }
+    output: { amount: 10, unit: MTok, origin: official }
+    note: 名称按调研段给出；官方 API model id 与上下文窗口待核验（missing_fields）。
+  - model: luna
+    context_window: null
+    input: { amount: 0.10, unit: MTok, origin: official }
+    input_cache_hit: { amount: 0.01, unit: MTok, origin: official }
+    output: { amount: 0.50, unit: MTok, origin: official }
+    note: 名称按调研段给出；官方 API model id 与上下文窗口待核验（missing_fields）。
+
+additional_pricing:
+  long_context:
+    applies_to: requests_exceeding_standard_context_window
+    rate: null                       # 长上下文单价更高，具体数值本数据段未给出
+    origin: unknown
+    note: 官方对更长上下文收取更高单价；具体数值待补，不编造。
+  data_residency_endpoint:
+    uplift_percent: 10
+    origin: official
+    note: 符合条件的数据驻留（data residency）endpoint 价格上浮 +10%。
+
+trial:
+  available: null
+  note: API 试用/赠额政策本数据段未给出。
+
+quota:
+  token: null                        # PAYG 无固定配额，按预付余额扣费
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  allocation_scope: account
+  refresh_enabled: null
+  refresh_period: null
+  rolling_windows: null
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: 计费单位 1,000,000 tokens（MTok）、预付余额制；限流按账户 tier，具体数值未公开。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false         # PAYG 本身就是单价口径
+  note: 逐组件单价见 model_pricing（含 cache hit）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                         # 官方 API model id 未核验，见 model_pricing 与 missing_fields
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: unknown  # 本记录未声明，显式保留未知
+
+rate_limits:
+  dimensions:
+    - RPM
+    - TPM
+  scope: account
+  tier_basis: account_tier
+  exact_public_tiers: false
+  note: 账户级 tier（如 Tier 1/2/3）不是可购买套餐，不建 API Tier N 文件。
+
+product_isolation:
+  chatgpt_subscription_balance_shared: false
+  note: API 计费/余额与 ChatGPT 订阅互相独立、不可兑换。
+
+missing_fields:
+  - official_api_model_ids
+  - complete_model_price_table
+  - long_context_pricing
+  - exact_rate_limit_tiers
+  - api_trial_policy
+  - official_source_urls
+
+source_refs: []
+sources: []
+
+notes: >-
+  ① record_kind: payg_baseline —— 本记录是 API 按量计费的比较基线，不是 subscription；
+  API PAYG 与 ChatGPT 订阅必须独立 record，不混类、不互相换算。
+  ② model_pricing 记 GPT-6 Astra（input $10 / cache hit $1 / output $50）、Sol（$2 / $0.20 / $10）、
+  Luna（$0.10 / $0.01 / $0.50），单位 MTok，origin official；名称为调研段给出，官方 API id 待核验。
+  ③ additional_pricing 记长上下文更高单价与数据驻留 endpoint +10% uplift。
+  ④ 官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

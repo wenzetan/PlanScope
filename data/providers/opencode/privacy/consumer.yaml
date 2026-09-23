@@ -1,0 +1,70 @@
+# OpenCode 个人（consumer）隐私与数据政策汇总。
+# 逐字段：未知写 null，不猜测；模型级差异（训练 / 保留期 / ZDR）以 models.yaml 的
+# modelEntry privacy 为准，本文件只做汇总。URL 待补时 source 为 null + note。
+id: consumer
+provider: opencode
+scope: consumer
+region: global
+policy_document_url: null
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 按模型而异（多数 0 天、GPT-5.6 Luna 与 Grok 4.6 为 30 天），见 models.yaml。URL 待补。
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 未单独披露，保留期按模型而异，见 models.yaml。URL 待补。
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 逐模型保留期见 models.yaml 的 modelEntry privacy.retention_days。URL 待补。
+used_for_training:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: >-
+    按模型而异 —— 多数开放模型不训练；GPT-5.6 Luna / Grok 4.6 不训练但保留 30 天；
+    标注为 contributor 的模型允许训练。逐模型见 models.yaml。URL 待补。
+training_default_opt_in:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: >-
+    DeepSeek 的 ZDR 为按月续约协议，公开页写到 2026-09-30（见 models.yaml 对应 modelEntry
+    的 privacy.effective_until），到期需复核，**不得永久标 ZDR true**；其余模型 ZDR 未知。
+    URL 待补。
+third_party_model_routing:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 模型由多家上游提供（动态目录），隐私条款随上游而异。URL 待补。
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+transport_encryption:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+notes: >-
+  个人订阅（Go）与 Zen PAYG、Team Workspace Beta 的隐私条款可能不同；本记录仅覆盖个人
+  consumer 面。模型级隐私是权威来源（models.yaml）。官方隐私页 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

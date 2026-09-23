@@ -1,0 +1,117 @@
+# 腾讯云 TokenHub 国际站 Token Plan Pro（个人版，current）—— region: global，月付 $51（USD, official）。
+# 7,900 credits / 月（30 天，不结转）。**额度口径与大陆通用 Token Plan 不同**，
+# 不得把 USD 报价当作 CN 价格的折算，也不得把两地区额度互相换算。
+id: global-personal-token-pro
+name: Tencent Cloud Token Plan Pro (International)
+provider: tencent-cloud
+record_kind: token_plan
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: null
+region: global
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+pricing:
+  currency: USD
+  monthly:
+    amount: 51
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: 7900
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 7900
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    国际站按订阅月发放固定 credits（30 天有效、不结转）。额度与其他地区不同，
+    不做跨地区折算。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                            # 国际站模型矩阵未核实
+
+compatibility:
+  openclaw: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  cline: officially_supported
+  cursor: officially_supported
+  kilo_code: officially_supported
+  codex: officially_supported
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+  tool_calling: unknown
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 国际站 Token Plan 官方价格页（URL 待补）
+  credit_quota:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方积分额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_model_matrix
+  - credit_conversion_formula
+  - exact_reset_anchor_definition
+
+source_refs: []
+sources: []
+
+notes: >-
+  国际站 Token Plan Pro（个人）：$51/月（official），7,900 credits/月（30 天，不结转）。
+  支持多模型与 OpenClaw / Claude Code / OpenCode / Cline / Cursor / Kilo Code / Codex CLI。
+  与大陆通用 Token Plan **额度口径不同**，USD 原币记录，不得折算为 CN 价格。
+  官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

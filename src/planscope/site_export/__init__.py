@@ -124,6 +124,11 @@ def plan_price_view(plan: dict, rate: float) -> dict:
         "annual_shown": annual_shown,
         "annual_derived": annual_derived,
         "annual_cny": to_cny(annual_shown, currency, rate),
+        "current_offer": pricing.get("current_offer"),
+        "current_offer_amount": (pricing.get("current_offer") or {}).get("amount")
+        if isinstance(pricing.get("current_offer"), dict)
+        else None,
+        "offers": pricing.get("offers"),
         "promotion": pricing.get("promotion"),
         "auto_renew": pricing.get("auto_renew"),
         "checked_at": pricing.get("checked_at"),

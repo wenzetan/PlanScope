@@ -13,6 +13,11 @@
       "description": "Stable slug, must equal the directory name under data/providers/."
     },
     "name": { "type": "string", "minLength": 1 },
+    "aliases": {
+      "type": ["array", "null"],
+      "description": "同一 Provider 的其它常见名称 / 别名（如 Alibaba Cloud / 阿里云 / 百炼 / Qwen），仅用于检索与展示，不新建第二份索引。",
+      "items": { "type": "string", "minLength": 1 }
+    },
     "legal_name": { "type": ["string", "null"] },
     "website": { "type": ["string", "null"], "description": "Official website URL." },
     "docs": { "type": ["string", "null"], "description": "Official documentation URL." },

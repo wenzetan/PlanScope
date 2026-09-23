@@ -1,0 +1,136 @@
+# SCNet Token Plan Standard（个人版）—— 中国大陆，标准价 ¥185/月，当前活动价 ¥130/月（official）。
+# 额度 240,000 credits/月。活动价冲突：较早 618 页 ¥110 vs 最新 Help 页 ¥130 → canonical 取 ¥130。
+id: cn-personal-token-standard
+name: SCNet Token Plan Standard
+provider: scnet
+record_kind: subscription
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: productivity_upgrade
+region: cn
+market: null
+audience: personal
+service_domain: api.scnet.cn
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 185
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer:
+    amount: 130
+    origin: official
+    billing_period: month
+    note: 当前活动价 ¥130/月（最新 Help 页；较早 618 页为 ¥110，见 evidence_conflicts）
+  first_purchase: null
+  renewal: null
+  promotion: 当前活动价 ¥130/月；标准价 ¥185/月。
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: month
+  windows:
+    - label: "monthly"
+      duration_days: 30
+      amount: 240000
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 240000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: Token Plan 为 credits/月；额度耗尽不自动转 PAYG（见 restrictions）。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null
+
+endpoints:
+  openai_compatible: https://api.scnet.cn/api/llm/v1
+  anthropic_compatible: https://api.scnet.cn/api/llm/anthropic
+
+compatibility:
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+
+restrictions:
+  personal_use_only: true
+  interactive_tools_only: true
+  automated_backend_forbidden: true
+  batch_non_interactive_forbidden: true
+  automatic_payg_after_exhaustion: false
+  note: >-
+    仅限个人使用与交互式工具调用；禁止用于应用后端 / 自动脚本 / 批量非交互调用。
+    额度耗尽后不自动转 PAYG。
+
+product_isolation:
+  api_key_prefix: sk-tp-
+  note: Token Plan 专属 Key（sk-tp-...）；与 Coding Plan 的 sk-sp-... 区分。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Token Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方额度说明（URL 待补）
+
+evidence_conflicts:
+  - field: current_offer_price
+    selected_value: 130
+    selected_source: latest_help_page
+    conflicting_value: 110
+    conflicting_source: earlier_618_page
+    resolution:
+      reason: >-
+        最新 Help 页 ¥130 作为 canonical；较早 618 活动页 ¥110 为旧价，
+        CI 从结算页复核。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - official_source_urls
+  - exact_reset_anchor_definition
+
+source_refs: []
+sources: []
+
+notes: >-
+  Token Plan Standard（个人）：标准价 ¥185/月，当前活动价 ¥130/月（official），240,000 credits/月。
+  活动价历史：较早 618 页 ¥110 vs 最新 Help 页 ¥130，canonical 取 ¥130。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

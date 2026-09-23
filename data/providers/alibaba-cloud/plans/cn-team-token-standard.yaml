@@ -1,0 +1,96 @@
+# 阿里云百炼 Token Plan 团队版 Standard —— 按席位月付，无 7 日窗口，每席位额度独立。
+# 标准价 ¥198/席/月（official）；当前活动价 ¥150/席/月（official，存 current_offer，不覆盖标准价）。
+id: cn-team-token-standard
+name: Token Plan Team Standard
+provider: alibaba-cloud
+record_kind: token_plan
+type:
+  - token_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: cn
+market: bailian
+audience: team
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 198
+    origin: official
+    billing_period: month
+    billing_model: per_seat
+  annual: null
+  current_offer:
+    amount: 150
+    origin: official
+    billing_period: month
+    billing_model: per_seat
+    note: 当前活动价 ¥150/席/月（official），标准价仍为 ¥198/席/月
+  first_purchase: null
+  renewal: null
+  promotion: 活动价 ¥150/席/月（标准价 ¥198/席/月）
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: false          # 每席位额度独立，不跨席位共享
+  allocation_scope: per_seat
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false         # 团队版无 7 日窗口
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "30 days"
+      duration_days: 30
+      amount: 25000
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 25000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: 每席位 25,000 credits / 月（30 天），席位独立、不共享。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                           # 团队版可用模型矩阵未核实
+
+compatibility:
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+missing_fields:
+  - official_source_urls
+  - seat_minimum
+  - model_matrix
+  - overage_rate
+
+source_refs: []
+sources: []
+
+notes: >-
+  团队版 Token Plan Standard：标准价 ¥198/席/月，当前活动价 ¥150/席/月（official，存 current_offer）。
+  每席位 25,000 credits / 月（30 天），无 7 日窗口，席位独立不共享。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

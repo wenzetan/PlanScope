@@ -1,0 +1,153 @@
+# 火山引擎 Coding Plan Pro（个人版，current）—— 中国大陆，标准月价 ¥200（CNY, official）。
+# 额度为三层窗口：5 小时 6,000 / 周 45,000 / 月 90,000（官方确认与 Lite 为 5×/1× 关系）。
+# 首购活动价多页不一致（¥39.9/45/49.9），标准价不受影响，见 pricing.current_offer + evidence_conflicts。
+id: cn-personal-coding-pro
+name: Volcengine Coding Plan Pro
+provider: volcengine
+record_kind: subscription
+type:
+  - coding_plan
+status: active
+plan_family: membership
+generation: current
+positioning: null
+region: cn
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: medium
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: Coding Plan
+  personal_use_only: null
+  enterprise_use_allowed: null
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 200
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer:
+    amount: null
+    origin: verified_public_report
+    billing_period: month
+    note: >-
+      首购活动价出现 ¥39.9 / ¥45 / ¥49.9 多个不一致值，无法确定单一当前价，
+      amount 保持 null；见 evidence_conflicts 与 provider.promotions。
+  first_purchase: null
+  renewal: null
+  promotion: 首购活动价（Pro）在多个官方活动页出现 ¥39.9/45/49.9，互不一致，绝不覆盖标准月价 ¥200。
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: null
+  unit: null
+  weekly_quota_enabled: true
+  refresh_enabled: true
+  refresh_period: subscription_month
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 6000
+      unit: null
+      reset_mode: rolling_after_consumption
+    - label: "weekly"
+      duration_days: 7
+      amount: 45000
+      unit: null
+    - label: "monthly"
+      duration_days: 30
+      amount: 90000
+      unit: null
+      reset_anchor: subscription_month
+  daily: null
+  weekly: 45000
+  monthly: 90000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    Pro 与 Lite 为 5×/1× 三级限额关系（5 小时 / 周 / 月）。计量单位官方未在本数据段说明，
+    unit 保持 null，不猜测、不与其它 Provider 的 model_calls / credits 换算。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models: null                            # 模型矩阵官方未公开，保持 null（不猜）
+
+compatibility:
+  opencode: officially_supported
+  claude_code: officially_supported
+  codex: officially_supported
+  cursor: officially_supported
+  cline: officially_supported
+  roo_code: officially_supported
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+
+restrictions:
+  note: >-
+    官方支持工具列表含 Claude Code / Cursor / Cline / Codex CLI / Kilo Code / Roo Code /
+    OpenCode；Kilo Code 无对应 compatibility 键，记录于本 note。企业级用途未核实。
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: Coding Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方额度说明（URL 待补）
+
+evidence_conflicts:
+  - field: first_purchase_price
+    selected_value: regular
+    selected_source: official_pricing_page
+    conflicting_value: "39.9 / 45 / 49.9"
+    conflicting_source: multiple_official_promotion_pages
+    resolution:
+      reason: >-
+        多个官方活动页给出的首购价不一致，无法确定单一当前价；标准月价 ¥200 作为 canonical，
+        活动价保持 null，待 CI 从结算页判定。
+      decided_at: "2026-09-23T00:00:00+08:00"
+
+missing_fields:
+  - official_source_urls
+  - quota_unit_confirmation
+  - exact_reset_anchor_definition
+  - current_first_purchase_price
+  - enterprise_use_policy
+
+source_refs: []
+sources: []
+
+notes: >-
+  Coding Plan Pro（个人）：标准月价 ¥200（official），5 小时 6,000 / 周 45,000 / 月 90,000。
+  与 Lite 为 5×/1× 限额关系。支持 Claude Code / Cursor / Cline / Codex CLI / Kilo Code /
+  Roo Code / OpenCode。首购活动价多页不一致，见 evidence_conflicts。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

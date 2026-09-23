@@ -1,0 +1,118 @@
+# Xiaomi MiMo Token Plan Standard（个人版）—— CN ¥99/月 + Global $16/月，权益相同，单 Plan 两 offer。
+# 额度 11B credits/月（30 天窗口）。
+id: personal-token-standard
+name: Xiaomi MiMo Token Plan Standard
+provider: xiaomi
+record_kind: subscription
+type:
+  - token_plan
+status: active
+plan_family: credits
+generation: current
+positioning: productivity_upgrade
+region: null
+market: null
+audience: personal
+service_domain: null
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 99
+    origin: official
+    billing_period: month
+    billing_model: flat
+  annual: null
+  current_offer: null
+  offers:
+    - market: global
+      region: null
+      currency: USD
+      amount: 16
+      origin: official
+      billing_period: month
+      billing_model: flat
+      unit: null
+      effective_monthly: null
+      note: 官方同页 Global USD 报价 $16/月（与 CN ¥99 同权益）
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: >-
+    CN ¥99/月 与 Global $16/月 为同权益的区域报价，分别保留原币种，不折算回写。
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: null
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: false
+  refresh_enabled: true
+  refresh_period: month
+  windows:
+    - label: "monthly"
+      duration_days: 30
+      amount: 11000000000
+      unit: credits
+      reset_anchor: subscription_month
+  daily: null
+  weekly: null
+  monthly: 11000000000
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: 个人版为 30 天 credits 窗口；11B credits/月。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - mimo-v2.6-pro
+  - mimo-v2.6-flash
+  - mimo-v2.5-pro
+  - mimo-v2.5
+  - mimo-v2.5-asr
+  - mimo-v2.5-tts
+  - mimo-v2.5-tts-voiceclone
+  - mimo-v2.5-tts-voicedesign
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: MiMo Token Plan 官方价格页（URL 待补）
+  quota_windows:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 官方额度说明（URL 待补）
+
+missing_fields:
+  - official_source_urls
+  - exact_reset_anchor_definition
+
+source_refs: []
+sources: []
+
+notes: >-
+  个人 Token Plan Standard：CN ¥99/月（CNY, official）/ Global $16/月（USD, official），
+  11B credits/月（30 天窗口）。官方来源 URL 待补（不猜 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null
