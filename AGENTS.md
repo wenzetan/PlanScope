@@ -122,6 +122,9 @@ pytest
   4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
      站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
      `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
+  5. **audience 类目待统一（搁置，最后一起做）**：现网同时存在 `team`（GLM 团队版）与 `business`
+     （`kimi/cn-business`），AGENTS 词汇表只列 `personal/team/enterprise`。等后续 Provider 调研完，
+     再整体决定是否收敛、以及是否引入新类目，避免现在反复改名。**在此之前不单独改任何一条。**
 - **下一家 Provider：GLM 海外 Z.ai 个人 Coding Plan（Lite / Pro / Max）**——`market: zai` + `region: global` +
   USD 原币种，与大陆三档做区域价格/额度对照（`regional_price_ratio` 只在展示层派生）。
   其后：GLM API / 企业线，以及大陆个人版低价的购买接口核验（升级 `billing_period` 为 quarterly）。
