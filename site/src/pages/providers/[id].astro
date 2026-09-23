@@ -56,13 +56,15 @@ const POLICY_FIELDS = [
     <div class="table-scroll">
       <table>
         <thead>
-          <tr><th>Plan</th><th>Type</th><th>Status</th><th>Monthly</th><th>CNY</th><th>Last checked</th></tr>
+          <tr><th>Plan</th><th>Type</th><th>Region</th><th>Audience</th><th>Status</th><th>Monthly</th><th>CNY</th><th>Last checked</th></tr>
         </thead>
         <tbody>
           {plans.map((plan) => (
             <tr>
               <td class="wrap-cell">{display(plan.name)} <span class="mono small">{plan.id}</span></td>
               <td>{display(plan.type)}</td>
+              <td>{plan.region ? <span class="badge">{plan.region}</span> : "—"}</td>
+              <td>{plan.audience ? <span class="badge">{plan.audience}</span> : "—"}</td>
               <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
               <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
               <td>{cny(plan.price_view.monthly_cny)}</td>

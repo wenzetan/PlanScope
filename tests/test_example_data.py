@@ -79,3 +79,39 @@ def test_unknown_currency_conversion_is_not_forced() -> None:
     assert to_cny(100, "CNY", 7.0) == pytest.approx(100.0)
     assert to_cny(100, "JPY", 7.0) is None  # 不认识的币种不强行换算
     assert to_cny(None, "USD", 7.0) is None
+
+
+def _plan_doc(repo_root: Path) -> dict:
+    path = repo_root / "data" / "providers" / "openai" / "plans" / "example-coding-plan.yaml"
+    import json
+
+    return json.loads(_yaml_to_json(path))
+
+
+def _yaml_to_json(path: Path) -> str:
+    import json
+
+    return json.dumps(yaml.safe_load(path.read_text(encoding="utf-8")))
+
+
+def test_plan_variant_dimensions_are_accepted(repo_root: Path) -> None:
+    """region / market / audience 是一等字段：变体拆独立记录的基础。"""
+    validator = _schema(repo_root, "plan.schema.json")
+    doc = _plan_doc(repo_root)
+    variant = {**doc, "region": "cn", "market": "bigmodel", "audience": "team"}
+    assert not list(validator.iter_errors(variant))
+
+
+def test_plan_variant_codes_must_not_be_prose(repo_root: Path) -> None:
+    """禁止把说明文字塞进 region / market（这些变体必须拆成独立记录）。"""
+    validator = _schema(repo_root, "plan.schema.json")
+    doc = _plan_doc(repo_root)
+
+    prose_region = {**doc, "region": "中国大陆与海外双价格"}
+    assert any("region" in str(e.path) for e in validator.iter_errors(prose_region))
+
+    bad_audience = {**doc, "audience": "groups"}
+    assert any("audience" in str(e.path) for e in validator.iter_errors(bad_audience))
+
+    prose_market = {**doc, "market": "BigModel 国内平台"}
+    assert any("market" in str(e.path) for e in validator.iter_errors(prose_market))

@@ -27,6 +27,44 @@ data/
 └── models/                         # 可选 canonical model index（预留，不覆盖 provider 数据）
 ```
 
+## 拆分规则（多 Plan / 区域 / 人群 / 子平台）
+
+**一个 Provider 可以有任意多个 Plan 文件。** 首批数据中已经确认的现实情况（阿里百炼、小米、GLM 等）
+说明不能按"一个 Provider 一条套餐记录"处理。以下差异**必须拆成独立的 Plan 记录**，
+禁止塞进 `notes` 或 `pricing.regional_differences` 等备注字段：
+
+| 差异 | 字段 | 示例（独立文件） |
+| --- | --- | --- |
+| 人群：个人 / 团队 / 企业 | `audience: personal / team / enterprise` | `plans/personal-token-plan.yaml` vs `plans/team-token-plan.yaml` |
+| 区域：中国 / 海外双价格 | `region: cn / global`（短代码，各自保留原币种） | `plans/token-plan-cn.yaml`（CNY）vs `plans/token-plan-global.yaml`（USD） |
+| 子平台 / 品牌 | `market: bailian / bigmodel / zai` | `plans/bigmodel-team-token.yaml` vs `plans/zai-personal-token.yaml` |
+| 计划代际（旧 Coding Plan 等） | `type` + `status` + `effective_until` | `plans/legacy-coding-plan.yaml`（`status: deprecated`） |
+
+示例：
+
+```text
+data/providers/aliyun/plans/           # 阿里百炼
+├── personal-token-plan.yaml           # audience: personal, type: [token_plan]
+├── team-token-plan.yaml               # audience: team,     type: [token_plan]
+└── legacy-coding-plan.yaml            # type: [coding_plan], status: deprecated
+
+data/providers/xiaomi/plans/           # 小米（中国/海外双价格 + 团队版）
+├── token-plan-cn.yaml                 # region: cn,     audience: personal, currency: CNY
+├── token-plan-global.yaml             # region: global, audience: personal, currency: USD
+└── team-plan.yaml                     # audience: team
+
+data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
+├── bigmodel-personal-token.yaml       # region: cn,     market: bigmodel, audience: personal
+├── bigmodel-team-token.yaml           # region: cn,     market: bigmodel, audience: team
+└── zai-personal-token.yaml            # region: global, market: zai,      audience: personal
+```
+
+同一 Provider 下 `id` 唯一即可（逻辑 ID = `<provider>/<id>`）。
+模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
+
+`pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
+不是变体容器——区域/人群/子平台变体永远是独立文件。
+
 ### 关键规则
 
 | 规则 | 说明 |
@@ -106,6 +144,9 @@ provider: xiaomi             # 必须 = 目录名
 type:
   - token_plan               # coding_plan / token_plan / agent_plan / api_plan / hybrid（可多个）
 status: unknown              # active / beta / invite_only / deprecated / discontinued / unknown
+region: null                 # cn / global —— 区域变体拆独立记录（短代码，不是散文）
+market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
+audience: null               # personal / team / enterprise —— 人群变体拆独立记录
 
 pricing:
   currency: null             # 原始结算币种（如 USD）；CNY 是派生值，绝不写这里

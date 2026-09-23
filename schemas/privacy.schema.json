@@ -17,6 +17,11 @@
       "enum": ["api", "web", "coding_plan", "general", null],
       "description": "Set when this record covers only one product surface; api/web/coding plans may differ."
     },
+    "region": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z]{2,10}$",
+      "description": "Short region code (e.g. cn, global) when privacy policies differ by region. Use a separate record per region — do not merge cn/global policies."
+    },
     "policy_document_url": { "type": ["string", "null"] },
     "terms_url": { "type": ["string", "null"] },
 

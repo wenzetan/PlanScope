@@ -82,6 +82,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and the site's Methodology page.
 
 - **Repository as database**: no PostgreSQL / MySQL / SQLite / Redis / Supabase or any hosted database. All research data is structured YAML in Git — directly viewable, diffable, reviewable, versionable.
 - **Provider-centric**: `data/providers/<provider>/` is the data boundary; 1 plan = 1 YAML file; the filesystem is the provider registry (no second index).
+- **Variants are separate records**: personal vs team (`audience`), China vs global (`region`), and sub-platforms (`market`, e.g. BigModel vs Z.ai) are always split into independent plan records — never stuffed into note fields.
 - **Raw facts first**: store raw facts, then derive. Prices keep their original currency; CNY is derived; promotions never overwrite standard prices; any derived unit price must be traceable back to original price, currency, quota, and multipliers.
 - **Unknown stays unknown**: unverified → `null` / `unknown`; vague vendor wording (`Unlimited`, `Fair Use`, …) recorded verbatim; plans that cannot be converted to a unit price are marked `not directly comparable` — never force an estimate.
 - **Sources & time**: key data carries `sources` and `checked_at` (ISO 8601); every privacy field carries its own `source` + `checked_at`; history uses `effective_from` / `effective_until` and is never silently overwritten.

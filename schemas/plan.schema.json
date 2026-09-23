@@ -34,6 +34,22 @@
     },
     "purchase_url": { "type": ["string", "null"] },
 
+    "region": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z]{2,10}$",
+      "description": "Short market/region code where this plan is sold (e.g. cn, global). CN and global variants are SEPARATE plan records — never merged into one record or stuffed into notes."
+    },
+    "market": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Sub-brand / storefront / platform within the provider (e.g. bailian, bigmodel, zai). Different platform => separate plan record."
+    },
+    "audience": {
+      "type": ["string", "null"],
+      "enum": ["personal", "team", "enterprise", null],
+      "description": "Who the plan targets. Personal / team / enterprise variants are separate plan records."
+    },
+
     "pricing": { "$ref": "#/$defs/pricing" },
     "quota": { "$ref": "#/$defs/quota" },
     "token_rules": { "$ref": "#/$defs/tokenRules" },
@@ -109,7 +125,10 @@
           "type": ["string", "null"],
           "description": "Temporary promotion description. Promotions must NOT overwrite standard prices."
         },
-        "regional_differences": { "type": ["string", "null"] },
+        "regional_differences": {
+          "type": ["string", "null"],
+          "description": "Residual regional notes within THIS record (e.g. tax wording). Not a container for region variants — those are separate plan records with their own region/market/audience."
+        },
         "tax_note": { "type": ["string", "null"] },
         "auto_renew": { "type": ["boolean", "null"] },
         "checked_at": { "$ref": "#/$defs/iso8601OrNull" }

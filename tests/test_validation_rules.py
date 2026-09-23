@@ -86,3 +86,57 @@ def test_broken_broken_change_file_reports_file(mini_repo: Path, capsys) -> None
     captured = capsys.readouterr()
     assert code == 1
     assert "broken.yaml" in captured.err
+
+
+_MINIMAL_PLAN = """\
+id: {id}
+name: {name}
+provider: {provider}
+type:
+  - token_plan
+status: unknown
+region: {region}
+market: {market}
+audience: {audience}
+checked_at: "2026-09-23T10:30:00+08:00"
+"""
+
+
+def test_variant_plans_coexist_under_one_provider(mini_repo: Path) -> None:
+    """同一 Provider 下 region / audience / market 变体必须能作为独立记录共存。
+
+    模拟首批数据的真实形态：小米中国/海外双价格 + 团队版；GLM 国内 BigModel / 海外 Z.ai。
+    """
+    plans_dir = mini_repo / "data" / "providers" / "openai" / "plans"
+    variants = [
+        ("token-plan-cn", "Token Plan CN", "cn", "null", "personal"),
+        ("token-plan-global", "Token Plan Global", "global", "null", "personal"),
+        ("team-token-plan", "Team Token Plan", "cn", "bigmodel", "team"),
+        ("legacy-coding-plan", "Legacy Coding Plan", "cn", "null", "personal"),
+    ]
+    for plan_id, name, region, market, audience in variants:
+        content = _MINIMAL_PLAN.format(
+            id=plan_id, name=name, provider="openai", region=region, market=market, audience=audience
+        )
+        if plan_id == "legacy-coding-plan":
+            content = content.replace("status: unknown", "status: deprecated")
+        (plans_dir / f"{plan_id}.yaml").write_text(content, encoding="utf-8")
+
+    errors = validate_tree(mini_repo)
+    assert errors == [], "\n".join(str(e) for e in errors)
+
+
+def test_variant_ids_need_not_be_globally_unique(mini_repo: Path) -> None:
+    """id 只需在同一 Provider 内唯一：不同 Provider 可以有同名 plan id。"""
+    other = mini_repo / "data" / "providers" / "anthropic" / "plans"
+    other.mkdir(exist_ok=True)
+    content = _MINIMAL_PLAN.format(
+        id="example-coding-plan",
+        name="Example Coding Plan (Template)",
+        provider="anthropic",
+        region="null",
+        market="null",
+        audience="null",
+    )
+    (other / "example-coding-plan.yaml").write_text(content, encoding="utf-8")
+    assert validate_tree(mini_repo) == []

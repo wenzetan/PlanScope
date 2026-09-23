@@ -9,6 +9,14 @@ type:
 status: unknown
 purchase_url: null
 
+# 变体维度（不同取值 = 不同的独立 Plan 记录，禁止塞进 notes）：
+#   region   cn / global —— 中国与海外双价格必须拆成两条记录
+#   market   子平台/品牌，如 bailian / bigmodel / zai
+#   audience personal / team / enterprise —— 个人版与团队版必须拆成两条记录
+region: null
+market: null
+audience: null
+
 pricing:
   currency: null            # 原始结算币种（如 USD），人民币换算属于派生值，绝不写在这里
   monthly: null
@@ -16,7 +24,7 @@ pricing:
   first_purchase: null
   renewal: null
   promotion: null           # 临时促销单独记录，绝不覆盖标准价
-  regional_differences: null
+  regional_differences: null # 仅用于本记录内的残余区域说明（如税费）；区域变体请拆独立文件
   tax_note: null
   auto_renew: null
   checked_at: "2026-09-23T10:30:00+08:00"

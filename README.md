@@ -82,6 +82,7 @@ GitHub Issues、Reddit、Discord、Telegram、论坛、博客、用户实际报�
 
 - **Repository as database**：不引入 PostgreSQL / MySQL / SQLite / Redis / Supabase 等任何数据库；所有研究数据都是 Git 中的结构化 YAML，可直接查看、diff、review、版本控制。
 - **Provider-centric**：`data/providers/<provider>/` 是数据边界；1 个 Plan = 1 个 YAML 文件；文件系统即 Provider 注册表（无第二份索引）。
+- **变体拆独立记录**：同一 Provider 的个人/团队（`audience`）、中国/海外（`region`）、不同子平台（`market`，如 BigModel / Z.ai）套餐全部拆成独立 Plan 记录，**不塞进备注字段**。
 - **Raw facts first**：先存原始事实再算派生值。价格保留原始币种，人民币是派生值；促销价不覆盖标准价；可推导的单价必须能追溯到原始价格、币种、额度与倍率。
 - **未知不编造**：未查证写 `null` / `unknown`；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录；无法换算单价标记 `not directly comparable`，不强行估算。
 - **来源与时间**：关键数据带 `sources` 与 `checked_at`（ISO 8601）；隐私字段逐条带 `source` + `checked_at`；历史用 `effective_from` / `effective_until`，不静默覆盖。

@@ -28,10 +28,25 @@ Research Xiaomi plans and update: data/providers/xiaomi/
 
 ## 不变规则
 
-### 1. 一个 Plan 一个文件
+### 1. 一个 Plan 一个文件；变体拆独立记录
 
 `data/providers/<provider>/plans/<plan-id>.yaml`。不要把一个 Provider 的所有套餐塞进单一 YAML。
 逻辑 ID 是 `<provider>/<plan-id>`，`id` 只需在同 Provider 内唯一。
+
+**一个 Provider 可以有任意多个 Plan 文件。** 以下差异必须拆成独立文件，
+**禁止塞进 `notes` / `pricing.regional_differences` 等备注字段**：
+
+- **人群**：个人 vs 团队 vs 企业 → `audience: personal / team / enterprise`
+  （例：阿里百炼个人 Token Plan 与团队 Token Plan = 两条记录）
+- **区域**：中国 vs 海外双价格 → `region: cn / global`，各自保留原币种定价
+  （例：小米 CNY 国内版与 USD 海外版 = 两条记录）
+- **子平台 / 品牌** → `market: bailian / bigmodel / zai`
+  （例：GLM 国内 BigModel 与海外 Z.ai = 两条记录）
+- **计划代际**：新旧套餐 → 不同文件 + `status: deprecated` / `effective_until`
+  （例：阿里百炼旧 Coding Plan 单独保留，不与新计划混写）
+
+区域代码与子平台代码是**短 slug**（`^[a-z]{2,10}$` / `^[a-z0-9-]+$`），不是散文；
+Schema 会拒绝把说明文字写进 `region` / `market`。
 
 ### 2. 文件名是稳定标识符
 
