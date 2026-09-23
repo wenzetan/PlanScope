@@ -150,7 +150,9 @@
         "note": { "type": ["string", "null"], "description": "e.g. 只扣 Extra Usage 余额、不影响原会员额度刷新。" },
         "subscribers_only": { "type": ["boolean", "null"], "description": "是否仅订阅用户可购买加油包/加量包。" },
         "shared_with_web": { "type": ["boolean", "null"], "description": "余额是否与网页端/其他终端共享。" },
-        "enterprise_supported": { "type": ["boolean", "null"] }
+        "enterprise_supported": { "type": ["boolean", "null"] },
+        "admin_enable_required": { "type": ["boolean", "null"], "description": "超额按量付费是否必须由管理员开启（团队版）。" },
+        "budget_control": { "type": ["boolean", "null"], "description": "是否支持成员级预算控制（团队版）。" }
       }
     },
 
@@ -647,6 +649,25 @@
               "unit": { "type": ["string", "null"], "description": "该窗口的计量单位，如 credits / tokens。" },
               "reset_mode": { "type": ["string", "null"], "description": "e.g. rolling_after_consumption." },
               "reset_anchor": { "type": ["string", "null"], "description": "e.g. subscription_activation." },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "published_references": {
+          "type": ["array", "null"],
+          "description": "厂商页面仍在展示、但已非 canonical 的旧口径额度（如团队版 Token 上限）。绝不覆盖 canonical quota（unit/windows），只作并行参考保留，并与 evidence_conflicts 对应。",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["unit", "amount"],
+            "properties": {
+              "unit": { "type": "string", "description": "如 tokens。" },
+              "window": { "type": ["string", "null"], "description": "厂商原文窗口标签，如 '5 hours'。" },
+              "duration_hours": { "type": ["number", "null"], "minimum": 0 },
+              "duration_days": { "type": ["number", "null"], "minimum": 0 },
+              "amount": { "$ref": "#/$defs/quotaValue" },
+              "status": { "type": ["string", "null"], "description": "e.g. vendor_page_parallel_or_stale。" },
+              "authority": { "type": ["string", "null"], "description": "official_product_page / verified_public_report / …" },
               "note": { "type": ["string", "null"] }
             }
           }

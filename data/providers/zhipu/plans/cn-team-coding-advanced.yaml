@@ -1,0 +1,294 @@
+# GLM Coding Plan Team Advanced（团队高级版）—— 中国大陆，`market: bigmodel`，按席位计费。
+# canonical 额度为积分（credits）：5h 35,000 / 7d 155,000 **每席位独立**，不跨席位共享。
+# 高级版不只是额度更高：还含最新旗舰模型/功能首发接入 + 高峰期专属资源优先保障。
+# 购买页仍展示旧 Token 口径（160M/5h、800M/周）—— 作为并行参考保留。
+id: cn-team-coding-advanced
+name: GLM Coding Plan Team Advanced
+provider: zhipu
+record_kind: subscription
+type:
+  - coding_plan
+  - agent_plan
+status: active
+plan_family: business
+generation: current
+positioning: null
+region: cn
+market: bigmodel
+audience: team
+service_domain: open.bigmodel.cn
+purchase_url: null
+research_status: verified_initial
+confidence: high
+
+availability:
+  new_purchase: true
+  online_purchase: true
+
+coding:
+  included: true
+  product: GLM Coding Plan Team
+  personal_use_only: false
+  enterprise_use_allowed: true
+
+endpoints:
+  openai_compatible: https://open.bigmodel.cn/api/coding/paas/v4
+  anthropic_compatible: https://open.bigmodel.cn/api/anthropic
+
+pricing:
+  currency: CNY
+  monthly:
+    amount: 1198
+    origin: official
+    billing_period: month
+    billing_model: per_seat
+  annual:
+    amount: 12938.40
+    origin: derived              # 1078.20 × 12
+    billing_period: year
+    billing_model: per_seat
+    effective_monthly: 1078.20
+    effective_monthly_origin: official
+    note: 年付折合 ¥1,078.20/席/月（official）；年总价 ¥12,938.40 = 1078.20 × 12（derived）
+  monthly_billing_available: true
+  seats:
+    minimum:
+      value: 2
+      origin: verified_public_report
+      note: 2 席起购（人工核验；官方团队管理页字段待抓取）
+    minimum_order:
+      amount: 2396
+      currency: CNY
+      origin: derived
+      note: 2 席 × ¥1,198/席/月 = ¥2,396/月（derived；年付最低 ¥25,876.80 = 2 × 12,938.40）
+  discounts:
+    publicly_available: true
+    note: 年付较月付约 9 折（约 −10%）
+  invoices:
+    supported: true
+    types:
+      - china_vat_general
+      - china_vat_special
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null
+  requests: null
+  messages: null
+  agent_tasks: null
+  agent_tasks_approx: null
+  coding_tasks: null
+  shared_pool_enabled: false
+  allocation_scope: per_seat
+  accounting_basis: credits
+  unit: credits
+  weekly_quota_enabled: true
+  windows:
+    - label: "5 hours"
+      duration_hours: 5
+      amount: 35000
+      unit: credits
+      reset_mode: rolling_after_consumption
+    - label: "7 days"
+      duration_days: 7
+      amount: 155000
+      unit: credits
+      reset_anchor: subscription_activation
+  published_references:
+    - unit: tokens
+      window: "5 hours"
+      duration_hours: 5
+      amount: 160000000
+      status: vendor_page_parallel_or_stale
+      authority: official_product_page
+    - unit: tokens
+      window: "7 days"
+      duration_days: 7
+      amount: 800000000
+      status: vendor_page_parallel_or_stale
+      authority: official_product_page
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: hard
+  actual_limit_known: true
+  note: >-
+    canonical 为积分制：每席位 5 小时 35,000 credits + 7 天 155,000 credits，独立计算、不跨席位池化。
+    购买页仍展示 160M/5h、800M/周 Token 上限，已存入 published_references 作并行参考。
+    积分系数 / 高峰非高峰 / MCP 成本见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+extra_usage:
+  supported: true
+  subscribers_only: true
+  currency: CNY
+  minimum_topup: null
+  balance_expires: null
+  pricing_basis: null
+  bypass_subscription_quota_when_active: true
+  admin_enable_required: true
+  budget_control: true
+  note: 官方团队页明确支持超额按量付费及预算控制；精确费率未公开（missing exact_overage_rate）
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: false
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: false
+  note: 积分公式与模型系数见 provider.yaml quota_policies.credit_system。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - glm-5.3
+  - glm-5.3-flash
+
+compatibility:
+  zcode: officially_supported
+  claude_code: officially_supported
+  opencode: officially_supported
+  openclaw: officially_supported
+  cline: officially_supported
+  factory_droid: officially_supported
+  kilo_code: officially_supported
+  roo_code: officially_supported
+  crush: officially_supported
+  goose: officially_supported
+  cursor: officially_supported
+  gemini_cli: officially_supported
+  grok_cli: officially_supported
+  cherry_studio: officially_supported
+  openai_compatible_api: officially_supported
+  anthropic_compatible_api: officially_supported
+  mcp: officially_supported
+
+organization:
+  seat_management: true
+  permission_management: true
+  usage_dashboard:
+    enabled: true
+    team_usage: true
+    engineering_efficiency: true
+  admin:
+    default_consumes_seat: false
+  seat_sharing:
+    allowed: false
+  mixed_standard_advanced_seats:
+    supported: false
+
+product_isolation:
+  coding_plan_team_key:
+    namespace: coding_plan_team
+    separate_from_platform_api_key: true
+    separate_from_personal_coding_key: true
+    issued_per_member: true
+    consumes_team_quota_only: true
+
+enterprise_services:
+  fixed_ip_allowlist: true
+  centralized_billing: true
+  centralized_invoice: true
+  enterprise_vat_invoice: true
+
+benefits:
+  mcp:
+    vision_understanding: included
+    web_search: included
+    web_reader: included
+    zread: included
+    curated_mcp_tools: included
+    exact_monthly_call_quota: null
+  resource_priority:
+    latest_flagship_first_access: true      # 高级版额外权益
+    dedicated_peak_priority: true           # 高峰期专属资源优先保障
+  recommended_workload:
+    repo_size: medium_to_large
+    concurrent_projects:
+      minimum: 2
+
+restrictions:
+  seat_sharing: prohibited
+  coding_endpoint_only_for_coding: true
+  general_backend_api_use: prohibited
+  resale: prohibited
+  risk_control:
+    enabled: true
+    possible_actions:
+      - rate_limit
+      - freeze
+      - ban
+    repeated_violation_ban_threshold:
+      value: 3
+      relation: greater_than
+
+evidence:
+  pricing:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+  quota:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+  min_seats:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+  organization:
+    authority: verified_public_report
+    checked_at: "2026-09-23T00:00:00+08:00"
+  privacy:
+    authority: official
+    checked_at: "2026-09-23T00:00:00+08:00"
+    note: 团队版官方承诺数据默认不用于训练（见 privacy/business.yaml）；ZDR / 保留期仍 unknown
+
+evidence_conflicts:
+  - field: quota.canonical_unit
+    selected_value: credits
+    selected_source: 新版团队套餐积分制资料
+    conflicting_value: tokens
+    conflicting_source: BigModel 购买页仍展示 Token 最大值
+    resolution:
+      reason: >-
+        新版团队套餐采用积分制，因此 Credits 作为 canonical quota；官方购买页尚保留的
+        Token 最大值作为参考字段保留在 quota.published_references，不覆盖积分额度。
+
+missing_fields:
+  - exact_overage_rate
+  - exact_concurrency
+  - retention_period
+  - zero_data_retention
+  - official_source_urls
+  - official_team_management_page_fields
+
+source_refs: []
+sources: []
+
+notes: >-
+  团队高级版：每席位 5h 35,000 credits / 7d 155,000 credits（canonical）；购买页并行展示
+  160M/5h、800M/周 Token 上限。高级版不只是额度更高，还含最新旗舰首发接入与高峰专属
+  资源优先保障，不能简化为「Standard × 2.35 quota」。支持企业认证（enterprise verification）。
+  禁止席位共享；团队 Coding Key 与平台通用 API Key 不通用。隐私见 privacy/business.yaml。
+  官方来源 URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

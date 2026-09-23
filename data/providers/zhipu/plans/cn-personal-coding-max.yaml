@@ -43,8 +43,9 @@ pricing:
   first_purchase: null
   renewal: null
   promotion: >-
-    官方页面当前展示 ¥862.4（划线 ¥1078）；抓取页未可靠说明该价格对应的结算周期
-    （月 / 季 / 年），不绑定为月付成交价，也不覆盖标准月价。
+    官方页面当前展示 ¥862.4（划线 ¥1078）。官方已确认个人套餐支持包月 / 包季 / 包年；
+    近期关联资料与页面快照显示该低价更可能是**包季 8 折**，但尚未从购买接口 / 渲染页确认，
+    因此 billing_period 暂保持 unknown，确认后再升级为 quarterly，且不覆盖标准月价。
   regional_differences: null
   tax_note: null
   auto_renew: null

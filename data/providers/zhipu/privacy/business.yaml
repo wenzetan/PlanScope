@@ -1,0 +1,95 @@
+# GLM Coding Plan 团队版（中国大陆）隐私 / 数据政策 —— scope: business
+# 与个人版（privacy/consumer.yaml）存在实质差异：团队版官方明确「数据默认不用于模型训练」。
+# 但**不训练 ≠ ZDR**：保留期与 Zero Data Retention 官方团队页均未给出，保持 unknown。
+id: business
+provider: zhipu
+scope: business
+region: cn
+policy_document_url: null       # 官方 URL 待补（不猜 URL）
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 团队套餐展示页未给出明确保留期
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 公开团队页未披露保留天数；不猜
+used_for_training:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方团队版权益明确「数据默认不用于模型训练」（authority official）。URL 待补。
+training_default_opt_in:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 默认不用于训练。URL 待补。
+opt_out_supported:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 默认不训练时是否仍提供开关 —— 未核实，不猜
+zero_data_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 不因「不训练」推导 ZDR = true；官方团队页未给出 ZDR 承诺
+enterprise_data_isolation:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 团队/企业管理能力（席位、权限、看板）已知；数据隔离细节未核实
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+business_consumer_policy_differs:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 团队版明确不训练；个人版公开页无同等承诺 —— 两者政策确实不同。URL 待补。
+coding_api_policy_differs:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: null
+automated_agent_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Coding endpoint 仅限官方支持的 Coding 工具；通用后端 API 用途禁止（见 plan restrictions）
+account_sharing_forbidden:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 席位不可共享（seat_sharing prohibited）；这是使用条款，不是隐私项。URL 待补。
+notes: >-
+  团队版隐私关键结论：Training = false（官方，默认不用于训练）；Retention / ZDR = unknown，
+  绝不从「不训练」推导。business_consumer_policy_differs = true。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

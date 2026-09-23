@@ -56,6 +56,7 @@ PLAN_VIEW_KEYS = (
     "weekly_applies_to_legacy_plans",
     "rolling_windows",
     "windows",
+    "published_references",
     "daily",
     "weekly",
     "monthly",

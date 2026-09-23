@@ -90,11 +90,13 @@ promotions:
     note: 截至 2026-09-23 尚未生效（effective_from 2026-09-25）。临时活动，覆盖正常高峰/非高峰规则但不改 Plan 标准值。
     checked_at: "2026-09-23T00:00:00+08:00"
 notes: >-
-  Zhipu AI / BigModel（中国大陆）。首批记录：GLM Coding Plan 个人版当前积分制三档
-  （Lite / Pro / Max）。一次性短期体验（5 天）不入统计、不建 Plan。
+  Zhipu AI / BigModel（中国大陆）。首批记录：GLM Coding Plan 当前积分制
+  个人版（Lite / Pro / Max）与团队版（Team Standard / Advanced，按席位）。
+  一次性短期体验（5 天）不入统计、不建 Plan。
   provider 级 quota_policies 存跨档位通用机制（credit 公式、模型系数、高峰/非高峰、MCP 积分成本）；
   Plan 只在 quota.windows 写具体窗口数值。
-  官方来源 URL 待补（不猜 URL）；个人版隐私承诺未在公开页明确，见 privacy/consumer.yaml。
+  官方来源 URL 待补（不猜 URL）；个人版隐私承诺未在公开页明确（consumer），
+  团队版官方承诺不用于训练（business）—— 两份分开，绝不合并。
 checked_at: "2026-09-23T00:00:00+08:00"
 effective_from: null
 effective_until: null

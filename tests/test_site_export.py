@@ -150,6 +150,19 @@ def test_quota_view_exports_structured_credit_windows(repo_root: Path) -> None:
     assert "estimated_weekly_tokens" not in view
 
 
+def test_quota_view_exports_team_published_token_references(repo_root: Path) -> None:
+    """团队版：credits 为 canonical，购买页 Token 上限作为并行参考进入派生数据。"""
+    data = build_site_data(repo_root)
+    plan = next(p for p in data["plans"] if p["id"] == "cn-team-coding-standard")
+    view = plan["quota_view"]
+    assert view["unit"] == "credits"
+    assert view["allocation_scope"] == "per_seat"
+    refs = {(r["unit"], r.get("window")): r for r in view["published_references"]}
+    assert refs[("tokens", "5 hours")]["amount"] == 60_000_000
+    assert refs[("tokens", "7 days")]["amount"] == 300_000_000
+    assert plan["extra_usage"]["admin_enable_required"] is True
+
+
 def test_sources_are_flattened_with_provenance(repo_root: Path) -> None:
     data = build_site_data(repo_root)
     assert len(data["sources"]) >= 2

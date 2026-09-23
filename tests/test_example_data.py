@@ -152,11 +152,10 @@ def test_zhipu_credit_tiers_scale_from_lite(repo_root: Path) -> None:
 
 
 def test_zhipu_short_term_trial_is_not_recorded(repo_root: Path) -> None:
-    """短期体验不入统计：不得存在 trial 类 Plan 记录。"""
+    """短期体验不入统计：不得存在 trial / 体验类 Plan 记录。"""
     plans_dir = repo_root / "data" / "providers" / "zhipu" / "plans"
     ids = {p.stem for p in plans_dir.glob("*.yaml")}
-    assert ids == {"cn-personal-coding-lite", "cn-personal-coding-pro", "cn-personal-coding-max"}
-    assert not any("trial" in plan_id for plan_id in ids)
+    assert not any("trial" in plan_id or "free" in plan_id for plan_id in ids)
 
 
 def test_plan_schema_accepts_structured_windows(repo_root: Path) -> None:
@@ -205,3 +204,87 @@ def test_zhipu_credit_system_lives_at_provider_level(repo_root: Path) -> None:
     promo_ids = {p["id"] for p in provider["promotions"]}
     assert "all-day-off-peak" in promo_ids
     assert all(p["status"] in {"scheduled", "active", "expired", "unknown"} for p in provider["promotions"])
+
+
+# --- Zhipu / GLM Coding Plan Team（按席位，积分制 + 并行 Token 展示） -----------
+
+
+def _load_zhipu_team(repo_root: Path, plan_id: str) -> dict:
+    path = repo_root / "data" / "providers" / "zhipu" / "plans" / f"{plan_id}.yaml"
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def test_zhipu_team_plans_are_per_seat(repo_root: Path) -> None:
+    for plan_id, monthly, annual_effective in (
+        ("cn-team-coding-standard", 598, 538.20),
+        ("cn-team-coding-advanced", 1198, 1078.20),
+    ):
+        plan = _load_zhipu_team(repo_root, plan_id)
+        assert plan["audience"] == "team"
+        assert plan["pricing"]["monthly"]["billing_model"] == "per_seat"
+        assert plan["pricing"]["monthly"]["amount"] == monthly
+        assert plan["pricing"]["monthly"]["origin"] == "official"
+        # 年付折合月价 official；年总价 = ×12 → derived
+        assert plan["pricing"]["annual"]["effective_monthly"] == annual_effective
+        assert plan["pricing"]["annual"]["effective_monthly_origin"] == "official"
+        assert plan["pricing"]["annual"]["origin"] == "derived"
+        assert plan["pricing"]["annual"]["amount"] == round(annual_effective * 12, 2)
+        # 2 席起购：人工核验，不伪装成官方直读
+        assert plan["pricing"]["seats"]["minimum"]["value"] == 2
+        assert plan["pricing"]["seats"]["minimum"]["origin"] == "verified_public_report"
+
+
+def test_zhipu_team_keeps_credits_canonical_and_tokens_as_reference(repo_root: Path) -> None:
+    """credits 是 canonical quota；购买页 Token 上限作为并行参考保留。"""
+    plan = _load_zhipu_team(repo_root, "cn-team-coding-standard")
+    assert plan["quota"]["unit"] == "credits"
+    windows = {w["label"]: w for w in plan["quota"]["windows"]}
+    assert windows["5 hours"]["amount"] == 15000
+    assert windows["7 days"]["amount"] == 66000
+    refs = {r["unit"] + ":" + str(r.get("window")): r for r in plan["quota"]["published_references"]}
+    assert refs["tokens:5 hours"]["amount"] == 60_000_000
+    assert refs["tokens:7 days"]["amount"] == 300_000_000
+    assert refs["tokens:5 hours"]["status"] == "vendor_page_parallel_or_stale"
+    # 冲突留档，防止每日 CI 被旧页面回改
+    assert plan["evidence_conflicts"][0]["selected_value"] == "credits"
+
+
+def test_zhipu_team_quota_is_per_seat_and_not_pooled(repo_root: Path) -> None:
+    plan = _load_zhipu_team(repo_root, "cn-team-coding-advanced")
+    assert plan["quota"]["allocation_scope"] == "per_seat"
+    assert plan["quota"]["shared_pool_enabled"] is False
+    assert plan["token_rules"]["shared_quota"] is False
+    windows = {w["label"]: w for w in plan["quota"]["windows"]}
+    assert windows["5 hours"]["amount"] == 35000
+    assert windows["7 days"]["amount"] == 155000
+
+
+def test_zhipu_team_overage_is_admin_enabled(repo_root: Path) -> None:
+    plan = _load_zhipu_team(repo_root, "cn-team-coding-standard")
+    overage = plan["extra_usage"]
+    assert overage["supported"] is True
+    assert overage["admin_enable_required"] is True
+    assert overage["budget_control"] is True
+    assert overage["pricing_basis"] is None      # 精确费率未公开，不编造
+
+
+def test_zhipu_team_key_is_isolated_from_platform_api_key(repo_root: Path) -> None:
+    plan = _load_zhipu_team(repo_root, "cn-team-coding-standard")
+    team_key = plan["product_isolation"]["coding_plan_team_key"]
+    assert team_key["separate_from_platform_api_key"] is True
+    assert team_key["separate_from_personal_coding_key"] is True
+
+
+def test_zhipu_privacy_splits_consumer_and_business(repo_root: Path) -> None:
+    """团队版不训练 ≠ 个人版不训练，也 ≠ ZDR。"""
+    consumer = yaml.safe_load(
+        (repo_root / "data" / "providers" / "zhipu" / "privacy" / "consumer.yaml").read_text(encoding="utf-8")
+    )
+    business = yaml.safe_load(
+        (repo_root / "data" / "providers" / "zhipu" / "privacy" / "business.yaml").read_text(encoding="utf-8")
+    )
+    assert consumer["used_for_training"]["value"] is None          # 个人版未知
+    assert business["used_for_training"]["value"] is False         # 团队版不训练
+    assert business["zero_data_retention"]["value"] is None        # 不训练 ≠ ZDR
+    assert business["log_retention_days"]["value"] is None
+    assert business["business_consumer_policy_differs"]["value"] is True

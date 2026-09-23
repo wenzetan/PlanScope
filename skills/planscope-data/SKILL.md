@@ -31,6 +31,10 @@ updated: 2026-09-23
    | `quota.unit` / 5h+7d 双层额度 | `quota.unit: credits` + `quota.windows[]`（label/duration_hours/duration_days/amount/unit/reset_mode/reset_anchor）；跨 Plan 的积分公式放 Provider `quota_policies[].credit_system` |
    | 厂商「≈ N M tokens/week」估算 | `estimated_weekly_tokens`（带 basis.cache_hit_rate），**绝不写进 `quota`** |
    | 5 天体验 / 短期限时体验（一次性） | **不建 Plan、不入统计**（不是 `free_tier`，也不是订阅档位） |
+   | 团队版：厂商页旧 Token 上限 vs 新积分 canonical | canonical 写 `quota.windows`（unit: credits）；旧口径写 `quota.published_references`（status: vendor_page_parallel_or_stale）+ `evidence_conflicts`，**绝不覆盖** |
+   | 团队版：按席位、额度不共享、管理员开超额 | `pricing.monthly/annual.billing_model: per_seat` + `quota.allocation_scope: per_seat` + `shared_pool_enabled: false` + `extra_usage.admin_enable_required/budget_control` |
+   | 团队 Key 与平台 API Key 不通用 | `product_isolation`（namespace: coding_plan_team），不塞进 `api_keys` |
+   | 团队版「数据默认不用于训练」 | `privacy/business.yaml` 的 `used_for_training.value: false`；**ZDR / 保留期保持 unknown** |
    | 限时活动 / 促销 | Provider `promotions[]`（effective_from/until），**绝不覆盖标准价或标准额度** |
 4. **转换红线速查**（详见 AGENTS.md）：
    - 未知 → `null`/`unknown`，**绝不编造**；官方没给的价不推算（哪怕 ×12 算得出来）

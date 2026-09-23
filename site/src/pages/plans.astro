@@ -28,6 +28,10 @@ function fmtEstimate(est) {
     .join(" · ");
 }
 
+function fmtAmount(value) {
+  return typeof value === "number" ? value.toLocaleString("en-US") : value;
+}
+
 const rows = data.plans.map((plan) => {
   const compat = plan.compatibility || {};
   const perSeat = plan.price_view && plan.price_view.billing_model === "per_seat";
@@ -177,6 +181,24 @@ const rows = data.plans.map((plan) => {
                     ? `, ${Math.round(plan.estimated_weekly_tokens.basis.cache_hit_rate * 100)}% cache hit`
                     : ""}
                   )
+                </div>
+              )}
+              {(plan.quota_view.published_references || []).length > 0 && (
+                <div class="small muted">
+                  页仍显示参考值（非 canonical）:{" "}
+                  {(plan.quota_view.published_references || [])
+                    .map((r) => `${fmtAmount(r.amount)} ${r.unit}${r.window ? " / " + r.window : ""}`)
+                    .join(" · ")}
+                </div>
+              )}
+              {plan.quota_view.allocation_scope && (
+                <div class="small muted">quota scope: {plan.quota_view.allocation_scope}</div>
+              )}
+              {plan.extra_usage?.supported && (
+                <div class="small muted">
+                  overage PAYG
+                  {plan.extra_usage.admin_enable_required ? " (admin-enabled)" : ""}
+                  {plan.extra_usage.budget_control ? " · budget control" : ""}
                 </div>
               )}
               {plan.quota_view.refresh_period && (

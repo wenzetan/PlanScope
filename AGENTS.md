@@ -99,26 +99,29 @@ pytest
 
 （截至 2026-09-23；新会话续接请先读本节 + `docs/DATA_MODEL.md`，然后跑 `planscope validate && pytest` 确认全绿）
 
-- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 21 条含 openai 结构模板 + zhipu 3 条）：
+- **首批 Provider：Kimi 17 条已入库**（`planscope list plans` 共 23 条含 openai 结构模板 + zhipu 5 条）：
   - 大陆旧会员 ×4（`legacy_subscription`）→ 大陆新会员 ×4（`subscription`）→ `cn-business`（按席位年订）
   - API 系列 ×4：CN/Global × PAYG 基线/企业合同（`record_kind` 分组；官方无订阅制 API Plan）
   - 海外个人 ×4（moderato/allegretto/allegro/vivace）为 **draft 占位**：数值全 `null`、`research_status: draft`，等数据段
-- **Zhipu / BigModel（GLM Coding Plan 大陆个人版）已入库 3 条**（`market: bigmodel`，积分制）：
-  - `cn-personal-coding-lite/pro/max`（5h + 7d credits：2,000/10,000、12,000/60,000、28,000/140,000；
-    常规月价 ¥118 / ¥538 / ¥1078，页面另示低价但结算周期未知 → 只进 `pricing.promotion`，不绑定）
+- **Zhipu / BigModel（GLM Coding Plan 大陆）已入库 5 条**（`market: bigmodel`，积分制）：
+  - 个人版 3 条：`cn-personal-coding-lite/pro/max`（5h + 7d credits：2,000/10,000、12,000/60,000、28,000/140,000；
+    常规月价 ¥118 / ¥538 / ¥1078；页面低价疑似**包季 8 折**，待购买接口确认后再升级 `billing_period`）
+  - 团队版 2 条：`cn-team-coding-standard/advanced`（每席位 5h + 7d credits：15,000/66,000、35,000/155,000；
+    ¥598 / ¥1,198 每席每月，年付 9 折；2 席起购）
   - credit 公式 / 模型积分系数 / 高峰非高峰 / MCP 积分成本 → Provider `quota_policies[].credit_system`；
-    官方估算区间 → `estimated_weekly_tokens`（**绝不进 `quota`**）；历史别名 → `models.yaml` 的 `aliases`
-  - 个人版隐私全 unknown（`privacy/consumer.yaml`），不继承团队版「不训练」；团队版下一批处理
+    官方估算区间 → `estimated_weekly_tokens`；团队页旧 Token 上限 → `quota.published_references` + `evidence_conflicts`
+  - 团队版：`allocation_scope: per_seat` + 不共享；超额 PAYG 管理员开启（`extra_usage`）；团队 Key `product_isolation`
+  - 隐私两份：个人 `privacy/consumer.yaml` 全 unknown；团队 `privacy/business.yaml` 不训练但 **ZDR/保留期 unknown**
   - 一次性 5 天体验**不入统计、不建 Plan**（短期体验规则）
 - **隐私按 scope 三份**：`consumer`（可训练+opt-out）/ `business`（不训练+隔离）/ `api`（不训练、不为训练持久化、ZDR unknown）；Training / Retention / ZDR 三字段独立
-- **数据机制已就绪并有测试覆盖（87 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）与估算 Token（`estimated_weekly_tokens`）分离
+- **数据机制已就绪并有测试覆盖（102 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席、credits vs tokens 防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）/ 估算 Token（`estimated_weekly_tokens`）/ 厂商并行旧口径（`quota.published_references`）三者分离
 - **待办**：
   1. 补官方 URL → `sources.yaml`（Kimi 与 zhipu 目前均为注释空表）+ 隐私字段 source（official 徽标）
   2. 海外个人 4 条 draft 等数据段；`moonshot/` 空模板去留待定
-  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价 / GLM 低价结算周期与个人版隐私）
+  3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价 / GLM 低价结算周期与个人版隐私 / 团队版超额费率与保留期）
   4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
      站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
      `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
-- **下一家 Provider：GLM Coding Plan 大陆团队版（标准版 + 高级版）**——精确 Token 上限、团队管理、
-  超额 PAYG、固定 IP、数据默认不用于训练；用 `audience: business` + `market: bigmodel` + 独立 `privacy/business.yaml`。
-  之后才是 GLM 海外 Z.ai（`market: zai` + `region: global`）与 API/企业线。
+- **下一家 Provider：GLM 海外 Z.ai 个人 Coding Plan（Lite / Pro / Max）**——`market: zai` + `region: global` +
+  USD 原币种，与大陆三档做区域价格/额度对照（`regional_price_ratio` 只在展示层派生）。
+  其后：GLM API / 企业线，以及大陆个人版低价的购买接口核验（升级 `billing_period` 为 quarterly）。

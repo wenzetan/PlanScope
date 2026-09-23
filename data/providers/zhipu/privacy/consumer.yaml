@@ -69,10 +69,10 @@ cross_border_transfer:
   checked_at: "2026-09-23T00:00:00+08:00"
   note: null
 business_consumer_policy_differs:
-  value: null
+  value: true
   source: null
   checked_at: "2026-09-23T00:00:00+08:00"
-  note: 已知存在实质差异：团队版官方明确「数据默认不用于模型训练」，个人版无同等承诺 —— 待补双方官方 URL 后置 value=true
+  note: 已知存在实质差异：团队版官方明确「数据默认不用于模型训练」，个人版无同等承诺 —— 见 privacy/business.yaml。URL 待补。
 coding_api_policy_differs:
   value: null
   source: null

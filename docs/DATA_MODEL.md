@@ -57,9 +57,9 @@ data/providers/xiaomi/plans/           # 小米（中国/海外双价格 + 团�
 └── team-plan.yaml                     # audience: team
 
 data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
-├── bigmodel-personal-token.yaml       # region: cn,     market: bigmodel, audience: personal
-├── bigmodel-team-token.yaml           # region: cn,     market: bigmodel, audience: team
-└── zai-personal-token.yaml            # region: global, market: zai,      audience: personal
+├── cn-personal-coding-lite.yaml       # region: cn, market: bigmodel, audience: personal（积分制）
+├── cn-team-coding-standard.yaml       # region: cn, market: bigmodel, audience: team（按席位）
+└── zai-personal-coding-lite.yaml      # region: global, market: zai, audience: personal（海外，后续）
 ```
 
 同一 Provider 下 `id` 唯一即可（逻辑 ID = `<provider>/<id>`）。
@@ -94,6 +94,13 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
   三档模型权限相同（`glm-5.3` + `glm-5.3-flash`），历史别名路由写 `models.yaml` 的 `aliases`。
   个人版隐私未明确 → `privacy/consumer.yaml` 全 unknown，不继承团队版「不训练」。
   一次性短期体验（5 天）**不入统计、不建 Plan**。
+- Zhipu 团队 GLM Coding Plan（`audience: team`，按席位，`billing_model: per_seat`）：
+  `cn-team-coding-standard` / `-advanced`（5h + 7d credits 每席位 15,000/66,000、35,000/155,000）。
+  **canonical 是 credits，购买页旧 Token 上限（60M/300M、160M/800M）存 `quota.published_references` +
+  `evidence_conflicts`，绝不覆盖积分**。席位额度独立（`allocation_scope: per_seat`、`shared_pool_enabled: false`）；
+  超额 PAYG 由管理员开启（`extra_usage.admin_enable_required/budget_control`）；团队 Key 与平台 API Key
+  不通用 → `product_isolation`；固定 IP / 集中账单 / VAT 发票 → `enterprise_services`。
+  团队版隐私 `privacy/business.yaml`：`used_for_training: false`（官方），但 ZDR / 保留期仍 unknown
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -205,7 +212,8 @@ api_keys: null               # {membership_api_key, max_keys, shared_quota_acros
 extra_usage: null            # {supported, subscribers_only, currency, minimum_topup, balance_expires,
                              #  pricing_basis, note, bypass_subscription_quota_when_active,
                              #  bypass_monthly_limit, bypass_weekly_limit, bypass_rolling_window_limit,
-                             #  shared_with_web, enterprise_supported} —— 绕过粒度按实际已知记录
+                             #  shared_with_web, enterprise_supported, admin_enable_required, budget_control}
+                             # —— 超额按量付费（团队版可由管理员开启 + 成员预算控制）
 benefits: null               # 官方权益原文（approximate_* = 厂商估算，不是硬配额）
 estimated_weekly_tokens: null # 厂商**估算**型周 Token 区间：{basis: {cache_hit_rate, source, note},
                              #   models: [{model, minimum_million_tokens, maximum_million_tokens}]}
@@ -255,6 +263,9 @@ quota:
   windows: []                # 结构化多层窗口（含数值）：[{label, duration_hours, duration_days,
                              #   amount, unit, reset_mode, reset_anchor, note}]
                              # 如 GLM：5h → 2000 credits（rolling）+ 7d → 10000 credits（subscription_activation）
+  published_references: []   # 厂商页面仍在展示、但已非 canonical 的旧口径额度（如团队版 Token 上限）：
+                             #   [{unit, window, duration_hours/days, amount, status, authority, note}]
+                             #   绝不覆盖 windows；对应 evidence_conflicts
   daily: null
   weekly: null
   monthly: null
