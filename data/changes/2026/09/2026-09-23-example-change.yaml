@@ -1,0 +1,37 @@
+# 变更记录目录（Phase 3 / Changes 页面）
+#
+# 每个文件记录一天内的结构化变更，来源于 snapshot diff 或结构化历史数据，
+# 不通过解析 Git commit message 生成。
+# 结构示例：
+#
+# change_id: 2026-09-23-example-change   # 等于文件名
+# date: "2026-09-23"
+# entries:
+#   - provider: example-provider
+#     plan: null
+#     model: null
+#     kind: added                          # added / removed / changed
+#     field: models
+#     summary: "Added Model Y"
+#     before: null
+#     after: null
+#     source_type: official                # official / measured / community_reported / other
+#     confidence: low                      # high / medium / low
+#     checked_at: "2026-09-23T10:30:00+08:00"
+# notes: null
+
+change_id: 2026-09-23-example-change
+date: "2026-09-23"
+entries:
+  - provider: openai
+    plan: example-coding-plan
+    model: null
+    kind: added
+    field: notes
+    summary: "结构示例：新增一条变更记录（非真实变更）"
+    before: null
+    after: null
+    source_type: other
+    confidence: low
+    checked_at: "2026-09-23T10:30:00+08:00"
+notes: 结构示例模板，仅用于展示 Changes 数据结构。

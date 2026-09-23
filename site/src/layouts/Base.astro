@@ -1,0 +1,63 @@
+---
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import "../styles/global.css";
+
+const NAV = [
+  ["", "Overview"],
+  ["providers/", "Providers"],
+  ["plans/", "Plans"],
+  ["models/", "Models"],
+  ["pricing/", "Pricing"],
+  ["privacy/", "Privacy"],
+  ["reliability/", "Reliability"],
+  ["changes/", "Changes"],
+  ["sources/", "Sources"],
+  ["methodology/", "Methodology"],
+];
+
+const { title = "PlanScope", current = "" } = Astro.props;
+const generated = data.generated_at ? data.generated_at.slice(0, 19).replace("T", " ") : "—";
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="PlanScope — AI Coding / Token / Agent plan tracker (personal use)" />
+    <title>{title} · PlanScope</title>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap">
+        <a class="brand" href={href("")}>PlanScope</a>
+        <nav class="pages">
+          {NAV.map(([path, label]) => (
+            <a
+              href={href(path)}
+              aria-current={current === path ? "page" : undefined}
+            >{label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <p>
+          PlanScope 是个人自用研究项目，非商业产品、非 SaaS、无返利/推广链接。
+          数据不保证实时正确，请以官方来源为准。
+        </p>
+        <p class="small mono">数据生成时间（UTC+8）：{generated}</p>
+      </div>
+    </footer>
+  </body>
+</html>

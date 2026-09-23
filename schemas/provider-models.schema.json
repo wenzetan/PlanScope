@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planscope.local/schemas/provider-models.schema.json",
+  "title": "PlanScope Provider Models",
+  "description": "Models as actually exposed by ONE provider, stored at data/providers/<provider>/models.yaml. Capabilities, context, multipliers and availability are provider-specific: the same model_id may differ across providers, so this file is never merged into a global model definition.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider", "models"],
+  "properties": {
+    "provider": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Must equal the parent directory id under data/providers/."
+    },
+    "notes": { "type": ["string", "null"] },
+    "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+    "models": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/modelEntry" }
+    }
+  },
+  "$defs": {
+    "iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 timestamp, e.g. 2026-09-23T10:30:00+08:00"
+    },
+    "iso8601OrNull": {
+      "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }]
+    },
+    "modelEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id"],
+      "properties": {
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Raw identifier as exposed by this provider (may be an alias)."
+        },
+        "display_name": { "type": ["string", "null"] },
+        "model_family": { "type": ["string", "null"] },
+        "context_window": { "type": ["integer", "null"], "minimum": 0 },
+        "max_output": { "type": ["integer", "null"], "minimum": 0 },
+        "input_modalities": {
+          "type": ["array", "null"],
+          "items": { "type": "string", "enum": ["text", "image", "audio", "video"] }
+        },
+        "output_modalities": {
+          "type": ["array", "null"],
+          "items": { "type": "string", "enum": ["text", "image", "audio"] }
+        },
+        "reasoning": { "type": ["boolean", "null"] },
+        "tool_calling": { "type": ["boolean", "null"] },
+        "function_calling": { "type": ["boolean", "null"] },
+        "vision": { "type": ["boolean", "null"] },
+        "image_generation": { "type": ["boolean", "null"] },
+        "audio": { "type": ["boolean", "null"] },
+        "coding": { "type": ["boolean", "null"] },
+        "agent_suitability": { "type": ["string", "null"] },
+        "cache_support": { "type": ["boolean", "null"] },
+        "structured_output": { "type": ["boolean", "null"] },
+        "status": {
+          "type": "string",
+          "enum": ["active", "beta", "deprecated", "unknown"]
+        },
+        "aliases": { "type": ["array", "null"], "items": { "type": "string" } },
+        "multipliers": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["plan", "multiplier"],
+            "properties": {
+              "plan": { "type": "string", "description": "plan id within this provider." },
+              "multiplier": { "type": ["number", "null"] },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "availability": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["plan", "available"],
+            "properties": {
+              "plan": { "type": "string", "description": "plan id within this provider." },
+              "available": { "type": ["boolean", "null"] },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "rate_limits": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    }
+  }
+}

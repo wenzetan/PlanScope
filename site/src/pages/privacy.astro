@@ -1,0 +1,93 @@
+---
+import Base from "../layouts/Base.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { display, when } from "../lib/format.js";
+
+const FIELDS = [
+  ["prompt_retention", "Prompt retention"],
+  ["output_retention", "Output retention"],
+  ["log_retention_days", "Log retention"],
+  ["used_for_training", "Training usage"],
+  ["training_default_opt_in", "Training default"],
+  ["opt_out_supported", "Opt-out"],
+  ["zero_data_retention", "Zero Data Retention"],
+  ["enterprise_data_isolation", "Enterprise isolation"],
+  ["third_party_model_routing", "Third-party routing"],
+  ["subprocessors", "Subprocessors"],
+  ["data_region", "Data region"],
+  ["cross_border_transfer", "Cross-border"],
+  ["api_web_policy_differs", "API vs Web policy"],
+  ["coding_api_policy_differs", "Coding vs API policy"],
+  ["sensitive_code_allowed", "Sensitive code"],
+  ["commercial_code_allowed", "Commercial code"],
+  ["automated_agent_allowed", "Automated agents"],
+  ["account_sharing_forbidden", "Account sharing forbidden"],
+  ["proxy_forwarding_forbidden", "Proxy forwarding forbidden"],
+  ["api_gateway_restricted", "API gateway restricted"],
+  ["coding_agent_tools_restricted", "Coding-agent restrictions"],
+];
+---
+
+<Base title="Privacy" current="privacy/">
+  <h1>Privacy</h1>
+  <p class="lead">隐私与数据政策是核心研究维度。每个字段区分三种状态：</p>
+
+  <ul class="plain small">
+    <li><span class="badge official">official fact</span> — 有直接来源 URL（官方政策 / 条款）</li>
+    <li><span class="badge unknown">unknown</span> — 未查证，value 为 null，不猜测</li>
+    <li>二手转述不进入本页，只作为 <a href={href("reliability/")}>community signal</a> 记录</li>
+  </ul>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          {FIELDS.map(([, label]) => <th>{label}</th>)}
+          <th>Last checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.privacy.map((record) => (
+          <tr>
+            <td><a href={href(`providers/${record.provider}/`)}>{record.provider}</a></td>
+            {FIELDS.map(([field]) => {
+              const entry = record[field];
+              const value = entry ? entry.value : null;
+              const official = entry && entry.source && value !== null;
+              return (
+                <td>
+                  {value === null || value === undefined ? (
+                    <span class="badge unknown">unknown</span>
+                  ) : (
+                    <span>
+                      {display(value)}
+                      {official && (
+                        <>
+                          {" "}
+                          <a href={entry.source} rel="noopener" title={entry.source}>
+                            <span class="badge official">official</span>
+                          </a>
+                        </>
+                      )}
+                    </span>
+                  )}
+                </td>
+              );
+            })}
+            <td class="mono">{when(record.checked_at)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {data.privacy.length === 0 && <div class="empty">暂无隐私政策数据。</div>}
+
+  <p class="note small">
+    API 与 Web 产品、Coding Plan 与普通 API 的政策可能不同，分别记录于
+    <span class="mono">api_web_policy_differs</span> / <span class="mono">coding_api_policy_differs</span>。
+    每个字段独立携带 source 与 checked_at。
+  </p>
+</Base>

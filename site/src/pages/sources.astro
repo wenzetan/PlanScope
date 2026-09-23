@@ -1,0 +1,82 @@
+---
+import Base from "../layouts/Base.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { display, when } from "../lib/format.js";
+
+const typeOptions = [...new Set(data.sources.map((s) => s.type).filter(Boolean))].sort();
+---
+
+<Base title="Sources" current="sources/">
+  <h1>Sources</h1>
+  <p class="lead">“这个数字是从哪里来的？” —— 每条证据的 Provider、类型、URL、核查时间与用途。</p>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="搜索 record / provider / url…" aria-label="Search sources" />
+    <select id="f-type" aria-label="Filter by source type">
+      <option value="">全部类型</option>
+      {typeOptions.map((type) => <option value={type}>{type}</option>)}
+    </select>
+    <span class="count" id="count">{data.sources.length} / {data.sources.length} sources</span>
+  </div>
+
+  <div class="table-scroll">
+    <table id="sources-table">
+      <thead>
+        <tr>
+          <th>Provider</th><th>Record</th><th>Source type</th><th>URL</th>
+          <th>Checked at</th><th>Used for</th><th>Confidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.sources.map((entry) => (
+          <tr
+            data-type={entry.type || ""}
+            data-search={`${entry.record} ${entry.provider || ""} ${entry.url} ${entry.used_for || ""}`.toLowerCase()}
+          >
+            <td>{entry.provider ? <a href={href(`providers/${entry.provider}/`)}>{entry.provider_name || entry.provider}</a> : "—"}</td>
+            <td class="mono small">{display(entry.record)}</td>
+            <td><span class="badge">{display(entry.type, "—")}</span></td>
+            <td><a href={entry.url} rel="noopener">{entry.url.replace(/^https?:\/\//, "").slice(0, 48)}</a></td>
+            <td class="mono">{when(entry.checked_at)}</td>
+            <td class="wrap-cell small">{display(entry.used_for)}</td>
+            <td><span class={`badge ${display(entry.confidence, "unknown")}`}>{display(entry.confidence, "—")}</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {data.sources.length === 0 && <div class="empty">暂无来源记录。</div>}
+
+  <p class="note small">
+    来源优先级：official &gt; measured &gt; community。社区报告是信号，不是权威事实
+    （Community reports are signals, not authoritative facts）。
+    详见 <a href={href("methodology/")}>Methodology</a>。
+  </p>
+
+  <script>
+    const table = document.getElementById("sources-table");
+    if (table) {
+      const rows = Array.from(table.querySelectorAll("tbody tr"));
+      const q = document.getElementById("q");
+      const ft = document.getElementById("f-type");
+      const count = document.getElementById("count");
+      const total = rows.length;
+      function apply() {
+        const text = (q && q.value ? q.value : "").trim().toLowerCase();
+        const type = ft && ft.value ? ft.value : "";
+        let visible = 0;
+        for (const row of rows) {
+          const ok =
+            (!text || (row.dataset.search || "").includes(text)) &&
+            (!type || row.dataset.type === type);
+          row.style.display = ok ? "" : "none";
+          if (ok) visible += 1;
+        }
+        if (count) count.textContent = `${visible} / ${total} sources`;
+      }
+      for (const el of [q, ft]) if (el) el.addEventListener("input", apply);
+    }
+  </script>
+</Base>

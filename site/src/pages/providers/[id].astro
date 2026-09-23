@@ -1,0 +1,165 @@
+---
+import Base from "../../layouts/Base.astro";
+import { href } from "../../lib/base.js";
+import { data } from "../../lib/data.js";
+import { display, money, cny, statusBadge, when } from "../../lib/format.js";
+
+export function getStaticPaths() {
+  return data.providers.map((provider) => ({
+    params: { id: provider.id },
+    props: { provider },
+  }));
+}
+
+const { provider } = Astro.props;
+const plans = data.plans.filter((plan) => plan.provider === provider.id);
+const models = data.models.filter((model) => model.provider === provider.id);
+const privacy = data.privacy.find((record) => record.provider === provider.id);
+const sources = data.sources.filter((entry) => entry.provider === provider.id);
+const benchmarks = data.benchmarks.filter((entry) => entry.provider === provider.id);
+const community = data.community.filter((entry) => entry.provider === provider.id);
+
+const POLICY_FIELDS = [
+  ["prompt_retention", "Prompt retention"],
+  ["output_retention", "Output retention"],
+  ["used_for_training", "Training usage"],
+  ["opt_out_supported", "Opt-out"],
+  ["zero_data_retention", "Zero Data Retention"],
+  ["subprocessors", "Subprocessors"],
+  ["data_region", "Data region"],
+  ["cross_border_transfer", "Cross-border"],
+  ["automated_agent_allowed", "Automated agents"],
+  ["coding_agent_tools_restricted", "Coding-agent restrictions"],
+];
+---
+
+<Base title={provider.name} current="providers/">
+  <p class="small"><a href={href("providers/")}>← Providers</a></p>
+  <h1>{display(provider.name)}</h1>
+  <p class="lead mono">{provider.id}</p>
+
+  <dl class="kv">
+    <dt>Status</dt>
+    <dd><span class={`badge ${statusBadge(provider.status).cls}`}>{statusBadge(provider.status).label}</span></dd>
+    <dt>Official website</dt>
+    <dd>{provider.website ? <a href={provider.website} rel="noopener">{provider.website}</a> : "—"}</dd>
+    <dt>Docs</dt>
+    <dd>{provider.docs ? <a href={provider.docs} rel="noopener">{provider.docs}</a> : "—"}</dd>
+    <dt>Notes</dt>
+    <dd>{display(provider.notes)}</dd>
+    <dt>Last checked</dt>
+    <dd class="mono">{when(provider.checked_at)}</dd>
+  </dl>
+
+  <h2>Plans</h2>
+  {plans.length ? (
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Plan</th><th>Type</th><th>Status</th><th>Monthly</th><th>CNY</th><th>Last checked</th></tr>
+        </thead>
+        <tbody>
+          {plans.map((plan) => (
+            <tr>
+              <td class="wrap-cell">{display(plan.name)} <span class="mono small">{plan.id}</span></td>
+              <td>{display(plan.type)}</td>
+              <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
+              <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
+              <td>{cny(plan.price_view.monthly_cny)}</td>
+              <td class="mono">{when(plan.checked_at)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : <div class="empty">尚无套餐记录。</div>}
+
+  <h2>API / Coding / Agent compatibility</h2>
+  {plans.length ? plans.map((plan) => (
+    <h3>{display(plan.name)}</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Surface</th><th>Status</th></tr></thead>
+        <tbody>
+          {Object.entries(plan.compatibility || {}).map(([surface, status]) => (
+            <tr>
+              <td class="mono">{surface}</td>
+              <td><span class={`badge ${statusBadge(status).cls}`}>{display(status, "unknown")}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )) : <div class="empty">尚无兼容性记录。</div>}
+
+  <h2>Models</h2>
+  {models.length ? (
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>model_id</th><th>Context</th><th>Max output</th><th>Reasoning</th><th>Tool calling</th><th>Status</th></tr></thead>
+        <tbody>
+          {models.map((model) => (
+            <tr>
+              <td class="mono">{display(model.model_id)} {model.display_name && <span class="muted">({display(model.display_name)})</span>}</td>
+              <td>{display(model.context_window)}</td>
+              <td>{display(model.max_output)}</td>
+              <td>{display(model.reasoning)}</td>
+              <td>{display(model.tool_calling)}</td>
+              <td><span class={`badge ${statusBadge(model.status).cls}`}>{statusBadge(model.status).label}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : <div class="empty">尚无模型记录。</div>}
+
+  <h2>Privacy policy</h2>
+  {privacy ? (
+    <>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Field</th><th>Value</th><th>Evidence</th><th>Checked</th></tr></thead>
+          <tbody>
+            {POLICY_FIELDS.map(([field, label]) => {
+              const entry = privacy[field];
+              const value = entry && entry.value !== undefined ? entry.value : null;
+              const isOfficial = entry && entry.source && entry.value !== null;
+              return (
+                <tr>
+                  <td>{label}</td>
+                  <td>
+                    {value === null || value === undefined
+                      ? <span class="badge unknown">unknown</span>
+                      : <span>{display(value)} {isOfficial && <span class="badge official">official fact</span>}</span>}
+                  </td>
+                  <td>{entry && entry.source ? <a href={entry.source} rel="noopener">source</a> : "—"}</td>
+                  <td class="mono">{entry ? when(entry.checked_at) : "—"}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="small muted">没有直接证据（source）的字段一律标记为 unknown，不以二手信息填充。</p>
+    </>
+  ) : <div class="empty">尚无隐私政策记录。</div>}
+
+  <h2>Reliability signals</h2>
+  <p class="small">
+    Benchmarks: {benchmarks.length} · Community reports: {community.length}
+    （详见 <a href={href("reliability/")}>Reliability</a>）
+  </p>
+
+  <h2>Data sources</h2>
+  {sources.length ? (
+    <ul class="plain">
+      {sources.map((entry) => (
+        <li>
+          <span class="badge">{display(entry.type)}</span>{" "}
+          {entry.url ? <a href={entry.url} rel="noopener">{display(entry.id)}</a> : display(entry.id)}
+          <span class="muted small"> — {display(entry.used_for)} · checked {when(entry.checked_at)}</span>
+        </li>
+      ))}
+    </ul>
+  ) : <div class="empty">尚无来源记录。</div>}
+</Base>

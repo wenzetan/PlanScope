@@ -1,0 +1,103 @@
+# Daily CI: refresh -> validate -> test -> build -> commit -> deploy.
+# One schedule only. No retries, no fallbacks, no workflow_dispatch:
+# any failed step fails the whole run and nothing is deployed.
+name: daily-refresh
+
+on:
+  schedule:
+    - cron: "17 2 * * *"   # daily 02:17 UTC (~10:17 Asia/Shanghai)
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: planscope-daily-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: python -m pip install -e ".[dev]"
+
+      # 5-8. D-7 ~ D-1 USD/CNY average -> config/exchange_rate.yaml
+      # Failure here fails the workflow (no retry, no fallback; next run is tomorrow).
+      - name: Fetch USD/CNY 7-day average
+        run: planscope fetch-rate
+
+      # 9. Phase 2: official pricing / model-list / privacy extraction.
+      - name: Refresh provider research data
+        run: echo "Phase 2: provider adapters not yet implemented — data refresh is manual for now"
+
+      # 10. Phase 3: snapshots + diff -> data/changes/.
+      - name: Generate change records and snapshots
+        run: echo "Phase 3: snapshot diff not yet implemented — change records are manual for now"
+
+      # 11-12.
+      - name: Validate schemas
+        run: planscope validate
+
+      - name: Run Python tests
+        run: pytest
+
+      # 13-15. Build the static site and verify it produced real output.
+      - name: Export site data from repository YAML
+        run: planscope export-site-data
+
+      - name: Set Pages base path
+        run: |
+          repo="${{ github.event.repository.name }}"
+          if [[ "$repo" == *.github.io ]]; then
+            echo "PLANSCOPE_BASE=/" >> "$GITHUB_ENV"
+          else
+            echo "PLANSCOPE_BASE=/$repo/" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build GitHub Pages static site
+        working-directory: site
+        run: npm ci --no-audit --no-fund && npm run build
+
+      - name: Verify build succeeded
+        run: test -f site/dist/index.html
+
+      # 16. Commit changed source/data files — never an empty commit.
+      - name: Commit refreshed data if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data config/exchange_rate.yaml snapshots
+          if git diff --cached --quiet; then
+            echo "No data changes — skipping commit."
+          else
+            git commit -m "chore(data): daily PlanScope refresh"
+            git push
+          fi
+
+      # 17. Deploy only after refresh + validate + tests + build all succeeded.
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

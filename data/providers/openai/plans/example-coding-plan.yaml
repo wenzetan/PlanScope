@@ -1,0 +1,84 @@
+# PlanScope 结构示例模板 — 未填入任何已核实的价格、额度或政策数据。
+# 1 plan = 1 YAML file；逻辑 ID 为 <provider>/<id> = openai/example-coding-plan。
+# 文件名与 id 是稳定标识符，展示名称修改不要重命名文件。
+id: example-coding-plan
+name: Example Coding Plan (Template)
+provider: openai
+type:
+  - coding_plan
+status: unknown
+purchase_url: null
+
+pricing:
+  currency: null            # 原始结算币种（如 USD），人民币换算属于派生值，绝不写在这里
+  monthly: null
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null           # 临时促销单独记录，绝不覆盖标准价
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T10:30:00+08:00"
+
+quota:
+  token: null               # 数字或厂商原文（"Unlimited" / "Fair Use" 原样记录）
+  requests: null
+  messages: null
+  agent_tasks: null
+  coding_tasks: null
+  rolling_windows: []       # 如 ["3 hours", "5 hours"]
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null        # 厂商模糊表述原样记录
+  limit_type: unknown       # soft / hard / unknown
+  actual_limit_known: null  # 实际限制未知时为 false/null
+  note: 厂商模糊表述（Unlimited / Fair Use 等）请原样记录在此
+  checked_at: "2026-09-23T10:30:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null   # false ⇒ not directly comparable，不强行估算
+  note: null
+  checked_at: "2026-09-23T10:30:00+08:00"
+
+models: []                  # 本 Plan 可用的 provider 级 model_id
+
+compatibility:
+  opencode: unknown         # full / partial / unofficial / unsupported / unknown
+  claude_code: unknown
+  codex: unknown
+  pi: unknown
+  openclaw: unknown
+  hermes: unknown
+  openai_compatible_api: unknown   # 兼容 ≠ 完全兼容，请在 notes 备注具体差异
+  anthropic_compatible_api: unknown
+  mcp: unknown
+
+source_refs:
+  - docs                    # 引用 data/providers/openai/sources.yaml 中的 id
+sources: []                 # 本 Plan 特有的证据
+
+notes: 结构示例模板。未填入任何已核实数据。
+checked_at: "2026-09-23T10:30:00+08:00"
+effective_from: null
+effective_until: null

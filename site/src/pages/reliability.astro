@@ -1,0 +1,85 @@
+---
+import Base from "../layouts/Base.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { display, when } from "../lib/format.js";
+
+function provenance(record) {
+  const st = record.source_type || "unknown";
+  if (st === "measured" || (record.metric && st === "unknown" && record.status === "measured")) return "measured";
+  if (st === "official") return "official";
+  if (st === "community_reported") return "community_reported";
+  if (st === "estimated") return "estimated";
+  return "unknown";
+}
+---
+
+<Base title="Reliability" current="reliability/">
+  <h1>Reliability</h1>
+  <p class="lead">性能、429、超时、账号限制与响应异常。数据来源严格区分，绝不混合：</p>
+
+  <ul class="plain small">
+    <li><span class="badge measured">measured</span> — PlanScope 自己的实测</li>
+    <li><span class="badge official">official</span> — 厂商官方公布</li>
+    <li><span class="badge community_reported">community reported</span> — 社区反馈（信号，不是权威事实）</li>
+    <li><span class="badge estimated">estimated</span> — 估算值</li>
+  </ul>
+
+  <h2>Benchmarks</h2>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th><th>Plan</th><th>Model</th><th>Metric</th><th>Value</th><th>Unit</th>
+          <th>Provenance</th><th>Confidence</th><th>Status</th><th>Last checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.benchmarks.map((record) => (
+          <tr>
+            <td>{record.provider ? <a href={href(`providers/${record.provider}/`)}>{record.provider}</a> : "—"}</td>
+            <td class="mono">{display(record.plan)}</td>
+            <td class="mono">{display(record.model)}</td>
+            <td class="mono">{display(record.metric)}</td>
+            <td>{record.value === null || record.value === undefined ? <span class="badge unknown">unknown</span> : record.value}</td>
+            <td>{display(record.unit)}</td>
+            <td><span class={`badge ${provenance(record)}`}>{display(record.source_type, "unknown")}</span></td>
+            <td><span class={`badge ${display(record.confidence, "unknown")}`}>{display(record.confidence, "unknown")}</span></td>
+            <td>{display(record.status)}</td>
+            <td class="mono">{when(record.checked_at)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {data.benchmarks.length === 0 && <div class="empty">暂无 benchmark 数据。</div>}
+
+  <h2>429 / Rate limit / Account &amp; response issues（community reports）</h2>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Provider</th><th>Risk</th><th>Summary</th>
+          <th>Source type</th><th>Confidence</th><th>Reproduced</th><th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.community.map((record) => (
+          <tr>
+            <td class="mono">{when(record.occurred_at || record.checked_at)}</td>
+            <td>{record.provider ? <a href={href(`providers/${record.provider}/`)}>{record.provider}</a> : "—"}</td>
+            <td><span class="badge">{display(record.risk_type)}</span></td>
+            <td class="wrap-cell">{display(record.summary)}</td>
+            <td><span class={`badge ${provenance({ source_type: record.source_type })}`}>{display(record.source_type)}</span></td>
+            <td><span class={`badge ${display(record.confidence, "unknown")}`}>{display(record.confidence)}</span></td>
+            <td>{display(record.reproduced)}</td>
+            <td>{record.url ? <a href={record.url} rel="noopener">source</a> : "—"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {data.community.length === 0 && <div class="empty">暂无社区反馈记录。</div>}
+
+  <p class="note small">社区报告不会自动升级为事实；每条都标注 confidence（high / medium / low）。</p>
+</Base>

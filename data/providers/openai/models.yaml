@@ -1,0 +1,37 @@
+# 结构示例模板 — 未填入任何已核实的模型能力数据。
+# 本文件记录「该 Provider 实际暴露的模型能力」，是 Provider-specific 的：
+# 同一 model_id 在不同 Provider 下可能有不同 context / max output / 倍率 / 限流 / 可用性。
+provider: openai
+notes: 结构示例模板。未填入任何已核实数据。
+checked_at: "2026-09-23T10:30:00+08:00"
+models:
+  - model_id: example-model
+    display_name: Example Model (Template)
+    model_family: null
+    context_window: null
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: unknown
+    aliases: null
+    multipliers:
+      - plan: example-coding-plan
+        multiplier: null
+        note: 倍率按 Plan 记录，不要写成模型全局属性
+    availability:
+      - plan: example-coding-plan
+        available: null
+        note: 未知，不要猜测
+    rate_limits: null
+    notes: 结构示例模板。
+    checked_at: "2026-09-23T10:30:00+08:00"

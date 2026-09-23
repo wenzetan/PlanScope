@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import { data } from "../lib/data.js";
+import { display, money, cny, statusBadge, when } from "../lib/format.js";
+
+const providerOptions = [...new Set(data.plans.map((p) => p.provider))].sort();
+const typeOptions = [...new Set(data.plans.flatMap((p) => p.type || []))].sort();
+
+const rows = data.plans.map((plan) => {
+  const compat = plan.compatibility || {};
+  const compatSummary = Object.entries(compat)
+    .map(([key, value]) => `${key}: ${value ?? "unknown"}`)
+    .join(" · ");
+  const search = [plan.name, plan.id, plan.provider, plan.provider_name, ...(plan.type || []), compatSummary]
+    .join(" ")
+    .toLowerCase();
+  return { plan, search, compatSummary };
+});
+---
+
+<Base title="Plans" current="plans/">
+  <h1>Plans</h1>
+  <p class="lead">核心对比页。价格保留原始币种；CNY 为派生值；额度中的厂商原话（Unlimited / Fair Use 等）原样展示。</p>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="搜索 plan / provider / 兼容性…" aria-label="Search plans" />
+    <select id="f-provider" aria-label="Filter by provider">
+      <option value="">全部 Provider</option>
+      {providerOptions.map((id) => <option value={id}>{id}</option>)}
+    </select>
+    <select id="f-type" aria-label="Filter by plan type">
+      <option value="">全部类型</option>
+      {typeOptions.map((type) => <option value={type}>{type}</option>)}
+    </select>
+    <select id="f-status" aria-label="Filter by status">
+      <option value="">全部状态</option>
+      {[...new Set(data.plans.map((p) => p.status))].sort().map((s) => <option value={s}>{s}</option>)}
+    </select>
+    <span class="count" id="count">{rows.length} / {rows.length} plans</span>
+  </div>
+
+  <div class="table-scroll">
+    <table id="plans-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="provider">Provider</th>
+          <th class="sortable" data-sort="name">Plan</th>
+          <th>Type</th>
+          <th class="sortable" data-sort="status">Status</th>
+          <th class="sortable" data-sort="monthly">Monthly (original)</th>
+          <th class="sortable" data-sort="monthly-cny">Monthly (CNY)</th>
+          <th>Annual</th>
+          <th>Token / rolling quota</th>
+          <th>Coding / Agent compatibility</th>
+          <th>Last checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ plan, search, compatSummary }) => (
+          <tr
+            data-search={search}
+            data-provider={plan.provider || ""}
+            data-type={(plan.type || []).join(",")}
+            data-status={plan.status || "unknown"}
+            data-name={(plan.name || "").toLowerCase()}
+            data-monthly={plan.price_view.monthly ?? ""}
+            data-monthly-cny={plan.price_view.monthly_cny ?? ""}
+          >
+            <td>{display(plan.provider_name, plan.provider)}</td>
+            <td class="wrap-cell">
+              {display(plan.name)}
+              <div class="mono small muted">{plan.provider}/{plan.id}</div>
+            </td>
+            <td>{display(plan.type)}</td>
+            <td><span class={`badge ${statusBadge(plan.status).cls}`}>{statusBadge(plan.status).label}</span></td>
+            <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
+            <td>
+              {cny(plan.price_view.monthly_cny)}
+              {plan.price_view.currency && plan.price_view.monthly !== null && plan.price_view.monthly_cny === null && (
+                <div class="small muted">not directly comparable</div>
+              )}
+            </td>
+            <td>{plan.price_view.annual !== null ? `${money(plan.price_view.annual, plan.price_view.currency)} / ${cny(plan.price_view.annual_cny)}` : "—"}</td>
+            <td class="wrap-cell">
+              {display(plan.quota_view.token)}{" "}
+              {(plan.quota_view.rolling_windows || []).length > 0 && (
+                <span class="mono small">[{(plan.quota_view.rolling_windows || []).join(", ")}]</span>
+              )}
+              {plan.quota_view.usage_policy && <div class="small">“{plan.quota_view.usage_policy}”</div>}
+            </td>
+            <td class="wrap-cell small">{display(compatSummary, "—")}</td>
+            <td class="mono">{when(plan.checked_at)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {rows.length === 0 && <div class="empty">暂无 Plan 数据（先运行 planscope export-site-data）。</div>}
+
+  <p class="note small">
+    兼容状态取值：full / partial / unofficial / unsupported / unknown —— “兼容 OpenAI API” 不等于 “完全兼容”。
+    无法诚实换算为单价的套餐会标记 <span class="mono">not directly comparable</span>，不强行估算。
+  </p>
+
+  <script>
+    const table = document.getElementById("plans-table");
+    if (table) {
+      const rows = Array.from(table.querySelectorAll("tbody tr"));
+      const q = document.getElementById("q");
+      const fp = document.getElementById("f-provider");
+      const ft = document.getElementById("f-type");
+      const fs = document.getElementById("f-status");
+      const count = document.getElementById("count");
+      const total = rows.length;
+
+      function apply() {
+        const text = (q && q.value ? q.value : "").trim().toLowerCase();
+        const provider = fp && fp.value ? fp.value : "";
+        const type = ft && ft.value ? ft.value : "";
+        const status = fs && fs.value ? fs.value : "";
+        let visible = 0;
+        for (const row of rows) {
+          const ok =
+            (!text || (row.dataset.search || "").includes(text)) &&
+            (!provider || row.dataset.provider === provider) &&
+            (!type || (row.dataset.type || "").split(",").includes(type)) &&
+            (!status || row.dataset.status === status);
+          row.style.display = ok ? "" : "none";
+          if (ok) visible += 1;
+        }
+        if (count) count.textContent = `${visible} / ${total} plans`;
+      }
+
+      for (const el of [q, fp, ft, fs]) {
+        if (el) el.addEventListener("input", apply);
+      }
+
+      let sortKey = "";
+      let sortAsc = true;
+      for (const th of table.querySelectorAll("th.sortable")) {
+        th.addEventListener("click", () => {
+          const key = th.dataset.sort || "";
+          sortAsc = sortKey === key ? !sortAsc : true;
+          sortKey = key;
+          const sorted = [...rows].sort((a, b) => {
+            const av = a.dataset[key] ?? "";
+            const bv = b.dataset[key] ?? "";
+            const an = parseFloat(av);
+            const bn = parseFloat(bv);
+            let result;
+            if (!Number.isNaN(an) && !Number.isNaN(bn) && av !== "" && bv !== "") {
+              result = an - bn;
+            } else {
+              result = String(av).localeCompare(String(bv));
+            }
+            return sortAsc ? result : -result;
+          });
+          const tbody = table.querySelector("tbody");
+          if (tbody) for (const row of sorted) tbody.appendChild(row);
+        });
+      }
+    }
+  </script>
+</Base>

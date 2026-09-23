@@ -1,0 +1,42 @@
+---
+import Base from "../layouts/Base.astro";
+import { data } from "../lib/data.js";
+import { display, when } from "../lib/format.js";
+
+const dates = [...new Set(data.changes.map((c) => c.date || "unknown"))].sort().reverse();
+const byDate = new Map(dates.map((d) => [d, data.changes.filter((c) => (c.date || "unknown") === d)]));
+---
+
+<Base title="Changes" current="changes/">
+  <h1>Changes</h1>
+  <p class="lead">价格、额度、模型与政策的历史变化。数据来源于结构化历史数据或 snapshot diff —— 不解析 Git commit message。</p>
+
+  {data.changes.length === 0 && <div class="empty">暂无变化记录（data/changes/）。</div>}
+
+  {[...byDate.entries()].map(([date, changes]) => (
+    <section class="changes-day">
+      <h2 class="mono">{date}</h2>
+      {changes.flatMap((change) =>
+        (change.entries || []).map((entry) => (
+          <div class="change-entry">
+            <div>
+              <span class={`badge ${entry.kind || "unknown"}`}>{display(entry.kind, "changed")}</span>{" "}
+              <strong>{display(entry.provider)}</strong>
+              {entry.plan && <span class="mono small muted"> / {entry.plan}</span>}
+              {entry.field && <span class="muted small"> — {entry.field}</span>}
+            </div>
+            <div class="wrap-cell">{display(entry.summary)}</div>
+            {(entry.before !== null || entry.after !== null) && entry.before !== entry.after && (
+              <div class="delta">
+                {display(entry.before)} → <strong>{display(entry.after)}</strong>
+              </div>
+            )}
+            <div class="small muted">
+              {display(change.notes)} · checked {when(entry.checked_at)}
+            </div>
+          </div>
+        ))
+      )}
+    </section>
+  ))}
+</Base>

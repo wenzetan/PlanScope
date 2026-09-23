@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+import { data } from "../lib/data.js";
+import { display, money, cny, when } from "../lib/format.js";
+
+const rate = data.exchange_rate.usd_cny;
+const rows = data.plans.map((plan) => ({
+  plan,
+  sortCny: plan.price_view.monthly_cny ?? Number.POSITIVE_INFINITY,
+}));
+rows.sort((a, b) => a.sortCny - b.sortCny);
+---
+
+<Base title="Pricing" current="pricing/">
+  <h1>Pricing</h1>
+  <p class="lead">成本比较视图：原始价格 → 人民币等价 → 年度成本 → 有效 Token 成本。</p>
+
+  <div class="note">
+    换算规则：<span class="mono">CNY = USD × {rate ?? "—"}</span>，
+    系数来自 <span class="mono">config/exchange_rate.yaml</span>（每日 D-7 ~ D-1 七日均值，代码中从不硬编码）。
+    这是用于横向比较的近似值，不是实时支付 / 结算汇率。
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Plan</th>
+          <th>Original price</th>
+          <th>CNY equivalent</th>
+          <th>Annual (original)</th>
+          <th>Annual (CNY)</th>
+          <th>Effective RMB / 1M input</th>
+          <th>Effective RMB / 1M output</th>
+          <th>Promotion</th>
+          <th>Last checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ plan }) => {
+          const comparable = plan.token_rules && plan.token_rules.directly_comparable;
+          const inputCost = plan.token_rules && plan.token_rules.directly_comparable === false
+            ? "not directly comparable"
+            : "—";
+          return (
+            <tr>
+              <td>{display(plan.provider_name, plan.provider)}</td>
+              <td class="wrap-cell">{display(plan.name)}</td>
+              <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
+              <td>{cny(plan.price_view.monthly_cny)}</td>
+              <td>{money(plan.price_view.annual, plan.price_view.currency)}</td>
+              <td>{cny(plan.price_view.annual_cny)}</td>
+              <td>{inputCost}</td>
+              <td>{inputCost}</td>
+              <td class="wrap-cell small">{display(plan.price_view.promotion, "—")}</td>
+              <td class="mono">{when(plan.checked_at)}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  {rows.length === 0 && <div class="empty">暂无价格数据。</div>}
+
+  <ul class="plain small muted">
+    <li>原始价格与币种永不被覆盖；促销价单独记录，不写入标准价字段。</li>
+    <li>人民币列全部为派生值，可由原始价格 + 配置汇率重新计算。</li>
+    <li>无法换算为每百万 Token 单价时标记 <span class="mono">not directly comparable</span>，不强行估算。</li>
+    <li>Effective Token Cost 需要已核实的 Token 额度与模型倍率；数据不完整时显示 —，不猜测。</li>
+  </ul>
+</Base>

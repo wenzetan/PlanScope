@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import { href } from "../../lib/base.js";
+import { data } from "../../lib/data.js";
+import { display, statusBadge, when } from "../../lib/format.js";
+---
+
+<Base title="Providers" current="providers/">
+  <h1>Providers</h1>
+  <p class="lead">文件系统即 Provider 注册表：<span class="mono">data/providers/&lt;id&gt;/</span> 目录存在，该 Provider 即存在。</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Status</th><th>Website</th><th>Plans</th><th>Models</th><th>Last checked</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.providers.map((provider) => (
+          <tr>
+            <td class="mono"><a href={href(`providers/${provider.id}/`)}>{display(provider.id)}</a></td>
+            <td><a href={href(`providers/${provider.id}/`)}>{display(provider.name)}</a></td>
+            <td><span class={`badge ${statusBadge(provider.status).cls}`}>{statusBadge(provider.status).label}</span></td>
+            <td>{provider.website ? <a href={provider.website} rel="noopener">{provider.website.replace("https://", "")}</a> : "—"}</td>
+            <td>{(provider.plan_ids || []).length}</td>
+            <td>{provider.model_count ?? 0}</td>
+            <td class="mono">{when(provider.checked_at)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {data.providers.length === 0 && <div class="empty">暂无 Provider 数据（先运行 planscope export-site-data）。</div>}
+</Base>

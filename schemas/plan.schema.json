@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planscope.local/schemas/plan.schema.json",
+  "title": "PlanScope Plan",
+  "description": "One plan = one YAML file at data/providers/<provider>/plans/<id>.yaml. Logical id is <provider>/<id>; plan ids only need to be unique within a provider. Raw facts first: pricing keeps the original settlement currency and is never overwritten by converted or promotional values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "provider", "type", "status", "checked_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable slug, must equal the file name. Do not rename for display-name changes."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "provider": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Must equal the parent directory id under data/providers/."
+    },
+    "type": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["coding_plan", "token_plan", "agent_plan", "api_plan", "hybrid"]
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "beta", "invite_only", "deprecated", "discontinued", "unknown"],
+      "description": "Deprecated/discontinued plans stay in the repo with effective_until; only erroneous entries are deleted."
+    },
+    "purchase_url": { "type": ["string", "null"] },
+
+    "pricing": { "$ref": "#/$defs/pricing" },
+    "quota": { "$ref": "#/$defs/quota" },
+    "token_rules": { "$ref": "#/$defs/tokenRules" },
+
+    "models": {
+      "type": ["array", "null"],
+      "items": { "type": "string" },
+      "description": "Provider-scoped model ids available under this plan."
+    },
+    "compatibility": { "$ref": "#/$defs/compatibility" },
+
+    "source_refs": {
+      "type": ["array", "null"],
+      "items": { "type": "string" },
+      "description": "References to source ids in the provider's sources.yaml (avoids duplicating shared URLs)."
+    },
+    "sources": {
+      "type": ["array", "null"],
+      "description": "Plan-specific evidence. Shared official URLs live in sources.yaml.",
+      "items": { "$ref": "#/$defs/source" }
+    },
+
+    "notes": { "type": ["string", "null"] },
+    "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_from": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_until": { "$ref": "#/$defs/iso8601OrNull" }
+  },
+
+  "$defs": {
+    "iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 timestamp, e.g. 2026-09-23T10:30:00+08:00"
+    },
+    "iso8601OrNull": {
+      "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "checked_at"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["official", "official_pricing", "official_docs", "official_api_docs", "official_terms", "official_privacy", "official_model_docs", "official_faq", "official_announcement", "official_github", "github", "reddit", "discord", "telegram", "forum", "blog", "user_test", "other"]
+        },
+        "url": { "type": "string", "minLength": 1 },
+        "archived_url": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+
+    "priceValue": {
+      "description": "Raw numeric price in pricing.currency. Never store converted or promotional values here.",
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "pricing": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["currency"],
+      "properties": {
+        "currency": {
+          "type": ["string", "null"],
+          "description": "ISO 4217 code of the ORIGINAL settlement currency, e.g. USD. CNY conversion is derived and never stored here."
+        },
+        "monthly": { "$ref": "#/$defs/priceValue" },
+        "annual": { "$ref": "#/$defs/priceValue" },
+        "first_purchase": { "$ref": "#/$defs/priceValue" },
+        "renewal": { "$ref": "#/$defs/priceValue" },
+        "promotion": {
+          "type": ["string", "null"],
+          "description": "Temporary promotion description. Promotions must NOT overwrite standard prices."
+        },
+        "regional_differences": { "type": ["string", "null"] },
+        "tax_note": { "type": ["string", "null"] },
+        "auto_renew": { "type": ["boolean", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    },
+
+    "quotaValue": {
+      "description": "Quota recorded verbatim. Vague vendor wording ('Unlimited', 'High Usage', 'Fair Use', 'Reasonable Usage') is stored as a string exactly as written; null means unknown.",
+      "type": ["number", "string", "null"]
+    },
+    "quota": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "token": { "$ref": "#/$defs/quotaValue" },
+        "requests": { "$ref": "#/$defs/quotaValue" },
+        "messages": { "$ref": "#/$defs/quotaValue" },
+        "agent_tasks": { "$ref": "#/$defs/quotaValue" },
+        "coding_tasks": { "$ref": "#/$defs/quotaValue" },
+        "rolling_windows": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "Rolling windows verbatim, e.g. ['3 hours', '5 hours']."
+        },
+        "daily": { "$ref": "#/$defs/quotaValue" },
+        "weekly": { "$ref": "#/$defs/quotaValue" },
+        "monthly": { "$ref": "#/$defs/quotaValue" },
+        "burst": { "$ref": "#/$defs/quotaValue" },
+        "rpm": { "$ref": "#/$defs/quotaValue" },
+        "tpm": { "$ref": "#/$defs/quotaValue" },
+        "concurrency": { "$ref": "#/$defs/quotaValue" },
+        "usage_policy": {
+          "type": ["string", "null"],
+          "description": "Vendor wording such as 'Unlimited', 'Fair Use' — record verbatim."
+        },
+        "limit_type": { "type": "string", "enum": ["soft", "hard", "unknown"] },
+        "actual_limit_known": {
+          "type": ["boolean", "null"],
+          "description": "false/null when the real enforced limit is not disclosed."
+        },
+        "note": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    },
+
+    "tokenRules": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "input": { "$ref": "#/$defs/quotaValue" },
+        "output": { "$ref": "#/$defs/quotaValue" },
+        "cached_input": { "$ref": "#/$defs/quotaValue" },
+        "cache_write": { "$ref": "#/$defs/quotaValue" },
+        "cache_read": { "$ref": "#/$defs/quotaValue" },
+        "reasoning": { "$ref": "#/$defs/quotaValue" },
+        "tool": { "$ref": "#/$defs/quotaValue" },
+        "image": { "$ref": "#/$defs/quotaValue" },
+        "audio": { "$ref": "#/$defs/quotaValue" },
+        "multimodal": { "$ref": "#/$defs/quotaValue" },
+        "multiplier": { "type": ["number", "null"] },
+        "model_multipliers": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["model", "multiplier"],
+            "properties": {
+              "model": { "type": "string" },
+              "multiplier": { "type": ["number", "null"] },
+              "note": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "shared_quota": { "type": ["boolean", "null"] },
+        "hidden_multiplier_known": { "type": ["boolean", "null"] },
+        "can_backtrack_usage": { "type": ["boolean", "null"] },
+        "directly_comparable": {
+          "type": ["boolean", "null"],
+          "description": "false when this plan cannot be honestly converted to a per-token unit price (not directly comparable)."
+        },
+        "note": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
+      }
+    },
+
+    "compatibility": {
+      "type": ["object", "null"],
+      "description": "Coding / Agent surface compatibility. 'compatible with OpenAI API' never implies 'fully compatible'. Extra surface keys are allowed.",
+      "additionalProperties": {
+        "type": ["string", "null"],
+        "enum": ["full", "partial", "unofficial", "unsupported", "unknown", null]
+      },
+      "properties": {
+        "opencode": { "$ref": "#/$defs/compatValue" },
+        "claude_code": { "$ref": "#/$defs/compatValue" },
+        "codex": { "$ref": "#/$defs/compatValue" },
+        "pi": { "$ref": "#/$defs/compatValue" },
+        "openclaw": { "$ref": "#/$defs/compatValue" },
+        "hermes": { "$ref": "#/$defs/compatValue" },
+        "openai_compatible_api": { "$ref": "#/$defs/compatValue" },
+        "anthropic_compatible_api": { "$ref": "#/$defs/compatValue" },
+        "responses_api": { "$ref": "#/$defs/compatValue" },
+        "chat_completions": { "$ref": "#/$defs/compatValue" },
+        "mcp": { "$ref": "#/$defs/compatValue" },
+        "tool_calling": { "$ref": "#/$defs/compatValue" },
+        "computer_use": { "$ref": "#/$defs/compatValue" },
+        "browser_use": { "$ref": "#/$defs/compatValue" },
+        "long_running_agent": { "$ref": "#/$defs/compatValue" },
+        "background_agent": { "$ref": "#/$defs/compatValue" },
+        "subagent": { "$ref": "#/$defs/compatValue" },
+        "parallel_agent": { "$ref": "#/$defs/compatValue" },
+        "web_search": { "$ref": "#/$defs/compatValue" },
+        "code_execution": { "$ref": "#/$defs/compatValue" },
+        "roo_code": { "$ref": "#/$defs/compatValue" },
+        "cline": { "$ref": "#/$defs/compatValue" },
+        "continue": { "$ref": "#/$defs/compatValue" },
+        "cursor": { "$ref": "#/$defs/compatValue" }
+      }
+    },
+    "compatValue": {
+      "type": ["string", "null"],
+      "enum": ["full", "partial", "unofficial", "unsupported", "unknown", null]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# PlanScope 结构示例模板 — 风险与社区反馈记录。
+# 社区报告不得直接作为事实，必须标注 source_type 与 confidence。
+id: example-rate-limit
+provider: openai
+plan: example-coding-plan
+model: null
+risk_type: rate_limit
+summary: 结构示例模板，未填入任何已核实的社区反馈。
+occurred_at: null
+source_type: other
+url: null
+confidence: low
+reproduced: null
+notes: 仅用于展示数据结构。
+sources: []
+checked_at: "2026-09-23T10:30:00+08:00"

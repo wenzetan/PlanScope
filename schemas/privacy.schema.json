@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planscope.local/schemas/privacy.schema.json",
+  "title": "PlanScope Privacy Policy Record",
+  "description": "Provider-level privacy and data-handling policy at data/providers/<provider>/privacy.yaml. Every policy field carries its own source and checked_at — never fill fields from second-hand information alone. Use value: null for unknown. Plan-specific overrides may live in the plan notes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider", "checked_at"],
+  "properties": {
+    "provider": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Must equal the parent directory id under data/providers/."
+    },
+    "scope": {
+      "type": ["string", "null"],
+      "enum": ["api", "web", "coding_plan", "general", null],
+      "description": "Set when this record covers only one product surface; api/web/coding plans may differ."
+    },
+    "policy_document_url": { "type": ["string", "null"] },
+    "terms_url": { "type": ["string", "null"] },
+
+    "prompt_retention": { "$ref": "#/$defs/policyField" },
+    "output_retention": { "$ref": "#/$defs/policyField" },
+    "log_retention_days": { "$ref": "#/$defs/policyField" },
+    "used_for_training": { "$ref": "#/$defs/policyField" },
+    "training_default_opt_in": { "$ref": "#/$defs/policyField" },
+    "opt_out_supported": { "$ref": "#/$defs/policyField" },
+    "zero_data_retention": { "$ref": "#/$defs/policyField" },
+    "enterprise_data_isolation": { "$ref": "#/$defs/policyField" },
+    "third_party_model_routing": { "$ref": "#/$defs/policyField" },
+    "subprocessors": { "$ref": "#/$defs/policyField" },
+    "data_region": { "$ref": "#/$defs/policyField" },
+    "cross_border_transfer": { "$ref": "#/$defs/policyField" },
+    "api_web_policy_differs": { "$ref": "#/$defs/policyField" },
+    "coding_api_policy_differs": { "$ref": "#/$defs/policyField" },
+    "sensitive_code_allowed": { "$ref": "#/$defs/policyField" },
+    "commercial_code_allowed": { "$ref": "#/$defs/policyField" },
+    "automated_agent_allowed": { "$ref": "#/$defs/policyField" },
+    "account_sharing_forbidden": { "$ref": "#/$defs/policyField" },
+    "proxy_forwarding_forbidden": { "$ref": "#/$defs/policyField" },
+    "api_gateway_restricted": { "$ref": "#/$defs/policyField" },
+    "coding_agent_tools_restricted": {
+      "$ref": "#/$defs/policyField",
+      "description": "Restrictions targeting automated coding agents such as OpenClaw / Claude Code / OpenCode style callers."
+    },
+
+    "notes": { "type": ["string", "null"] },
+    "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_from": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_until": { "$ref": "#/$defs/iso8601OrNull" }
+  },
+  "$defs": {
+    "iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 timestamp, e.g. 2026-09-23T10:30:00+08:00"
+    },
+    "iso8601OrNull": {
+      "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }]
+    },
+    "policyField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "source", "checked_at"],
+      "description": "A single privacy fact. value: null = unknown (do not guess). source must be a direct URL (official policy/ToS preferred); second-hand claims belong in community/ instead.",
+      "properties": {
+        "value": { "type": ["string", "boolean", "number", "array", "null"] },
+        "source": {
+          "type": ["string", "null"],
+          "description": "Direct URL of the evidence. null only when value is also null (unknown)."
+        },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+        "note": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

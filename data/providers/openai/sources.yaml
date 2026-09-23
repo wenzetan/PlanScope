@@ -1,0 +1,18 @@
+# Provider 级常用来源注册表（sources.yaml）。
+# Plan 通过 source_refs 引用这里的 id，避免几十个套餐重复复制同一 URL。
+# 推荐 id：pricing / docs / api_docs / privacy / terms / models / faq / announcements / github / status。
+# 未查证的条目不要填写，不要猜测 URL。
+- id: website
+  type: official
+  url: https://openai.com
+  archived_url: null
+  checked_at: "2026-09-23T10:30:00+08:00"
+  note: Official homepage (structure example only)
+  used_for: null
+- id: docs
+  type: official_docs
+  url: https://platform.openai.com/docs
+  archived_url: null
+  checked_at: "2026-09-23T10:30:00+08:00"
+  note: Official documentation (structure example only)
+  used_for: null

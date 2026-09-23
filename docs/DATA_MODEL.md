@@ -1,0 +1,355 @@
+# Data Model
+
+PlanScope 使用 **Git 仓库即数据库（Repository as database）**：所有研究数据都是 `data/` 下的结构化 YAML，
+用 JSON Schema 校验。**不引入任何数据库**（PostgreSQL / MySQL / SQLite / Redis / Supabase / 托管数据库均不使用），
+GitHub Pages 只读取仓库数据生成静态页面。
+
+选择 YAML 的原因：Git diff 清晰、人工可读性高、Agent 易修改、后续容易导入其他存储（未来若真的需要）。
+
+## Provider-centric 目录（数据边界）
+
+```text
+data/
+├── providers/
+│   └── <provider>/                 # 一个 Provider ≈ 一个目录（Agent 的修改边界）
+│       ├── provider.yaml           # Provider 元数据（仅 Provider 层信息）
+│       ├── sources.yaml            # 常用官方来源注册表（YAML list）
+│       ├── models.yaml             # 该 Provider 实际暴露的模型及能力
+│       ├── privacy.yaml            # 隐私与数据政策（逐字段来源）
+│       ├── plans/
+│       │   └── <plan-id>.yaml      # 1 plan = 1 file
+│       ├── benchmarks/
+│       │   └── <id>.yaml
+│       └── community/
+│           └── <id>.yaml
+├── changes/<year>/<month>/
+│   └── <date>-<slug>.yaml          # 结构化变更记录（非 commit message 解析）
+└── models/                         # 可选 canonical model index（预留，不覆盖 provider 数据）
+```
+
+### 关键规则
+
+| 规则 | 说明 |
+| --- | --- |
+| 文件系统即注册表 | `data/providers/<id>/provider.yaml` 存在 ⇒ 该 Provider 存在，**没有第二份 `config/providers.yaml` 索引** |
+| 1 plan = 1 文件 | diff 清晰、Agent 修改范围小、减少并发冲突、易回溯与删除 |
+| 逻辑 ID | Plan 为 `<provider>/<plan-id>`（如 `xiaomi/mimo-token-plan`），`id` **只需在同 Provider 内唯一** |
+| 文件名稳定 | 文件名 = `id` = 稳定标识符；展示名称改了**不要重命名文件**（改 `name` 即可） |
+| 引用检查 | plan 的 `source_refs` 必须存在于本 Provider 的 `sources.yaml`；models / benchmarks / community 中的 `plan` 必须是本 Provider 的 plan |
+| 边界清晰 | `data/providers/<id>/` 下未知 YAML 文件或未知子目录会被校验拒绝 |
+
+## Schema 映射
+
+| 文件 | Schema |
+| --- | --- |
+| `provider.yaml` | `provider.schema.json` |
+| `plans/*.yaml` | `plan.schema.json` |
+| `models.yaml` | `provider-models.schema.json` |
+| `privacy.yaml` | `privacy.schema.json` |
+| `sources.yaml` | `sources.schema.json`（顶层为 list） |
+| `benchmarks/*.yaml` | `benchmark.schema.json` |
+| `community/*.yaml` | `community.schema.json` |
+| `changes/**/*.yaml` | 暂只做 YAML 解析检查（Phase 3 可加 schema） |
+
+`planscope validate` 校验：schema → 文件名与 `id` 一致 → Provider 目录一致性 → 引用完整性 → `config/exchange_rate.yaml`（恰好只有正数 `usd_cny`）。
+
+## 通用字段
+
+```yaml
+checked_at: "2026-09-23T10:30:00+08:00"   # ISO 8601；字段必须存在，未核查可为 null
+effective_from: null                       # 记录开始生效
+effective_until: null                      # 记录失效（历史不静默覆盖）
+notes: null
+```
+
+**未知就是未知**：未查证一律 `null` / `unknown`，不要编造。
+
+## Provider（`provider.yaml`）
+
+```yaml
+id: xiaomi                  # = 目录名，稳定 slug
+name: Xiaomi                # 展示名称，可独立修改
+legal_name: null
+website: null               # 官方网站
+docs: null
+purchase_url: null
+status: unknown             # active / beta / invite_only / deprecated / unknown
+regions: null
+notes: null
+checked_at: "..."
+```
+
+不把 `plans:` 嵌套进来；Plan 独立存在于 `plans/`。Provider 级来源在 `sources.yaml`。
+
+## Sources（`sources.yaml`，YAML list）
+
+```yaml
+- id: pricing                # 本 Provider 内唯一 slug
+  type: official_pricing     # official / official_pricing / official_docs / official_terms /
+                             # official_privacy / official_model_docs / official_faq /
+                             # official_announcement / official_github / github / reddit / ...
+  url: https://...
+  archived_url: null
+  checked_at: "..."
+  note: null
+  used_for: null
+```
+
+Plan 通过 `source_refs: [pricing, docs]` 引用，避免重复复制同一 URL；Plan 自己特有的证据写 `sources:`。
+
+## Plan（`plans/<id>.yaml`）
+
+```yaml
+id: mimo-token-plan          # = 文件名，稳定
+name: MiMo Token Plan        # 展示名（改名不改文件名）
+provider: xiaomi             # 必须 = 目录名
+type:
+  - token_plan               # coding_plan / token_plan / agent_plan / api_plan / hybrid（可多个）
+status: unknown              # active / beta / invite_only / deprecated / discontinued / unknown
+
+pricing:
+  currency: null             # 原始结算币种（如 USD）；CNY 是派生值，绝不写这里
+  monthly: null              # 原始价格；促销写 promotion，绝不覆盖
+  annual: null
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "..."
+
+quota:
+  token: null                # 数字，或厂商原文："Unlimited" / "High Usage" / "Fair Use" 原样记录
+  requests: null
+  messages: null
+  agent_tasks: null
+  coding_tasks: null
+  rolling_windows: []        # ["3 hours", "5 hours"]
+  daily: null
+  weekly: null
+  monthly: null
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null         # 厂商模糊表述原话
+  limit_type: unknown        # soft / hard / unknown
+  actual_limit_known: null   # 实际强制限制未知 → false / null
+  note: null
+  checked_at: "..."
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null    # [{model: ..., multiplier: ...}]
+  shared_quota: null
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null  # false ⇒ not directly comparable，不强行估算
+  note: null
+  checked_at: "..."
+
+models: []                   # 本 Plan 可用的 provider 级 model_id
+
+compatibility:               # 兼容 ≠ 完全兼容；任意 surface 键都可扩展
+  opencode: unknown          # full / partial / unofficial / unsupported / unknown
+  claude_code: unknown
+  codex: unknown
+  pi: unknown
+  openclaw: unknown
+  hermes: unknown
+  openai_compatible_api: unknown
+  anthropic_compatible_api: unknown
+  responses_api: unknown
+  chat_completions: unknown
+  mcp: unknown
+  tool_calling: unknown
+  computer_use: unknown
+  browser_use: unknown
+  long_running_agent: unknown
+  background_agent: unknown
+  subagent: unknown
+  parallel_agent: unknown
+  web_search: unknown
+  code_execution: unknown
+  roo_code: unknown
+  cline: unknown
+  continue: unknown
+  cursor: unknown
+
+source_refs: [pricing, docs] # 引用本 Provider sources.yaml 的 id
+sources: []                  # 本 Plan 特有证据
+
+notes: null
+checked_at: "..."
+effective_from: null
+effective_until: null        # 下线时设 status: deprecated/discontinued + effective_until
+```
+
+### 原始值优先（Raw facts first）
+
+- 原始价格 + 币种永不被覆盖；**人民币只在展示层由 `config/exchange_rate.yaml` 派生**，不写入 YAML。
+- 促销价写 `pricing.promotion`，不覆盖 `pricing.monthly`。
+- 无法换算单价 → `directly_comparable: false`，报告中显示 `not directly comparable`。
+
+## Models（`models.yaml`，Provider-specific）
+
+```yaml
+provider: xiaomi             # = 目录名
+notes: null
+checked_at: "..."
+models:
+  - model_id: mimo-7b        # 该 Provider 实际暴露的标识符（可能是 alias）
+    display_name: null
+    model_family: null
+    context_window: null     # 该 Provider 下的值，不假设与其他 Provider 相同
+    max_output: null
+    input_modalities: null   # text / image / audio / video
+    output_modalities: null  # text / image / audio
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: unknown          # active / beta / deprecated / unknown
+    aliases: null
+    multipliers:             # 倍率按 Plan 记录，不是模型全局属性
+      - plan: mimo-token-plan
+        multiplier: null
+    availability:
+      - plan: mimo-token-plan
+        available: null
+    rate_limits: null
+    notes: null
+    checked_at: "..."
+```
+
+`data/models/` 仅作为未来可选的 canonical index，**不能覆盖** Provider 暴露的实际能力。
+
+## Privacy（`privacy.yaml`，Provider 级）
+
+字段与 `policyField` 结构（见 `schemas/privacy.schema.json`）：
+
+```yaml
+provider: anthropic           # = 目录名
+scope: null                   # api / web / coding_plan / general（仅覆盖单一面时填写）
+policy_document_url: null
+terms_url: null
+used_for_training:
+  value: null                 # 未知 → null，不要猜
+  source: null                # 直接证据 URL；value 非 null 时 source 必须存在
+  checked_at: "..."
+  note: null
+# 其余字段同构：
+# prompt_retention / output_retention / log_retention_days / training_default_opt_in /
+# opt_out_supported / zero_data_retention / enterprise_data_isolation /
+# third_party_model_routing / subprocessors / data_region / cross_border_transfer /
+# api_web_policy_differs / coding_api_policy_differs / sensitive_code_allowed /
+# commercial_code_allowed / automated_agent_allowed / account_sharing_forbidden /
+# proxy_forwarding_forbidden / api_gateway_restricted / coding_agent_tools_restricted
+notes: null
+checked_at: "..."
+```
+
+Plan 级特殊政策写在 Plan 的 `notes` 或未来扩展字段中（不复制整份 privacy 记录）。
+
+## Benchmarks（`benchmarks/<id>.yaml`）
+
+```yaml
+id: 2026-09-23-ttft-v4.1     # = 文件名
+provider: scnet               # 若填写必须 = 目录名
+plan: null                    # 本 Provider 的 plan id
+model: null
+metric: ttft                  # ttft / tps / decode_tps / prefill / latency / p50 / p95 /
+                              # p99 / concurrency / stability / rate_429 / timeout / error_rate
+value: null
+unit: ms
+status: planned               # measured / planned / unknown
+source_type: unknown          # official / measured / community_reported / estimated / unknown
+confidence: unknown           # high / medium / low / unknown
+conditions: { region: null, concurrency: null, payload: null, note: null }
+notes: null
+sources: []
+checked_at: "..."
+```
+
+**四类来源绝不混在同一个数字里。**
+
+## Community（`community/<id>.yaml`）
+
+```yaml
+id: 2026-09-429-reports       # = 文件名
+provider: scnet
+plan: null
+model: null
+risk_type: "429"              # 429 / rate_limit / account_ban / account_suspension /
+                              # model_downgrade / silent_model_switching / routing / capacity /
+                              # peak_degradation / token_accounting / billing /
+                              # response_corruption / terms_enforcement
+summary: ...
+occurred_at: null
+source_type: reddit           # official / github / reddit / discord / telegram / forum / blog / user_test / other
+url: null
+confidence: low               # high / medium / low —— 社区报告不得直接作为事实
+reproduced: null
+notes: null
+sources: []
+checked_at: "..."
+```
+
+## Changes（`changes/<year>/<month>/*.yaml`）
+
+```yaml
+date: "2026-09-23"
+entries:
+  - provider: xiaomi
+    plan: mimo-token-plan
+    model: null
+    kind: changed             # added / removed / changed
+    field: pricing.monthly
+    summary: "Monthly price: 49 → 59"
+    before: 49
+    after: 59
+    source_type: official
+    confidence: high
+    checked_at: "..."
+notes: null
+```
+
+来源于 snapshot diff 或结构化历史数据，**不解析 Git commit message**。Git 本身是审计记录（diff / history / blame / rollback），
+因此不另建数据库 audit log。
+
+## 汇率（`config/exchange_rate.yaml`）
+
+文件**只有一个键**：
+
+```yaml
+usd_cny: 6.70154
+```
+
+- 每日 CI 计算 D-7 ~ D-1（Asia/Shanghai）有效日值均值写入；不补周末、不插值、不取当天、无 retry/fallback。
+- 全项目 USD → CNY 的唯一配置来源；代码不硬编码、不多处定义、不实时联网。
+- 它是计算配置，不是动态研究数据：不需要 `checked_at` / `sources`，不建复杂 Schema（校验：恰好只有 `usd_cny` 且为正数）。
+
+## 站点数据导出
+
+```text
+data/**/*.yaml → planscope export-site-data → site/src/generated/site_data.json → Astro build → site/dist/
+```
+
+生成的 JSON 是**派生构建数据**（不提交 Git），事实源永远是 `data/**/*.yaml`；Pages 只是展示层，不允许反向写入（无 CMS / 登录 / 后台编辑）。

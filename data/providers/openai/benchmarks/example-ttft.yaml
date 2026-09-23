@@ -1,0 +1,25 @@
+# PlanScope 结构示例模板 — 性能记录。
+# status: planned 表示尚未实测；source_type 必须区分 official / measured / community_reported / estimated。
+id: example-ttft
+provider: openai
+plan: example-coding-plan
+model: example-model
+
+metric: ttft
+value: null
+unit: ms
+status: planned
+
+source_type: unknown
+confidence: unknown
+conditions:
+  region: null
+  concurrency: null
+  payload: null
+  note: null
+
+notes: 结构示例模板。未填入任何已核实数据。
+sources: []
+checked_at: "2026-09-23T10:30:00+08:00"
+effective_from: null
+effective_until: null

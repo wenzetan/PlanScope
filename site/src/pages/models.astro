@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { display, statusBadge, when } from "../lib/format.js";
+
+// model_id -> per-provider entries. Same model_id may differ across providers:
+// context / max output / multipliers / availability are never global.
+const byModelId = new Map();
+for (const model of data.models) {
+  const key = model.model_id || "(unknown)";
+  if (!byModelId.has(key)) byModelId.set(key, []);
+  byModelId.get(key).push(model);
+}
+const groups = [...byModelId.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<Base title="Models" current="models/">
+  <h1>Models</h1>
+  <p class="lead">回答“哪些 Plan 可以使用某个模型”。同一 model_id 在不同 Provider 下的能力、上下文、倍率与可用性分别记录，互不覆盖。</p>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="搜索 model / provider…" aria-label="Search models" />
+    <span class="count" id="count">{data.models.length} / {data.models.length} models</span>
+  </div>
+
+  {groups.length === 0 && <div class="empty">暂无模型数据（先运行 planscope export-site-data）。</div>}
+
+  {groups.map(([modelId, entries]) => (
+    <section class="model-group" data-search={`${modelId} ${entries.map((e) => `${e.provider} ${e.display_name || ""}`).join(" ")}`.toLowerCase()}>
+      <h2 class="mono">{modelId}</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Available from</th>
+              <th>Context</th>
+              <th>Max output</th>
+              <th>Multimodal</th>
+              <th>Reasoning</th>
+              <th>Tool calling</th>
+              <th>Multiplier</th>
+              <th>Quota behavior</th>
+              <th>Status</th>
+              <th>Last checked</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((model) => {
+              const availability = (model.availability || []).filter((a) => a.available);
+              const multipliers = (model.multipliers || [])
+                .map((m) => `${m.plan}: ${m.multiplier ?? "unknown"}`)
+                .join(" · ");
+              const input = (model.input_modalities || []).join("+");
+              return (
+                <tr>
+                  <td><a href={href(`providers/${model.provider}/`)}>{display(model.provider_name, model.provider)}</a></td>
+                  <td class="wrap-cell">
+                    {availability.length
+                      ? availability.map((a) => <div class="mono small">{model.provider}/{a.plan}</div>)
+                      : <span class="badge unknown">unknown</span>}
+                  </td>
+                  <td>{display(model.context_window)}</td>
+                  <td>{display(model.max_output)}</td>
+                  <td>{display(input, "—")}</td>
+                  <td>{display(model.reasoning)}</td>
+                  <td>{display(model.tool_calling)}</td>
+                  <td class="mono small">{display(multipliers, "—")}</td>
+                  <td class="small">{display(model.rate_limits, "unknown")}</td>
+                  <td><span class={`badge ${statusBadge(model.status).cls}`}>{statusBadge(model.status).label}</span></td>
+                  <td class="mono">{when(model.checked_at)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {entries.some((e) => e.notes) && <p class="small muted">{display(entries.find((e) => e.notes)?.notes)}</p>}
+    </section>
+  ))}
+
+  <script>
+    const q = document.getElementById("q");
+    const groups = Array.from(document.querySelectorAll(".model-group"));
+    const count = document.getElementById("count");
+    const total = groups.length;
+    function apply() {
+      const text = (q && q.value ? q.value : "").trim().toLowerCase();
+      let visible = 0;
+      for (const group of groups) {
+        const ok = !text || (group.dataset.search || "").includes(text);
+        group.style.display = ok ? "" : "none";
+        if (ok) visible += 1;
+      }
+      if (count) count.textContent = `${visible} / ${total} model groups`;
+    }
+    if (q) q.addEventListener("input", apply);
+  </script>
+</Base>

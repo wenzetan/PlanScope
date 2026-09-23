@@ -1,0 +1,95 @@
+---
+import Base from "../layouts/Base.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { cny, display } from "../lib/format.js";
+
+const stats = data.stats;
+const recentChanges = data.changes.slice(0, 3);
+
+const NAV = [
+  ["providers/", "Providers", "每个 Provider 的官方信息、套餐与来源"],
+  ["plans/", "Plans", "核心页面：筛选 / 搜索 / 排序所有套餐"],
+  ["models/", "Models", "模型在哪些 Provider / Plan 可用"],
+  ["pricing/", "Pricing", "原始价格、人民币换算与 Token 成本"],
+  ["privacy/", "Privacy", "Prompt 保留、训练使用、ZDR、自动化限制"],
+  ["reliability/", "Reliability", "429、超时、社区反馈（Measured / Official / Community）"],
+  ["changes/", "Changes", "价格、额度、模型与政策的历史变化"],
+  ["sources/", "Sources", "每个数字的出处与核查时间"],
+  ["methodology/", "Methodology", "数据处理与汇率计算方法"],
+];
+---
+
+<Base title="Overview">
+  <h1>{data.site.title}</h1>
+  <p class="lead">{data.site.tagline_zh} · {data.site.tagline_en}</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="num">{display(stats.generated_at ? stats.generated_at.slice(0, 16).replace("T", " ") : null)}</div>
+      <div class="label">最近成功更新（Asia/Shanghai）</div>
+    </div>
+    <div class="card">
+      <div class="num">{stats.providers}</div>
+      <div class="label">Providers</div>
+    </div>
+    <div class="card">
+      <div class="num">{stats.plans}</div>
+      <div class="label">Plans</div>
+    </div>
+    <div class="card">
+      <div class="num">{stats.models}</div>
+      <div class="label">Models</div>
+    </div>
+    <div class="card">
+      <div class="num">{data.exchange_rate.usd_cny !== null ? data.exchange_rate.usd_cny : "—"}</div>
+      <div class="label">USD/CNY 7 日均值（D-7 ~ D-1）</div>
+    </div>
+  </div>
+
+  <div class="note">
+    汇率由每日 CI 计算最近 7 个完整自然日的有效日值均值（不补周末、不插值、不取当日），
+    写入 <span class="mono">config/exchange_rate.yaml</span>；人民币价格均为派生值，原始币种价格始终保留。
+    完整方法见 <a href={href("methodology/")}>Methodology</a>。
+  </div>
+
+  {recentChanges.length > 0 && (
+    <>
+      <h2>最近变化</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Provider</th><th>Change</th></tr>
+          </thead>
+          <tbody>
+            {recentChanges.flatMap((change) =>
+              (change.entries || []).map((entry) => (
+                <tr>
+                  <td class="mono">{display(change.date)}</td>
+                  <td>{display(entry.provider)}</td>
+                  <td class="wrap-cell">{display(entry.summary)}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+      <p class="small"><a href={href("changes/")}>查看全部变化 →</a></p>
+    </>
+  )}
+
+  <h2>浏览</h2>
+  <div class="grid-nav">
+    {NAV.map(([path, label, desc]) => (
+      <a href={href(path)}>
+        <strong>{label}</strong>
+        <div class="desc">{desc}</div>
+      </a>
+    ))}
+  </div>
+
+  <p class="small muted" style="margin-top:24px">
+    当前为初始化阶段的示例 / 模板数据（未填入任何已核实价格、额度或政策）。
+    CNY 示例：{cny(140)}（仅示意换算格式）。
+  </p>
+</Base>

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planscope.local/schemas/benchmark.schema.json",
+  "title": "PlanScope Benchmark / Performance Record",
+  "description": "A performance measurement at data/providers/<provider>/benchmarks/<id>.yaml. official / measured / community_reported / estimated provenance must never be mixed: record source_type per entry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "metric", "source_type", "status", "checked_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable slug, must equal the file name."
+    },
+    "provider": {
+      "type": ["string", "null"],
+      "description": "Must equal the parent provider directory id when present."
+    },
+    "plan": { "type": ["string", "null"], "description": "Plan id within this provider." },
+    "model": { "type": ["string", "null"] },
+
+    "metric": {
+      "type": "string",
+      "enum": [
+        "ttft",
+        "tps",
+        "decode_tps",
+        "prefill",
+        "latency",
+        "p50",
+        "p95",
+        "p99",
+        "concurrency",
+        "stability",
+        "rate_429",
+        "timeout",
+        "error_rate"
+      ]
+    },
+    "value": { "type": ["number", "null"] },
+    "unit": { "type": ["string", "null"] },
+    "status": {
+      "type": "string",
+      "enum": ["measured", "planned", "unknown"],
+      "description": "Use 'planned' for a template entry with no verified numbers yet."
+    },
+
+    "source_type": {
+      "type": "string",
+      "enum": ["official", "measured", "community_reported", "estimated", "unknown"],
+      "description": "Provenance of the value. Never mix these categories in a single number."
+    },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "conditions": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "region": { "type": ["string", "null"] },
+        "concurrency": { "type": ["number", "null"] },
+        "payload": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+
+    "notes": { "type": ["string", "null"] },
+    "sources": {
+      "type": ["array", "null"],
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_from": { "$ref": "#/$defs/iso8601OrNull" },
+    "effective_until": { "$ref": "#/$defs/iso8601OrNull" }
+  },
+  "$defs": {
+    "iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 timestamp, e.g. 2026-09-23T10:30:00+08:00"
+    },
+    "iso8601OrNull": {
+      "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "checked_at"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["official", "official_pricing", "official_docs", "official_api_docs", "official_terms", "official_privacy", "official_model_docs", "official_faq", "official_announcement", "official_github", "github", "reddit", "discord", "telegram", "forum", "blog", "user_test", "other"]
+        },
+        "url": { "type": "string", "minLength": 1 },
+        "archived_url": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601OrNull" },
+        "note": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

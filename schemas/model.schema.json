@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planscope.local/schemas/model.schema.json",
+  "title": "PlanScope Model",
+  "description": "A model entry SCOPED to a provider (and optionally a plan). The same model_id may have different context windows, multipliers or limits under different providers/plans, so capabilities are never defined globally by model_id alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["model_key", "provider", "model_id", "status", "checked_at"],
+  "properties": {
+    "model_key": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable slug, unique across data/models/. Usually provider + model_id."
+    },
+    "provider": { "type": "string" },
+    "plan": {
+      "type": ["string", "null"],
+      "description": "plan_id scope. null when the entry describes the provider-level offering."
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Raw model identifier as exposed by the provider."
+    },
+    "display_name": { "type": ["string", "null"] },
+    "model_family": { "type": ["string", "null"] },
+
+    "context_window": { "type": ["integer", "null"], "minimum": 0 },
+    "max_output": { "type": ["integer", "null"], "minimum": 0 },
+    "input_modalities": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "enum": ["text", "image", "audio", "video"] }
+    },
+    "output_modalities": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "enum": ["text", "image", "audio"] }
+    },
+
+    "reasoning": { "type": ["boolean", "null"] },
+    "tool_calling": { "type": ["boolean", "null"] },
+    "function_calling": { "type": ["boolean", "null"] },
+    "vision": { "type": ["boolean", "null"] },
+    "image_generation": { "type": ["boolean", "null"] },
+    "audio": { "type": ["boolean", "null"] },
+    "coding": { "type": ["boolean", "null"] },
+    "agent_suitability": { "type": ["string", "null"] },
+    "cache_support": { "type": ["boolean", "null"] },
+    "structured_output": { "type": ["boolean", "null"] },
+
+    "status": {
+      "type": "string",
+      "enum": ["active", "beta", "deprecated", "unknown"],
+      "description": "General availability of the model."
+    },
+    "plan_availability": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["plan", "available"],
+        "properties": {
+          "plan": { "type": "string" },
+          "available": { "type": ["boolean", "null"] },
+          "note": { "type": ["string", "null"] }
+        }
+      },
+      "description": "Per-plan availability of this model under this provider."
+    },
+    "multipliers": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["plan", "multiplier"],
+        "properties": {
+          "plan": { "type": "string" },
+          "multiplier": { "type": ["number", "null"] },
+          "note": { "type": ["string", "null"] }
+        }
+      },
+      "description": "Token multiplier differs per plan; never store one global multiplier for a model_id."
+    },
+
+    "notes": { "type": ["string", "null"] },
+    "sources": { "$ref": "#/$defs/sources" },
+    "checked_at": { "$ref": "#/$defs/iso8601" },
+    "effective_from": { "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }] },
+    "effective_until": { "anyOf": [{ "$ref": "#/$defs/iso8601" }, { "type": "null" }] }
+  },
+  "$defs": {
+    "iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 timestamp, e.g. 2026-09-23T10:30:00+08:00"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "checked_at"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["official", "github", "reddit", "discord", "telegram", "forum", "blog", "user_test", "other"]
+        },
+        "url": { "type": "string", "minLength": 1 },
+        "archived_url": { "type": ["string", "null"] },
+        "checked_at": { "$ref": "#/$defs/iso8601" },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+    "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } }
+  }
+}
