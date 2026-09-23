@@ -92,6 +92,8 @@ pytest
 - 来源与证据等级：`docs/SOURCES.md`
 - 贡献与检查清单：`docs/CONTRIBUTING_DATA.md`
 - 阶段规划：`docs/ROADMAP.md`
+- 项目 skills：`skills/`（**通用 SKILL.md 规范，厂商中立**；`planscope-data` 录入 / `planscope-ops` 运维。
+  文档/schema/workflow 变更时同提交更新 skill，过期即修，冲突以本文档与 docs/schemas 为准）
 
 ## 6. 当前状态与交接
 
@@ -107,5 +109,7 @@ pytest
   1. 补官方 URL → `sources.yaml`（目前为空）+ 隐私字段 source（official 徽标）
   2. 海外个人 4 条 draft 等数据段；`moonshot/` 空模板去留待定
   3. Daily CI 持续追 unknown（各档精确额度 / Business 模型矩阵与第三方 agent 权限 / Enterprise 合同条款 / API retention & ZDR / 海外本地售价）
-  4. GitHub Pages 一次性设置：Settings → Pages → Source = **GitHub Actions**（推送已自动触发 `validate.yml` 构建；每日 UTC 02:17 的 `daily-refresh` 负责部署）
+  4. ~~GitHub Pages 一次性设置~~ **已完成（2026-09-23）**：Source = GitHub Actions 已启用，首发部署成功，
+     站点可访问 **`https://wenzetan.github.io/PlanScope/`**（大小写敏感！）；日常部署由每日 UTC 02:17 的
+     `daily-refresh` 负责（临时 `deploy-pages-once` 工作流已删除）
 - **下一家 Provider：GLM / 智谱 / Z.ai（在新会话处理）**——用 `market: bigmodel/zai` + `region: cn/global` + `record_kind` 从第一天拆清国内外与 API/企业线；起手读本文档 + `docs/DATA_MODEL.md` 的拆分规则表。

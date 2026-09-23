@@ -12,9 +12,9 @@
 
 Full plan comparisons, pricing, token quotas, model availability, privacy policies, and change history live on GitHub Pages (no dynamic data tables in this README):
 
-**GitHub Pages:** `https://<github-user>.github.io/planscope/`
+**GitHub Pages:** [https://wenzetan.github.io/PlanScope/](https://wenzetan.github.io/PlanScope/)
 
-> Placeholder: replace with the actual GitHub username / Pages URL.
+> The URL is case-sensitive: use `PlanScope` exactly — lowercase `/planscope/` returns 404.
 
 ---
 
@@ -116,6 +116,7 @@ See [.github/workflows/daily-refresh.yml](.github/workflows/daily-refresh.yml).
 PlanScope/
 ├── README.md / README_EN.md   # project introduction (entry point)
 ├── AGENTS.md                  # agent / collaborator rules + handover status (read first)
+├── skills/                    # vendor-neutral skills (SKILL.md): planscope-data / planscope-ops
 ├── config/
 │   └── exchange_rate.yaml     # single FX config: usd_cny (updated by daily CI)
 ├── data/                      # ← source of truth (no database)

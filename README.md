@@ -12,9 +12,9 @@ A personal-use repository for tracking and comparing AI Coding, Token, and Agent
 
 完整的套餐对比、价格、Token 额度、模型可用性、隐私政策和历史变化请访问 GitHub Pages（README 不放动态数据表）：
 
-**GitHub Pages:** `https://<github-user>.github.io/planscope/`
+**GitHub Pages:** [https://wenzetan.github.io/PlanScope/](https://wenzetan.github.io/PlanScope/)
 
-> 占位地址：请替换为实际的 GitHub username / 仓库 Pages 地址。
+> 地址大小写敏感：必须使用 `PlanScope`，小写 `/planscope/` 会返回 404。
 
 ---
 
@@ -116,6 +116,7 @@ Daily Research / Refresh → Validate → Test → Build site → Commit data �
 PlanScope/
 ├── README.md / README_EN.md   # 项目介绍（入口）
 ├── AGENTS.md                  # Agent / 协作者规则 + 交接状态（先读这份）
+├── skills/                    # 通用规范 skills（SKILL.md）：planscope-data / planscope-ops
 ├── config/
 │   └── exchange_rate.yaml     # 唯一汇率配置：usd_cny（每日 CI 更新）
 ├── data/                      # ← source of truth（无数据库）
@@ -138,7 +139,8 @@ PlanScope/
 └── .github/workflows/         # validate.yml + daily-refresh.yml
 ```
 
-**Agent / 自动化协作者请先读 [AGENTS.md](AGENTS.md)**（绝对规则、数据规则、修改流程与当前交接状态）；字段级细节见 [docs/DATA_MODEL.md](docs/DATA_MODEL.md)。
+**Agent / 自动化协作者请先读 [AGENTS.md](AGENTS.md)**（绝对规则、数据规则、修改流程与当前交接状态），
+配套工作流 skill 见 [skills/](skills/)（`planscope-data` 录入数据、`planscope-ops` 运维发布）；字段级细节见 [docs/DATA_MODEL.md](docs/DATA_MODEL.md)。
 
 ---
 

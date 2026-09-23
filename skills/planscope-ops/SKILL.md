@@ -50,7 +50,8 @@ test -f site/dist/index.html
 - 每日部署由 `daily-refresh` 完成；即时手动部署用**临时** `workflow_dispatch` 工作流
   （跑 export → build → configure-pages → upload → deploy-pages），成功后删除临时文件——
   **不要把 dispatch 加进 daily-refresh**（会被纪律测试拒绝，且违背单一 schedule 设计）。
-- 站点地址：`https://wenzetan.github.io/planscope/`（project-site 基路径由 workflow 按仓库名计算 `PLANSCOPE_BASE`）。
+- 站点地址：**`https://wenzetan.github.io/PlanScope/`**（注意大小写：小写 `/planscope/` 会 404；
+  project-site 基路径由 workflow 按仓库名计算 `PLANSCOPE_BASE`）。
 - 排障：404 = Pages 未启用或未部署成功；构建成功但 404 → 查 `deploy-pages` run 与 environment `github-pages`。
 
 ## README / skills 维护
