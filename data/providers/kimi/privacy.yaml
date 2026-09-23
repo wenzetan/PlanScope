@@ -1,0 +1,108 @@
+# Kimi 个人消费版隐私与数据政策（含 Kimi Code 会员）。
+# 必须与 Kimi API / Kimi Business 分开记录，不继承 API 的政策。
+# ⚠ 各字段 source（官方 URL）待补：value 来自维护者对官方页面的当日核验（见 notes）。
+provider: kimi
+scope: consumer
+policy_document_url: null
+terms_url: null
+prompt_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+output_retention:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+log_retention_days:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+used_for_training:
+  value: allowed_after_deidentification
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人版隐私政策：在安全加密及严格去标识化前提下，输入输出内容可能用于模型优化。URL 待补。
+training_default_opt_in:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人版默认可能用于训练。URL 待补。
+opt_out_supported:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 可联系客服要求停止用于模型训练。URL 待补。
+zero_data_retention:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: URL 待补。
+enterprise_data_isolation:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 消费版不提供企业级数据隔离（企业需求走开放平台/企业方案）。URL 待补。
+third_party_model_routing:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+subprocessors:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+data_region:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+cross_border_transfer:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_web_policy_differs:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 个人消费版默认可能训练（可 opt-out），与 Kimi API 的政策不同，不得互相继承。URL 待补。
+coding_api_policy_differs:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: Kimi Code 会员遵循个人消费版隐私政策，不继承 Kimi API 政策。URL 待补。
+sensitive_code_allowed:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+commercial_code_allowed:
+  value: false
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 会员权益限定个人开发用途；企业开发应使用开放平台或企业方案。URL 待补。
+automated_agent_allowed:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 官方提供 Claude Code / OpenCode / Codex / Hermes 等接入说明。URL 待补。
+account_sharing_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+proxy_forwarding_forbidden:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+api_gateway_restricted:
+  value: null
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+coding_agent_tools_restricted:
+  value: true
+  source: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+  note: 禁止伪造第三方 Coding Agent 客户端身份 / User-Agent，伪造可能导致会员权益暂停。URL 待补。
+notes: >-
+  本记录为个人消费版（含 Kimi Code 会员）政策，与 Kimi API、Kimi Business 明确分开。
+  value 均来自维护者 2026-09-23 对官方页面的核验，官方 URL 待补——补齐前站点
+  不显示 official 徽标（按 SOURCES.md，只认直接证据 URL）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

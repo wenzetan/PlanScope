@@ -14,8 +14,8 @@
     },
     "scope": {
       "type": ["string", "null"],
-      "enum": ["api", "web", "coding_plan", "general", null],
-      "description": "Set when this record covers only one product surface; api/web/coding plans may differ."
+      "enum": ["api", "web", "coding_plan", "general", "consumer", null],
+      "description": "Set when this record covers only one product surface; api/web/coding plans may differ. consumer = 个人消费版（与 API / Business 政策分开）."
     },
     "region": {
       "type": ["string", "null"],

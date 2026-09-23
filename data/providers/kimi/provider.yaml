@@ -1,0 +1,16 @@
+id: kimi
+name: Kimi
+legal_name: null
+website: null
+docs: null
+purchase_url: null
+status: active
+regions:
+  - mainland_china
+notes: >-
+  Kimi 中国大陆个人/会员体系（含 Kimi Code）。首批数据：老套餐 Andante（个人版最低档）。
+  本目录仅记录中国大陆体系；如后续需要与海外体系并列，用 market/region 区分，不与 moonshot 目录混写。
+  所有来源 URL 待维护者补充（pricing / 模型矩阵 / 隐私政策 / 接入文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null

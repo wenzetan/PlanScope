@@ -40,7 +40,12 @@ PLAN_VIEW_KEYS = (
     "requests",
     "messages",
     "agent_tasks",
+    "agent_tasks_approx",
     "coding_tasks",
+    "shared_pool_enabled",
+    "shared_pool_refresh",
+    "shared_pool_rollover",
+    "accounting_basis",
     "rolling_windows",
     "daily",
     "weekly",
@@ -63,14 +68,36 @@ def _record_id(record: dict) -> str:
 
 
 def plan_price_view(plan: dict, rate: float) -> dict:
-    """Derived CNY figures computed from the original currency via config rate."""
+    """Derived CNY figures computed from the original currency via config rate.
+
+    Raw facts first: `annual` stays null when the vendor never published a
+    yearly total; the official effective monthly price is kept as-is and the
+    yearly total is derived (×12) for display only, flagged as derived.
+    """
     pricing = plan.get("pricing") if isinstance(plan.get("pricing"), dict) else {}
+
+    def is_num(value) -> bool:
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+    currency = pricing.get("currency")
+    annual = pricing.get("annual")
+    effective_monthly = pricing.get("annual_effective_monthly")
+    if is_num(annual):
+        annual_shown, annual_derived = annual, False
+    elif is_num(effective_monthly):
+        annual_shown, annual_derived = effective_monthly * 12, True
+    else:
+        annual_shown, annual_derived = None, False
+
     return {
-        "currency": pricing.get("currency"),
+        "currency": currency,
         "monthly": pricing.get("monthly"),
-        "monthly_cny": to_cny(pricing.get("monthly"), pricing.get("currency"), rate),
-        "annual": pricing.get("annual"),
-        "annual_cny": to_cny(pricing.get("annual"), pricing.get("currency"), rate),
+        "monthly_cny": to_cny(pricing.get("monthly"), currency, rate),
+        "annual": annual,
+        "annual_effective_monthly": effective_monthly,
+        "annual_shown": annual_shown,
+        "annual_derived": annual_derived,
+        "annual_cny": to_cny(annual_shown, currency, rate),
         "promotion": pricing.get("promotion"),
         "auto_renew": pricing.get("auto_renew"),
         "checked_at": pricing.get("checked_at"),

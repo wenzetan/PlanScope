@@ -38,7 +38,7 @@ data/
 | 人群：个人 / 团队 / 企业 | `audience: personal / team / enterprise` | `plans/personal-token-plan.yaml` vs `plans/team-token-plan.yaml` |
 | 区域：中国 / 海外双价格 | `region: cn / global`（短代码，各自保留原币种） | `plans/token-plan-cn.yaml`（CNY）vs `plans/token-plan-global.yaml`（USD） |
 | 子平台 / 品牌 | `market: bailian / bigmodel / zai` | `plans/bigmodel-team-token.yaml` vs `plans/zai-personal-token.yaml` |
-| 计划代际（旧 Coding Plan 等） | `type` + `status` + `effective_until` | `plans/legacy-coding-plan.yaml`（`status: deprecated`） |
+| 计划代际（新旧体系） | `type` + `status`（`legacy`=存量可续费 / `deprecated`=停供）+ `effective_until` | `plans/cn-personal-andante-legacy.yaml`（`status: legacy`） |
 
 示例：
 
@@ -60,6 +60,14 @@ data/providers/zhipu/plans/            # GLM（国内 BigModel / 海外 Z.ai）
 ```
 
 同一 Provider 下 `id` 唯一即可（逻辑 ID = `<provider>/<id>`）。
+
+**Plan identity 规则（重要）**：`market + audience + generation（代系）+ region` 都属于 Plan 身份的一部分，
+必须体现在独立记录与 `id` 编码中（如 `cn-personal-andante-legacy` = 中国 + 个人 + 老代系），
+否则会把「中国老套餐」「海外套餐」「中国新体系」错误合并成同一个 Plan。
+文件名/`id` 一旦确定即为稳定标识，不因展示名或体系更替而重命名。
+
+首批实例：`data/providers/kimi/plans/cn-personal-andante-legacy.yaml`
+（Kimi 中国大陆个人版 Andante 老套餐，`status: legacy`、`new_purchase: false`、存量可续费）。
 模型层面的差异通过 `models: []` + `models.yaml` 的 `availability`（按 plan）表达，不做全局模型表。
 
 `pricing.regional_differences` 只用于**本记录内**残余的区域说明（例如税费口径），
@@ -143,15 +151,23 @@ name: MiMo Token Plan        # 展示名（改名不改文件名）
 provider: xiaomi             # 必须 = 目录名
 type:
   - token_plan               # coding_plan / token_plan / agent_plan / api_plan / hybrid（可多个）
-status: unknown              # active / beta / invite_only / deprecated / discontinued / unknown
+status: unknown              # active / beta / invite_only / legacy / deprecated / discontinued / unknown
 region: null                 # cn / global —— 区域变体拆独立记录（短代码，不是散文）
 market: null                 # bailian / bigmodel / zai —— 子平台变体拆独立记录
 audience: null               # personal / team / enterprise —— 人群变体拆独立记录
+plan_family: null            # membership / payg / credits —— 订阅性质（"subscription" 记这里，不占 type）
+new_purchase: null           # 是否仍可新购（legacy 通常 false）
+existing_subscription_renewal: null  # 存量订阅者是否可续费/套餐内升级
+coding: null                 # {included, product, personal_use_only, enterprise_use_allowed}
+endpoints: null              # {openai_compatible: URL, anthropic_compatible: URL}
+api_keys: null               # {membership_api_key, max_keys, shared_quota_across_keys, shared_quota_across_devices}
+extra_usage: null            # {supported, currency, minimum_topup, balance_expires, pricing_basis, bypass_subscription_quota_when_active}
 
 pricing:
   currency: null             # 原始结算币种（如 USD）；CNY 是派生值，绝不写这里
   monthly: null              # 原始价格；促销写 promotion，绝不覆盖
   annual: null
+  annual_effective_monthly: null  # 官方年付折合月价（raw）；年总价未官方给出时 annual 保持 null，展示层 ×12 派生
   first_purchase: null
   renewal: null
   promotion: null
@@ -165,6 +181,7 @@ quota:
   requests: null
   messages: null
   agent_tasks: null
+  agent_tasks_approx: null   # 厂商「约 N 个用量」估算值 —— 绝不存进 requests
   coding_tasks: null
   rolling_windows: []        # ["3 hours", "5 hours"]
   daily: null

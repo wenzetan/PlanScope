@@ -45,6 +45,52 @@ def test_cny_conversion_uses_config_rate(tmp_path: Path, repo_root: Path) -> Non
     assert plan_price_view({"pricing": {"currency": "XYZ", "monthly": 10}}, rate)["monthly_cny"] is None
 
 
+def test_annual_total_is_derived_from_official_effective_monthly() -> None:
+    """Kimi Andante：官方只给年付折合 ¥39/月 → annual 保持 null，468=39×12 为派生值。"""
+    from planscope.site_export import plan_price_view
+
+    view = plan_price_view(
+        {"pricing": {"currency": "CNY", "monthly": 49, "annual": None, "annual_effective_monthly": 39}},
+        rate=7.0,
+    )
+    assert view["annual"] is None                 # 原始字段不冒充官方年总价
+    assert view["annual_shown"] == 468            # 派生展示值
+    assert view["annual_derived"] is True
+    assert view["annual_cny"] == 468              # CNY 直接使用
+    assert view["monthly_cny"] == 49
+
+    # 官方直接给出年总价时不算派生
+    official = plan_price_view(
+        {"pricing": {"currency": "CNY", "annual": 500, "annual_effective_monthly": 40}}, rate=7.0
+    )
+    assert official["annual_shown"] == 500
+    assert official["annual_derived"] is False
+
+
+def test_quota_view_keeps_approximate_agent_tasks() -> None:
+    """「约 30 个 Agent 用量」存 agent_tasks_approx，requests 保持 null。"""
+    from planscope.site_export import plan_quota_view
+
+    view = plan_quota_view(
+        {
+            "quota": {
+                "requests": None,
+                "agent_tasks": None,
+                "agent_tasks_approx": 30,
+                "shared_pool_enabled": True,
+                "shared_pool_refresh": "monthly",
+                "shared_pool_rollover": False,
+                "rolling_windows": ["5 hours", "7 days"],
+                "actual_limit_known": False,
+            }
+        }
+    )
+    assert view["agent_tasks_approx"] == 30
+    assert view["requests"] is None
+    assert view["rolling_windows"] == ["5 hours", "7 days"]
+    assert view["actual_limit_known"] is False
+
+
 def test_sources_are_flattened_with_provenance(repo_root: Path) -> None:
     data = build_site_data(repo_root)
     assert len(data["sources"]) >= 2

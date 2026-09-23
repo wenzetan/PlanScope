@@ -29,8 +29,21 @@
     },
     "status": {
       "type": "string",
-      "enum": ["active", "beta", "invite_only", "deprecated", "discontinued", "unknown"],
-      "description": "Deprecated/discontinued plans stay in the repo with effective_until; only erroneous entries are deleted."
+      "enum": ["active", "beta", "invite_only", "legacy", "deprecated", "discontinued", "unknown"],
+      "description": "legacy = 老套餐：新购关闭、存量订阅者可续费/内部升级（区别于 deprecated=已停供、discontinued=已彻底下线）。Deprecated/discontinued/legacy plans stay in the repo with effective_until; only erroneous entries are deleted."
+    },
+    "plan_family": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z][a-z0-9_-]*$",
+      "description": "Plan identity family, e.g. membership / payg / credits. 订阅性质（subscription）由本字段表达，不占用 type。"
+    },
+    "new_purchase": {
+      "type": ["boolean", "null"],
+      "description": "是否仍可新购（legacy 套餐通常为 false）。"
+    },
+    "existing_subscription_renewal": {
+      "type": ["boolean", "null"],
+      "description": "存量订阅者是否可续费（及在套餐内部升级）。"
     },
     "purchase_url": { "type": ["string", "null"] },
 
@@ -48,6 +61,46 @@
       "type": ["string", "null"],
       "enum": ["personal", "team", "enterprise", null],
       "description": "Who the plan targets. Personal / team / enterprise variants are separate plan records."
+    },
+
+    "coding": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Coding benefit bundled with this plan.",
+      "properties": {
+        "included": { "type": ["boolean", "null"] },
+        "product": { "type": ["string", "null"], "description": "e.g. Kimi Code." },
+        "personal_use_only": { "type": ["boolean", "null"] },
+        "enterprise_use_allowed": { "type": ["boolean", "null"] }
+      }
+    },
+    "endpoints": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": ["string", "null"] },
+      "description": "Official endpoints exposed under this plan, e.g. openai_compatible / anthropic_compatible URLs."
+    },
+    "api_keys": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "membership_api_key": { "type": ["boolean", "null"] },
+        "max_keys": { "type": ["integer", "null"], "minimum": 0 },
+        "shared_quota_across_keys": { "type": ["boolean", "null"] },
+        "shared_quota_across_devices": { "type": ["boolean", "null"] }
+      }
+    },
+    "extra_usage": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "按量加购 / 超额付费选项（与订阅额度池的关系必须记录）。",
+      "properties": {
+        "supported": { "type": ["boolean", "null"] },
+        "currency": { "type": ["string", "null"] },
+        "minimum_topup": { "type": ["number", "null"], "minimum": 0 },
+        "balance_expires": { "type": ["boolean", "null"] },
+        "pricing_basis": { "type": ["string", "null"], "description": "e.g. kimi_api_payg (approximate)." },
+        "bypass_subscription_quota_when_active": { "type": ["boolean", "null"] }
+      }
     },
 
     "pricing": { "$ref": "#/$defs/pricing" },
@@ -119,6 +172,11 @@
         },
         "monthly": { "$ref": "#/$defs/priceValue" },
         "annual": { "$ref": "#/$defs/priceValue" },
+        "annual_effective_monthly": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "官方给出的年付折合月价（raw fact）。annual 总价未官方直接给出时保持 null，展示层年总价 = 本字段 × 12（派生）。"
+        },
         "first_purchase": { "$ref": "#/$defs/priceValue" },
         "renewal": { "$ref": "#/$defs/priceValue" },
         "promotion": {
@@ -147,7 +205,15 @@
         "requests": { "$ref": "#/$defs/quotaValue" },
         "messages": { "$ref": "#/$defs/quotaValue" },
         "agent_tasks": { "$ref": "#/$defs/quotaValue" },
+        "agent_tasks_approx": {
+          "type": ["number", "null"],
+          "description": "厂商给出的**估算**型 Agent 用量（如「约 30 个 Agent 用量」）。绝不能存进 requests —— 它不是硬性 request 上限。"
+        },
         "coding_tasks": { "$ref": "#/$defs/quotaValue" },
+        "shared_pool_enabled": { "type": ["boolean", "null"], "description": "多功能是否共享同一额度池。" },
+        "shared_pool_refresh": { "type": ["string", "null"], "description": "e.g. monthly / weekly / daily." },
+        "shared_pool_rollover": { "type": ["boolean", "null"], "description": "未用完额度是否结转。" },
+        "accounting_basis": { "type": ["string", "null"], "description": "e.g. token_usage / requests." },
         "rolling_windows": {
           "type": ["array", "null"],
           "items": { "type": "string" },

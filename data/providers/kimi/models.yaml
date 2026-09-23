@@ -1,0 +1,128 @@
+# Kimi（中国大陆）实际暴露的模型与能力 —— Provider-specific，按 Plan 记录可用性。
+# 不存在全局 model_id 能力表；alias 当前指向的底层版本用 underlying_model 记录。
+provider: kimi
+notes: 来源（官方模型矩阵）URL 待补。
+checked_at: "2026-09-23T00:00:00+08:00"
+models:
+  - model_id: kimi-for-coding
+    display_name: null
+    model_family: K2
+    underlying_model: K2.8 Preview      # 该 ID 已就地升级为 K2.8 Preview
+    speed_tier: standard
+    context_window: 1048576             # 1,048,576 tokens
+    max_output: null
+    input_modalities:
+      - text
+      - image
+      - video
+    output_modalities: null
+    reasoning: true
+    reasoning_effort:
+      - low
+      - high
+      - max
+    tool_calling: null                  # 未核实，不猜
+    function_calling: null
+    vision: true                        # 输入支持 image
+    image_generation: null
+    audio: null
+    coding: true
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: active
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-personal-andante-legacy
+        available: true
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: k3
+    display_name: null
+    model_family: null
+    underlying_model: null
+    speed_tier: null
+    context_window: null
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: unknown
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-personal-andante-legacy
+        available: false                # Andante 不具备 k3 权限
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: k3-256k
+    display_name: null
+    model_family: null
+    underlying_model: null
+    speed_tier: null
+    context_window: null
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: unknown
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-personal-andante-legacy
+        available: false
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"
+
+  - model_id: kimi-for-coding-highspeed
+    display_name: null
+    model_family: null
+    underlying_model: null
+    speed_tier: highspeed
+    context_window: null
+    max_output: null
+    input_modalities: null
+    output_modalities: null
+    reasoning: null
+    tool_calling: null
+    function_calling: null
+    vision: null
+    image_generation: null
+    audio: null
+    coding: null
+    agent_suitability: null
+    cache_support: null
+    structured_output: null
+    status: unknown
+    aliases: null
+    multipliers: null
+    availability:
+      - plan: cn-personal-andante-legacy
+        available: false                # Andante 不具备 HighSpeed 权限
+    rate_limits: null
+    notes: null
+    checked_at: "2026-09-23T00:00:00+08:00"

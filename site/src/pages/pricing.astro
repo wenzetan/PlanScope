@@ -49,8 +49,24 @@ rows.sort((a, b) => a.sortCny - b.sortCny);
               <td class="wrap-cell">{display(plan.name)}</td>
               <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
               <td>{cny(plan.price_view.monthly_cny)}</td>
-              <td>{money(plan.price_view.annual, plan.price_view.currency)}</td>
-              <td>{cny(plan.price_view.annual_cny)}</td>
+              <td>{money(plan.price_view.monthly, plan.price_view.currency)}</td>
+              <td>{cny(plan.price_view.monthly_cny)}</td>
+              <td>
+                {plan.price_view.annual_shown !== null ? (
+                  <>
+                    {money(plan.price_view.annual_shown, plan.price_view.currency)}
+                    {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
+                  </>
+                ) : "—"}
+              </td>
+              <td>
+                {plan.price_view.annual_shown !== null ? (
+                  <>
+                    {cny(plan.price_view.annual_cny)}
+                    {plan.price_view.annual_derived && <span class="small muted"> (derived)</span>}
+                  </>
+                ) : "—"}
+              </td>
               <td>{inputCost}</td>
               <td>{inputCost}</td>
               <td class="wrap-cell small">{display(plan.price_view.promotion, "—")}</td>

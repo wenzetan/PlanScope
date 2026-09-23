@@ -1,0 +1,132 @@
+# Kimi 中国大陆个人版最低档老套餐（Legacy）
+# 1 plan = 1 文件；id 编码了 region(cn) + audience(personal) + generation(legacy)，
+# 避免与「海外套餐」「中国新 Go/Plus/Pro/Max/Ultra 体系」错误合并。
+id: cn-personal-andante-legacy
+name: Andante
+provider: kimi
+type:
+  - agent_plan
+  - coding_plan
+status: legacy
+plan_family: membership
+region: cn
+market: null              # 本 Provider 目录即中国大陆体系，暂无多店面；海外体系另行区分
+audience: personal
+purchase_url: null
+new_purchase: false
+existing_subscription_renewal: true
+
+coding:
+  included: true
+  product: Kimi Code
+  personal_use_only: true
+  enterprise_use_allowed: false
+
+pricing:
+  currency: CNY
+  monthly: 49             # 官方老个人会员最低档月付价
+  annual: null            # 官方未直接给出年付总价
+  annual_effective_monthly: 39   # 官方年付折合 ¥39/月（raw fact）；年总价 468=39×12 为派生值
+  first_purchase: null
+  renewal: null
+  promotion: null
+  regional_differences: null
+  tax_note: null
+  auto_renew: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+quota:
+  token: null                     # 精确 token 数官方未公开，不伪造
+  requests: null
+  messages: null
+  agent_tasks: null               # 不存在 30 次硬性 request 上限
+  agent_tasks_approx: 30          # 「约 30 个 Agent 用量」= 基于典型 token 消耗的估算
+  coding_tasks: null
+  shared_pool_enabled: true       # 会员功能共享月度额度池
+  shared_pool_refresh: monthly
+  shared_pool_rollover: false
+  accounting_basis: token_usage
+  rolling_windows:
+    - 5 hours                     # Kimi Code 5 小时滚动限额
+    - 7 days                      # 老套餐 7 日额度（weekly_refresh_days: 7）
+  daily: null
+  weekly: null                    # 窗口存在，但精确周限额未公开
+  monthly: null                   # 池存在，但精确月 token 数未公开
+  burst: null
+  rpm: null
+  tpm: null
+  concurrency: null
+  usage_policy: null
+  limit_type: unknown
+  actual_limit_known: false
+  note: >-
+    会员功能共享按 token 实际消耗的月度额度池（无结转）；Kimi Code 另受 5 小时滚动窗口
+    与老套餐 7 日额度控制，精确限额官方未公开。「约 30 Agent」为估算值，非硬性 request 配额。
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+token_rules:
+  input: null
+  output: null
+  cached_input: null
+  cache_write: null
+  cache_read: null
+  reasoning: null
+  tool: null
+  image: null
+  audio: null
+  multimodal: null
+  multiplier: null
+  model_multipliers: null
+  shared_quota: true               # 会员额度池跨功能/跨 key 共享（见 api_keys）
+  hidden_multiplier_known: null
+  can_backtrack_usage: null
+  directly_comparable: null
+  note: null
+  checked_at: "2026-09-23T00:00:00+08:00"
+
+models:
+  - kimi-for-coding                # 本档可用；k3 / k3-256k / highspeed 不可用（见 models.yaml availability）
+
+compatibility:
+  kimi_code_cli: full
+  kimi_code_vscode: full
+  claude_code: full                # 官方文档提供接入说明（工具支持，非模型记录）
+  opencode: full
+  codex: full
+  roo_code: full
+  hermes: full
+  openai_compatible_api: partial   # 官方存在 compatible endpoint，但未核验全接口等价 → 兼容≠完全兼容
+  anthropic_compatible_api: partial
+  responses_api: partial
+
+endpoints:
+  openai_compatible: "https://api.kimi.com/coding/v1"
+  anthropic_compatible: "https://api.kimi.com/coding/"
+
+api_keys:
+  membership_api_key: true
+  max_keys: 5
+  shared_quota_across_keys: true
+  shared_quota_across_devices: true
+
+extra_usage:
+  supported: true
+  currency: CNY
+  minimum_topup: 25
+  balance_expires: false
+  pricing_basis: kimi_api_payg     # 近似计费口径（估算），非精确定价
+  bypass_subscription_quota_when_active: true
+
+source_refs: []                    # sources.yaml 待补官方 URL 后建立引用
+sources: []
+
+notes: >-
+  ① 年付总价 ¥468/年 为派生值（官方年付折合 ¥39/月 × 12），原始事实存于
+  pricing.annual_effective_monthly，展示层再计算，不写成官方原价。
+  ② 状态为 legacy：2026-07 官方将 Andante/Moderato/Allegretto/Allegro 称为老套餐，
+  存量订阅者可继续使用/续费/套餐内升级，新购关闭，新体系为 Go/Plus/Pro/Max/Ultra。
+  ③ 兼容映射：Agent 工具按官方接入文档记 full；协议端点按官方 compatible endpoint 记 partial。
+  ④ 各来源 URL 待补（pricing / 模型矩阵 / Kimi Code 权益 / 隐私政策 / 接入文档）。
+checked_at: "2026-09-23T00:00:00+08:00"
+effective_from: null
+effective_until: null              # 老套餐停售/被替代的具体时间未知，不猜

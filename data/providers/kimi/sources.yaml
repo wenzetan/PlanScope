@@ -1,0 +1,13 @@
+# Kimi 常用来源注册表 —— 待维护者补充官方 URL 后按格式填写：
+#
+# - id: pricing
+#   type: official_pricing
+#   url: https://...
+#   archived_url: null
+#   checked_at: "2026-09-23T00:00:00+08:00"
+#   note: null
+#   used_for: Official pricing / membership tiers
+#
+# 需要补的入口：pricing（会员价格与年付折合）、model matrix（Kimi Code 模型矩阵）、
+# kimi_code docs（权益与接入文档）、privacy（个人版隐私政策）、terms（使用条款）。
+# 未查证的条目不要填写，不要猜测 URL。

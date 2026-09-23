@@ -40,6 +40,19 @@
         },
         "display_name": { "type": ["string", "null"] },
         "model_family": { "type": ["string", "null"] },
+        "underlying_model": {
+          "type": ["string", "null"],
+          "description": "该 alias 当前实际指向的底层模型/版本（如 kimi-for-coding → K2.8 Preview）。"
+        },
+        "speed_tier": {
+          "type": ["string", "null"],
+          "description": "e.g. standard / highspeed（同一模型不同速度档位可能是不同 model_id）。"
+        },
+        "reasoning_effort": {
+          "type": ["array", "null"],
+          "items": { "type": "string", "minLength": 1 },
+          "description": "e.g. [low, high, max]；存在取值即代表支持 reasoning。"
+        },
         "context_window": { "type": ["integer", "null"], "minimum": 0 },
         "max_output": { "type": ["integer", "null"], "minimum": 0 },
         "input_modalities": {

@@ -50,6 +50,14 @@ def test_plan_schema_supports_sources_and_source_refs(repo_root: Path) -> None:
     assert "source_refs" in schema["properties"]
 
 
+def test_plan_status_includes_legacy(repo_root: Path) -> None:
+    """老套餐（存量可续费、新购关闭）必须能表达为 status: legacy。"""
+    schema = _load(repo_root, "plan.schema.json")
+    status_enum = schema["properties"]["status"]["enum"]
+    assert "legacy" in status_enum
+    assert {"region", "market", "audience", "plan_family"} <= set(schema["properties"])
+
+
 def test_sources_schema_is_a_list_registry(repo_root: Path) -> None:
     schema = _load(repo_root, "sources.schema.json")
     assert schema["type"] == "array"

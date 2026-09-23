@@ -32,6 +32,9 @@
 
 - **Provider-centric**：一个 Provider ≈ 一个目录 `data/providers/<id>/`；文件系统即注册表，不要恢复 `config/providers.yaml` 之类第二份索引。
 - **1 plan = 1 文件**；`id` 只需同 Provider 内唯一；**文件名 = `id`，是稳定标识符，不因展示名变化而重命名**。
+- **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），避免跨区域 / 跨人群 / 跨代系错误合并。
+- **老套餐 `status: legacy`**（新购关闭、存量可续费/套餐内升级 + `new_purchase: false` + `existing_subscription_renewal: true`），区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
+- **估算值不冒充硬配额**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`，绝不存进 `requests`；官方年付折合月价存 `pricing.annual_effective_monthly`，年总价只在展示层 ×12 派生并标注 derived。
 - **变体必须拆独立记录，禁止塞进备注**：人群 `audience: personal/team/enterprise`、区域 `region: cn/global`、子平台 `market: bailian/bigmodel/zai`、旧计划用 `status: deprecated` + `effective_until` 单独保留。
 - **未知就写 `null` / `unknown`，绝不编造**；厂商模糊表述（`Unlimited` / `Fair Use` 等）原样记录 + `actual_limit_known: false`。
 - **原始价格与币种永不被覆盖**；促销写 `pricing.promotion`；人民币是派生值，**不写进 plan YAML**。
