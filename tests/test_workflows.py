@@ -44,11 +44,15 @@ def test_daily_refresh_has_exactly_one_schedule_and_no_extras(repo_root: Path) -
 
 
 def test_daily_refresh_never_retries(repo_root: Path) -> None:
-    """禁止 retry workflow / backoff / 失败后自动重试。"""
-    text = (repo_root / ".github" / "workflows" / "daily-refresh.yml").read_text(encoding="utf-8")
-    lowered = text.lower()
+    """禁止 retry workflow / backoff / 手动触发 —— 只扫描实际 YAML 内容，忽略注释。"""
+    lines = (repo_root / ".github" / "workflows" / "daily-refresh.yml").read_text(
+        encoding="utf-8"
+    ).splitlines()
+    content = "\n".join(
+        line for line in lines if not line.strip().startswith("#")
+    ).lower()
     for banned in ("retry:", "workflow_dispatch", "backoff", "max-attempt"):
-        assert banned not in lowered, f"daily-refresh 不允许出现: {banned}"
+        assert banned not in content, f"daily-refresh 不允许出现: {banned}"
 
 
 def test_no_colon_inside_plain_run_scalars(repo_root: Path) -> None:
