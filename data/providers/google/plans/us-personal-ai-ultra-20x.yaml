@@ -64,6 +64,19 @@ quota:
   note: 具体用量上限官方以相对倍率表述，绝对数值本数据段未给出。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: daily
+    duration_hours: null
+    duration_days: 1
+    quota_amount: 2000
+    quota_unit: requests
+    minimum_million_tokens: 10.0
+    maximum_million_tokens: 60.0
+    origin: community_reported
+    confidence: low
+    source: https://geminicli.com/docs/resources/quota-and-pricing/
+    note: 社区/第三方文档：Google AI Ultra 每日约 2,000 次请求；社区报告的请求数窗口；Token 按社区假设 5,000–30,000 tokens/次请求折算，仅作量级参考。
 token_rules:
   input: null
   output: null

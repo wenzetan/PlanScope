@@ -82,6 +82,1519 @@ quota:
     不把动态模型列表当成永久权益。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: glm-5.3-flash
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 54.5
+    maximum_million_tokens: 93.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.3-flash
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 136.4
+    maximum_million_tokens: 232.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.3-flash
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 272.7
+    maximum_million_tokens: 465.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 1.5
+    maximum_million_tokens: 2.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.3
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 3.8
+    maximum_million_tokens: 6.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.3
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 7.5
+    maximum_million_tokens: 13.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.2
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 6.0
+    maximum_million_tokens: 10.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.2
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 15.0
+    maximum_million_tokens: 26.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.2
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 30.0
+    maximum_million_tokens: 52.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.1
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 6.0
+    maximum_million_tokens: 10.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.1
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 15.0
+    maximum_million_tokens: 26.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: glm-5.1
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 30.0
+    maximum_million_tokens: 52.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 0.6
+    maximum_million_tokens: 0.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k3
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 1.4
+    maximum_million_tokens: 2.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k3
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 2.8
+    maximum_million_tokens: 4.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.7-code
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 7.7
+    maximum_million_tokens: 12.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.7-code
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 19.2
+    maximum_million_tokens: 30.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.7-code
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 38.5
+    maximum_million_tokens: 61.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.6
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 7.7
+    maximum_million_tokens: 12.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.6
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 19.2
+    maximum_million_tokens: 31.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: kimi-k2.6
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 38.5
+    maximum_million_tokens: 62.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: longcat-2.0
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 25.0
+    maximum_million_tokens: 46.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: longcat-2.0
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 116.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: longcat-2.0
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 125.0
+    maximum_million_tokens: 233.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-flash
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 71.4
+    maximum_million_tokens: 188.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-flash
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 178.6
+    maximum_million_tokens: 470.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-flash
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 357.1
+    maximum_million_tokens: 941.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-pro
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 5.7
+    maximum_million_tokens: 15.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-pro
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 14.4
+    maximum_million_tokens: 38.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.6-pro
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 28.7
+    maximum_million_tokens: 77.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 71.4
+    maximum_million_tokens: 188.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 178.6
+    maximum_million_tokens: 470.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 357.1
+    maximum_million_tokens: 941.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5-pro
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 5.7
+    maximum_million_tokens: 15.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5-pro
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 14.4
+    maximum_million_tokens: 38.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: mimo-v2.5-pro
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 28.7
+    maximum_million_tokens: 77.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 25.0
+    maximum_million_tokens: 40.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m3
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 100.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m3
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 125.0
+    maximum_million_tokens: 201.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.7
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 25.0
+    maximum_million_tokens: 40.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.7
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 100.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.7
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 125.0
+    maximum_million_tokens: 201.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.5
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 25.0
+    maximum_million_tokens: 40.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.5
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 100.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: minimax-m2.5
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 125.0
+    maximum_million_tokens: 201.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.3-contributor
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 100.0
+    maximum_million_tokens: 263.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.3-contributor
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 250.0
+    maximum_million_tokens: 659.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.3-contributor
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 500.0
+    maximum_million_tokens: 1318.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.2-contributor
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 100.0
+    maximum_million_tokens: 263.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.2-contributor
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 250.0
+    maximum_million_tokens: 659.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: muse-spark-1.2-contributor
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 500.0
+    maximum_million_tokens: 1318.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-max
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 1.1
+    maximum_million_tokens: 2.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-max
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 2.7
+    maximum_million_tokens: 5.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-max
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 5.4
+    maximum_million_tokens: 10.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-flash
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 6.0
+    quota_unit: usd
+    minimum_million_tokens: 28.0
+    maximum_million_tokens: 53.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-flash
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 70.1
+    maximum_million_tokens: 133.7
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.8-flash
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 140.2
+    maximum_million_tokens: 267.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-max
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 6.0
+    quota_unit: usd
+    minimum_million_tokens: 1.7
+    maximum_million_tokens: 3.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-max
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 4.3
+    maximum_million_tokens: 7.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-max
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 8.6
+    maximum_million_tokens: 15.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-lte-256k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 18.7
+    maximum_million_tokens: 32.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-lte-256k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 46.9
+    maximum_million_tokens: 81.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-lte-256k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 93.7
+    maximum_million_tokens: 163.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-gt-256k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 6.2
+    maximum_million_tokens: 10.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-gt-256k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 15.6
+    maximum_million_tokens: 27.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.7-plus-gt-256k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 54.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-lte-256k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 12.0
+    maximum_million_tokens: 18.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-lte-256k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 30.0
+    maximum_million_tokens: 45.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-lte-256k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 60.0
+    maximum_million_tokens: 91.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-gt-256k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 4.3
+    maximum_million_tokens: 8.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-gt-256k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 10.7
+    maximum_million_tokens: 20.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: qwen3.6-plus-gt-256k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 21.4
+    maximum_million_tokens: 41.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-off-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 12.5
+    maximum_million_tokens: 23.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-off-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 58.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-off-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 116.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 6.2
+    maximum_million_tokens: 11.7
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 15.6
+    maximum_million_tokens: 29.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4.1-flash-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 58.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-off-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 3.2
+    maximum_million_tokens: 6.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-off-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 8.1
+    maximum_million_tokens: 17.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-off-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 16.2
+    maximum_million_tokens: 34.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 1.6
+    maximum_million_tokens: 3.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 4.1
+    maximum_million_tokens: 8.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-pro-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 8.1
+    maximum_million_tokens: 17.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-off-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 6.0
+    quota_unit: usd
+    minimum_million_tokens: 25.0
+    maximum_million_tokens: 46.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-off-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 116.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-off-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 125.0
+    maximum_million_tokens: 233.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 6.0
+    quota_unit: usd
+    minimum_million_tokens: 12.5
+    maximum_million_tokens: 23.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 58.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 116.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-off-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 12.5
+    maximum_million_tokens: 23.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-off-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 58.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-off-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 62.5
+    maximum_million_tokens: 116.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-peak
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 6.2
+    maximum_million_tokens: 11.7
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-peak
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 15.6
+    maximum_million_tokens: 29.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: deepseek-v4-flash-vision-exp-peak
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 31.2
+    maximum_million_tokens: 58.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy4-preview
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 6.0
+    quota_unit: usd
+    minimum_million_tokens: 5.1
+    maximum_million_tokens: 10.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy4-preview
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 12.8
+    maximum_million_tokens: 26.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy4-preview
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 25.7
+    maximum_million_tokens: 53.1
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 12.0
+    quota_unit: usd
+    minimum_million_tokens: 52.6
+    maximum_million_tokens: 81.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy3
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 30.0
+    quota_unit: usd
+    minimum_million_tokens: 131.6
+    maximum_million_tokens: 202.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: hy3
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 60.0
+    quota_unit: usd
+    minimum_million_tokens: 263.2
+    maximum_million_tokens: 404.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-lte-200k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 1.1
+    maximum_million_tokens: 1.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-lte-200k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 2.7
+    maximum_million_tokens: 4.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-lte-200k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 5.4
+    maximum_million_tokens: 9.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-gt-200k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 0.5
+    maximum_million_tokens: 0.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-gt-200k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 1.3
+    maximum_million_tokens: 2.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.7-gt-200k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 2.7
+    maximum_million_tokens: 4.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-lte-200k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 1.1
+    maximum_million_tokens: 1.8
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-lte-200k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 2.7
+    maximum_million_tokens: 4.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-lte-200k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 5.4
+    maximum_million_tokens: 9.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-gt-200k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 0.5
+    maximum_million_tokens: 0.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-gt-200k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 1.3
+    maximum_million_tokens: 2.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: grok-4.6-gt-200k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 2.7
+    maximum_million_tokens: 4.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-lte-272k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 16.7
+    maximum_million_tokens: 26.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-lte-272k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 41.7
+    maximum_million_tokens: 67.2
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-lte-272k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 83.3
+    maximum_million_tokens: 134.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-gt-272k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 9.7
+    maximum_million_tokens: 17.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-gt-272k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 24.2
+    maximum_million_tokens: 43.3
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-6-luna-gt-272k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 48.4
+    maximum_million_tokens: 86.6
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-lte-272k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 7.5
+    maximum_million_tokens: 11.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-lte-272k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 18.8
+    maximum_million_tokens: 28.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-lte-272k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 37.5
+    maximum_million_tokens: 57.0
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-gt-272k-tokens
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3.0
+    quota_unit: usd
+    minimum_million_tokens: 4.4
+    maximum_million_tokens: 7.4
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-gt-272k-tokens
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 7.5
+    quota_unit: usd
+    minimum_million_tokens: 11.0
+    maximum_million_tokens: 18.5
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
+  - model: gpt-5.6-luna-gt-272k-tokens
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 15.0
+    quota_unit: usd
+    minimum_million_tokens: 22.1
+    maximum_million_tokens: 36.9
+    origin: derived
+    confidence: medium
+    source: https://opencode.ai/docs/go/
+    note: OpenCode Go 官方文档按模型给出每月美元上限与 Token 单价；5h=月 20%、周=月 50%。按社区常用输入:输出=4:1 折算，下限=无缓存、上限=95% 缓存命中；模型目录为动态快照，随时增减。
 token_rules:
   input: null
   output: null

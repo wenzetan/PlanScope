@@ -251,3 +251,63 @@ def test_changes_and_community_present(repo_root: Path) -> None:
     assert data["changes"], "data/changes/ 应被导出"
     assert data["community"], "community 记录应被导出"
     assert data["benchmarks"], "benchmark 记录应被导出"
+
+
+def test_window_tokens_flat_table(repo_root: Path) -> None:
+    """窗口额度 → 每模型 Token(M) 的扁平表：provider × plan × model × window。"""
+    data = build_site_data(repo_root)
+    rows = data["window_tokens"]
+    assert rows, "应导出 estimated_window_tokens 行"
+    assert data["stats"]["window_token_rows"] == len(rows)
+
+    origins = {"official", "verified_public_report", "community_reported", "derived", "estimated", "unknown"}
+    for row in rows:
+        assert row["provider"] and row["plan"] and row["window"]
+        assert row["origin"] in origins
+        # 每行都要能定位到真实存在（provider 内唯一）的 plan
+        _plan(data, row["provider"], row["plan"])
+
+    # 每模型一行：GLM 官方周估算按 5h/周积分比例缩放
+    lite = [
+        r
+        for r in rows
+        if r["provider"] == "zhipu" and r["plan"] == "cn-personal-coding-lite" and r["model"] == "glm-5.3"
+    ]
+    windows = {r["window"]: r for r in lite}
+    assert windows["7 days"]["minimum_million_tokens"] == 48
+    assert windows["7 days"]["maximum_million_tokens"] == 97
+    assert windows["5 hours"]["minimum_million_tokens"] == 9.6
+    assert windows["5 hours"]["quota_amount"] == 2000
+
+    # 请求数额度与模型无关 → model 为 null，且按社区假设折算
+    coding = next(
+        r
+        for r in rows
+        if r["provider"] == "tencent-cloud" and r["plan"] == "cn-personal-coding-pro" and r["window"] == "5 hours"
+    )
+    assert coding["model"] is None
+    assert coding["quota_unit"] == "model_calls"
+    assert coding["origin"] == "estimated"
+
+    # 腾讯通用 Token Plan：官方旧 Token 口径映射 → derived，模型级拆分未公开
+    token = next(
+        r
+        for r in rows
+        if r["provider"] == "tencent-cloud" and r["plan"] == "cn-personal-token-lite"
+    )
+    assert token["origin"] == "derived"
+    assert token["minimum_million_tokens"] == 35.0
+
+    # Anthropic 系模型永不记录
+    assert not any(
+        "claude" in str(r["model"]).lower() or "anthropic" in str(r["model"]).lower() for r in rows
+    )
+
+    # CommandCode GOAT/Pro：官方逐模型 credits 配额 → 每模型 derived 行
+    goat = [
+        r
+        for r in rows
+        if r["provider"] == "commandcode" and r["plan"] == "global-personal-goat" and r["window"] == "monthly"
+    ]
+    assert goat and all(r["origin"] == "derived" for r in goat)
+    assert all(r["quota_unit"] == "usd_credits" for r in goat)

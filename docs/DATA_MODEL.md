@@ -243,6 +243,13 @@ estimated_weekly_tokens: null # 厂商**估算**型周 Token 区间：{basis: {c
                              # 绝不写进 quota（硬额度）—— 如 GLM 官方 95% cache hit 下的 48M–97M
 estimated_requests: null     # 厂商/文档**估算**型请求量：{canonical, unit, sources: [{value, source, note}]}
                              # 多来源不一致时 canonical 保持 null，全部保留；绝不覆盖 Credits/Token/窗口
+estimated_window_tokens: null # 每个窗口额度按模型换算成 Token（M）的**派生/社区**表（一行 = 模型 × 窗口）：
+                             #   [{model, window, duration_hours, duration_days, quota_amount, quota_unit,
+                             #     minimum_million_tokens, maximum_million_tokens, origin, confidence, source, note}]
+                             # model: null = 该套餐额度与模型无关（如 model_calls 请求数额度），无法模型级拆分。
+                             # origin: official / verified_public_report / community_reported / derived / estimated / unknown。
+                             # 硬额度仍以 quota.windows 为准，本字段只做换算，绝不反向覆盖 quota / estimated_weekly_tokens。
+                             # 展示：/windows 页；导出：site_data.json 的 window_tokens 扁平表。
 restrictions: null           # 使用限制 / 风控（禁止共享 / 转售 / 通用 API 用途 / risk_control），原文结构
 background_consumption: null # 后台/驻留消耗：[{resource, rate, unit, condition, note}] —— 不假定消耗都来自主动请求
 confidence: null             # high / medium / low —— 本记录整体研究置信度

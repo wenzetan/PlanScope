@@ -68,6 +68,19 @@ quota:
   note: 一次性购买的预付 Token 包，30 自然日有效；包大小与价格官方未公开。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 30 days
+    duration_hours: null
+    duration_days: 30
+    quota_amount: null
+    quota_unit: tokens
+    minimum_million_tokens: null
+    maximum_million_tokens: null
+    origin: unknown
+    confidence: low
+    source: https://longcat.chat/platform/docs/zh/token-pack
+    note: Token 资源包为限时抢购的固定 Token 额度（购买后 30 天有效），官方未公布具体档位/数量，Token 量保持未知。
 models:
   - LongCat-2.0
 

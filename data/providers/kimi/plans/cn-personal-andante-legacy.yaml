@@ -79,6 +79,31 @@ quota:
     与老套餐 7 日额度控制，精确限额官方未公开。「约 30 Agent」为估算值，非硬性 request 配额。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: null
+    quota_unit: token_usage
+    minimum_million_tokens: 15.0
+    maximum_million_tokens: 15.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测（Kimi K2.5，原生 Token 计量、非硬额度）；官方未公布 5h/7d 精确数值。不同社区口径差异较大，仅作信号。
+  - model: null
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: null
+    quota_unit: token_usage
+    minimum_million_tokens: 21.0
+    maximum_million_tokens: 21.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测（Kimi K2.5，原生 Token 计量、非硬额度）；官方未公布 5h/7d 精确数值。不同社区口径差异较大，仅作信号。
 token_rules:
   input: null
   output: null

@@ -83,6 +83,19 @@ quota:
   note: 个人版为 30 天 credits 窗口；38B credits/月。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 38000000000
+    quota_unit: credits
+    minimum_million_tokens: 1300.0
+    maximum_million_tokens: 1300.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测 380 亿 credits ≈ 13 亿 tokens/月（mimo-v2.5-pro）；换算比随模型/缓存差异大，仅作信号。
 models:
   - mimo-v2.6-pro
   - mimo-v2.6-flash

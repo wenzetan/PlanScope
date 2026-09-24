@@ -95,6 +95,43 @@ quota:
     unit 保持 null，不猜测、不与其它 Provider 的 model_calls / credits 换算。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 1200
+    quota_unit: model_calls
+    minimum_million_tokens: 10.0
+    maximum_million_tokens: 10.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测火山方舟 Coding Plan Lite 窗口 Token 用量。
+  - model: null
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 9000
+    quota_unit: model_calls
+    minimum_million_tokens: 75.0
+    maximum_million_tokens: 75.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测火山方舟 Coding Plan Lite 窗口 Token 用量。
+  - model: null
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 18000
+    quota_unit: model_calls
+    minimum_million_tokens: 320.0
+    maximum_million_tokens: 320.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/mahonzhan/awesome-coding-plan
+    note: 社区实测火山方舟 Coding Plan Lite 窗口 Token 用量。
 models: null                            # 模型矩阵官方未公开，保持 null（不猜）
 
 compatibility:

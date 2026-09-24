@@ -85,6 +85,43 @@ quota:
     绝不复制中国大陆 Volcengine 的额度。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 1900
+    quota_unit: requests
+    minimum_million_tokens: 9.5
+    maximum_million_tokens: 57.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/robinebers/openusage/issues/285
+    note: 社区报告的请求数窗口；Token 按社区假设 5,000–30,000 tokens/次请求折算，仅作量级参考。
+  - model: null
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 12000
+    quota_unit: requests
+    minimum_million_tokens: 60.0
+    maximum_million_tokens: 360.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/robinebers/openusage/issues/285
+    note: 社区报告的请求数窗口；Token 按社区假设 5,000–30,000 tokens/次请求折算，仅作量级参考。
+  - model: null
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 24000
+    quota_unit: requests
+    minimum_million_tokens: 120.0
+    maximum_million_tokens: 720.0
+    origin: community_reported
+    confidence: low
+    source: https://github.com/robinebers/openusage/issues/285
+    note: 社区报告的请求数窗口；Token 按社区假设 5,000–30,000 tokens/次请求折算，仅作量级参考。
 models: null                            # 精确模型矩阵未公开，保持 null（不猜）
 
 compatibility:

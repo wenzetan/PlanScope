@@ -92,6 +92,43 @@ quota:
     不猜测、不与 Token Plan 的 credits 换算。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 1200
+    quota_unit: model_calls
+    minimum_million_tokens: 6.0
+    maximum_million_tokens: 36.0
+    origin: estimated
+    confidence: low
+    source: https://github.com/ForceInjection/forceinjection.github.io/blob/main/09_inference_system/cost_analysis/coding_plan/coding_plan_report.md
+    note: 请求数额度与所用模型无关（model_calls 全模型共享）；按社区假设 5,000–30,000 tokens/次交互请求折算，仅作量级参考。
+  - model: null
+    window: weekly
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 9000
+    quota_unit: model_calls
+    minimum_million_tokens: 45.0
+    maximum_million_tokens: 270.0
+    origin: estimated
+    confidence: low
+    source: https://github.com/ForceInjection/forceinjection.github.io/blob/main/09_inference_system/cost_analysis/coding_plan/coding_plan_report.md
+    note: 请求数额度与所用模型无关（model_calls 全模型共享）；按社区假设 5,000–30,000 tokens/次交互请求折算，仅作量级参考。
+  - model: null
+    window: monthly
+    duration_hours: null
+    duration_days: 30
+    quota_amount: 18000
+    quota_unit: model_calls
+    minimum_million_tokens: 90.0
+    maximum_million_tokens: 540.0
+    origin: estimated
+    confidence: low
+    source: https://github.com/ForceInjection/forceinjection.github.io/blob/main/09_inference_system/cost_analysis/coding_plan/coding_plan_report.md
+    note: 请求数额度与所用模型无关（model_calls 全模型共享）；按社区假设 5,000–30,000 tokens/次交互请求折算，仅作量级参考。
 models: null
 
 endpoints:

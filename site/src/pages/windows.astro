@@ -1,0 +1,123 @@
+---
+import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import { href } from "../lib/base.js";
+import { data } from "../lib/data.js";
+import { display } from "../lib/format.js";
+
+const rows = data.window_tokens || [];
+
+function fmtQuota(row) {
+  const amount = row.quota_amount;
+  const unit = row.quota_unit;
+  if (amount === null || amount === undefined) return unit ? `— ${unit}` : "—";
+  const num = typeof amount === "number" ? amount.toLocaleString("en-US") : amount;
+  return unit ? `${num} ${unit}` : String(num);
+}
+
+function fmtTokens(row) {
+  const lo = row.minimum_million_tokens;
+  const hi = row.maximum_million_tokens;
+  if (lo === null && hi === null) return "—";
+  if (lo !== null && hi !== null) {
+    return lo === hi ? `${lo} M` : `${lo}–${hi} M`;
+  }
+  return lo !== null ? `${lo} M` : `${hi} M`;
+}
+
+function fmtWindow(row) {
+  const label = row.window || "";
+  const dur = row.duration_hours
+    ? `${row.duration_hours}h`
+    : row.duration_days
+      ? `${row.duration_days}d`
+      : "";
+  return dur && !String(label).includes(dur) ? `${label} (${dur})` : label;
+}
+
+function isUrl(value) {
+  return typeof value === "string" && /^https?:\/\//.test(value);
+}
+---
+
+<Base titleKey="windows" current="windows/">
+  <h1><T k="windows.h1" /></h1>
+  <p class="lead"><T k="windows.lead" /></p>
+
+  <ul class="plain small">
+    <li><span class="badge official"><T k="badge.official" /></span> / <span class="badge derived">derived</span> — <T k="windows.method.derived" /></li>
+    <li><span class="badge community_reported"><T k="badge.communityReported" /></span> — <T k="windows.method.community" /></li>
+    <li><span class="badge estimated"><T k="badge.estimated" /></span> — <T k="windows.method.estimated" /></li>
+  </ul>
+
+  <p class="small">
+    <label for="win-provider"><T k="windows.filter.provider" /></label>
+    <select id="win-provider">
+      <option value=""><T k="windows.filter.all" /></option>
+      {[...new Set(rows.map((r) => r.provider).filter(Boolean))].sort().map((p) => <option value={p}>{p}</option>)}
+    </select>
+  </p>
+
+  <div class="table-scroll">
+    <table id="win-table">
+      <thead>
+        <tr>
+          <th><T k="windows.col.provider" /></th>
+          <th><T k="windows.col.plan" /></th>
+          <th><T k="windows.col.model" /></th>
+          <th><T k="windows.col.window" /></th>
+          <th><T k="windows.col.quota" /></th>
+          <th><T k="windows.col.tokens" /></th>
+          <th><T k="windows.col.origin" /></th>
+          <th><T k="windows.col.confidence" /></th>
+          <th><T k="windows.col.source" /></th>
+          <th><T k="windows.col.note" /></th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr data-provider={row.provider}>
+            <td>{row.provider ? <a href={href(`providers/${row.provider}/`)}>{row.provider}</a> : "—"}</td>
+            <td>
+              <a href={href("plans/")} class="mono">{display(row.plan)}</a>
+            </td>
+            <td class="mono">
+              {row.model ? row.model : <T k="windows.modelAll" />}
+            </td>
+            <td>{fmtWindow(row)}</td>
+            <td class="mono">{fmtQuota(row)}</td>
+            <td class="mono">{fmtTokens(row)}</td>
+            <td><span class={`badge ${display(row.origin, "unknown")}`}>{display(row.origin, "unknown")}</span></td>
+            <td><span class={`badge ${display(row.confidence, "unknown")}`}>{display(row.confidence, "unknown")}</span></td>
+            <td>
+              {isUrl(row.source)
+                ? <a href={row.source} target="_blank" rel="noopener noreferrer">link</a>
+                : <span class="small">{display(row.source)}</span>}
+            </td>
+            <td class="small">{display(row.note)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {rows.length === 0 && <div class="empty"><T k="windows.empty" /></div>}
+
+  <script is:inline>
+    (function () {
+      var sel = document.getElementById("win-provider");
+      var table = document.getElementById("win-table");
+      if (!sel || !table) return;
+      var rows = Array.prototype.slice.call(table.querySelectorAll("tbody tr"));
+      sel.addEventListener("change", function () {
+        var v = sel.value;
+        rows.forEach(function (tr) {
+          tr.style.display = !v || tr.getAttribute("data-provider") === v ? "" : "none";
+        });
+      });
+    })();
+  </script>
+
+  <h2><T k="windows.coverage.heading" /></h2>
+  <p class="small"><T k="windows.note" /></p>
+  <p class="small"><T k="windows.coverage.note" /></p>
+</Base>

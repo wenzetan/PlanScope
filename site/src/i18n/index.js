@@ -12,6 +12,7 @@ import homeZh from "./zh/home.json";
 import plansZh from "./zh/plans.json";
 import pricingZh from "./zh/pricing.json";
 import modelsZh from "./zh/models.json";
+import windowsZh from "./zh/windows.json";
 import providersZh from "./zh/providers.json";
 import privacyZh from "./zh/privacy.json";
 import reliabilityZh from "./zh/reliability.json";
@@ -24,6 +25,7 @@ import homeEn from "./en/home.json";
 import plansEn from "./en/plans.json";
 import pricingEn from "./en/pricing.json";
 import modelsEn from "./en/models.json";
+import windowsEn from "./en/windows.json";
 import providersEn from "./en/providers.json";
 import privacyEn from "./en/privacy.json";
 import reliabilityEn from "./en/reliability.json";
@@ -38,6 +40,7 @@ export const dictionaries = {
     ...plansZh,
     ...pricingZh,
     ...modelsZh,
+    ...windowsZh,
     ...providersZh,
     ...privacyZh,
     ...reliabilityZh,
@@ -51,6 +54,7 @@ export const dictionaries = {
     ...plansEn,
     ...pricingEn,
     ...modelsEn,
+    ...windowsEn,
     ...providersEn,
     ...privacyEn,
     ...reliabilityEn,

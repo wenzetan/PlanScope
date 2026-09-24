@@ -139,6 +139,55 @@ def plan_quota_view(plan: dict) -> dict:
     quota = plan.get("quota") if isinstance(plan.get("quota"), dict) else {}
     return {key: quota.get(key) for key in PLAN_VIEW_KEYS}
 
+def flatten_window_tokens(plans: list[dict], provider_names: dict[str, str | None]) -> list[dict]:
+    """Flat per-model window -> Token(M) table.
+
+    One row = provider × plan × model × window. The raw window quota stays the
+    source of truth in quota.windows; this is the (community/derived) conversion.
+    """
+    rows: list[dict] = []
+    for plan in plans:
+        entries = plan.get("estimated_window_tokens")
+        if not isinstance(entries, list):
+            continue
+        provider = plan.get("provider")
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            rows.append(
+                {
+                    "provider": provider,
+                    "provider_name": provider_names.get(provider),
+                    "plan": plan.get("id"),
+                    "plan_name": plan.get("name"),
+                    "record_kind": plan.get("record_kind"),
+                    "region": plan.get("region"),
+                    "audience": plan.get("audience"),
+                    "model": entry.get("model"),
+                    "window": entry.get("window"),
+                    "duration_hours": entry.get("duration_hours"),
+                    "duration_days": entry.get("duration_days"),
+                    "quota_amount": entry.get("quota_amount"),
+                    "quota_unit": entry.get("quota_unit"),
+                    "minimum_million_tokens": entry.get("minimum_million_tokens"),
+                    "maximum_million_tokens": entry.get("maximum_million_tokens"),
+                    "origin": entry.get("origin"),
+                    "confidence": entry.get("confidence"),
+                    "source": entry.get("source"),
+                    "note": entry.get("note"),
+                    "checked_at": plan.get("checked_at"),
+                }
+            )
+    rows.sort(
+        key=lambda row: (
+            str(row.get("provider") or ""),
+            str(row.get("plan") or ""),
+            str(row.get("window") or ""),
+            str(row.get("model") or ""),
+        )
+    )
+    return rows
+
 
 def flatten_sources(records: dict[str, list], provider_names: dict[str, str | None]) -> list[dict]:
     """Flat list for the Sources page: every URL used as evidence, with provenance."""
@@ -245,6 +294,7 @@ def build_site_data(root: Path | str | None = None) -> dict:
     ]
 
     generated_at = datetime.now(TIMEZONE).isoformat(timespec="seconds")
+    window_tokens = flatten_window_tokens(plans, provider_names)
 
     return {
         "generated_at": generated_at,
@@ -258,11 +308,13 @@ def build_site_data(root: Path | str | None = None) -> dict:
             "privacy_records": len(records["privacy"]),
             "community_reports": len(records["community"]),
             "benchmarks": len(records["benchmarks"]),
+            "window_token_rows": len(window_tokens),
             "usd_cny": rate,
         },
         "providers": providers,
         "plans": plans,
         "models": models,
+        "window_tokens": window_tokens,
         "privacy": records["privacy"],
         "benchmarks": records["benchmarks"],
         "community": records["community"],

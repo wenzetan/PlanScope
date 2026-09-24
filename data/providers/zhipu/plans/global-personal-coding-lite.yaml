@@ -84,6 +84,31 @@ quota:
     积分系数 / 高峰非高峰 / MCP 成本见 provider.yaml quota_policies.credit_system。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: glm-5.3
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 10000
+    quota_unit: credits
+    minimum_million_tokens: 48
+    maximum_million_tokens: 97
+    origin: derived
+    confidence: low
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 沿用大陆个人版官方周 Token 估算（同为 10,000 credits/周）；Z.ai 官方未单独给出 Token 估算，跨区域沿用属假设。
+  - model: glm-5.3-flash
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 10000
+    quota_unit: credits
+    minimum_million_tokens: 146
+    maximum_million_tokens: 292
+    origin: derived
+    confidence: low
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 沿用大陆个人版官方周 Token 估算（同为 10,000 credits/周）；Z.ai 官方未单独给出 Token 估算，跨区域沿用属假设。
 token_rules:
   input: null
   output: null

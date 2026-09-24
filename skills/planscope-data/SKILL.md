@@ -30,6 +30,7 @@ updated: 2026-09-23
    | `generation: current_credit_based` / `legacy_prompt_based` | `generation: current` / `legacy`（枚举只有两值）；credit 制写 `quota.accounting_basis: credits` + `quota.unit` |
    | `quota.unit` / 5h+7d 双层额度 | `quota.unit: credits` + `quota.windows[]`（label/duration_hours/duration_days/amount/unit/reset_mode/reset_anchor）；跨 Plan 的积分公式放 Provider `quota_policies[].credit_system` |
    | 厂商「≈ N M tokens/week」估算 | `estimated_weekly_tokens`（带 basis.cache_hit_rate），**绝不写进 `quota`** |
+   | 社区/派生的「窗口额度 → 每模型 Token(M)」 | Plan `estimated_window_tokens[]`（一行 = 模型 × 窗口；`model: null` 表示与模型无关如 model_calls）；逐行带 `origin` + `confidence` + `source`，硬额度仍以 `quota.windows` 为准，**绝不反向覆盖**；展示在 `/windows`，导出为 `window_tokens` 扁平表 |
    | 5 天体验 / 短期限时体验（一次性） | **不建 Plan、不入统计**（不是 `free_tier`，也不是订阅档位） |
    | 团队版：厂商页旧 Token 上限 vs 新积分 canonical | canonical 写 `quota.windows`（unit: credits）；旧口径写 `quota.published_references`（status: vendor_page_parallel_or_stale）+ `evidence_conflicts`，**绝不覆盖** |
    | 团队版：按席位、额度不共享、管理员开超额 | `pricing.monthly/annual.billing_model: per_seat` + `quota.allocation_scope: per_seat` + `shared_pool_enabled: false` + `extra_usage.admin_enable_required/budget_control` |

@@ -90,6 +90,31 @@ estimated_requests:
   note: >-
     请求数只是估算，不是硬额度；硬额度是 monthly credits + 5h + 7d 窗口。
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 3
+    quota_unit: usd_credits
+    minimum_million_tokens: null
+    maximum_million_tokens: null
+    origin: unknown
+    confidence: low
+    source: null
+    note: 该套餐窗口额度以美元计价（usd_credits），换算成 Token 需要模型单价，仓库暂未记录其模型价格，故 Token 保持未知。
+  - model: null
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 6
+    quota_unit: usd_credits
+    minimum_million_tokens: null
+    maximum_million_tokens: null
+    origin: unknown
+    confidence: low
+    source: null
+    note: 该套餐窗口额度以美元计价（usd_credits），换算成 Token 需要模型单价，仓库暂未记录其模型价格，故 Token 保持未知。
 token_rules:
   input: null
   output: null

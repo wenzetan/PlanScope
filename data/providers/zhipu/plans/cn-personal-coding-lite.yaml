@@ -91,6 +91,55 @@ quota:
     Coding Plan 不能充当通用 API 余额（fallback_to_general_api_balance: false）。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: glm-5.3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 2000
+    quota_unit: credits
+    minimum_million_tokens: 9.6
+    maximum_million_tokens: 19.4
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 10000
+    quota_unit: credits
+    minimum_million_tokens: 48
+    maximum_million_tokens: 97
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3-flash
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 2000
+    quota_unit: credits
+    minimum_million_tokens: 29.2
+    maximum_million_tokens: 58.4
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3-flash
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 10000
+    quota_unit: credits
+    minimum_million_tokens: 146
+    maximum_million_tokens: 292
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
 token_rules:
   input: null
   output: null

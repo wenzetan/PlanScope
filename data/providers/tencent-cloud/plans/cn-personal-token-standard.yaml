@@ -82,6 +82,19 @@ quota:
     官方未公开（见 provider.yaml quota_policies.credit_system）。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: null
+    window: 30 days
+    duration_hours: null
+    duration_days: 30
+    quota_amount: null
+    quota_unit: credits
+    minimum_million_tokens: 100.0
+    maximum_million_tokens: 100.0
+    origin: derived
+    confidence: medium
+    source: official Tencent Cloud legacy token mapping (quota.published_references)
+    note: 官方 2026-08-31 改积分前的旧 Token 口径直接映射到当前 credits 额度；模型级拆分未公开。
 models: null                            # 通用 Token Plan 的模型矩阵未核实
 
 compatibility:

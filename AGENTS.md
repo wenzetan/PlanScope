@@ -34,7 +34,7 @@
 - **1 plan = 1 文件**；`id` 只需同 Provider 内唯一；**文件名 = `id`，是稳定标识符，不因展示名变化而重命名**。
 - **Plan 身份 = `region` + `audience` + `market` + 代系**：四者的组合必须体现在 `id` 编码里（如 `cn-personal-andante-legacy`），并有显式字段 `generation: legacy | current` 与 id 后缀对应，避免跨区域 / 跨人群 / 跨代系错误合并。**同价不同代 = 两个 Plan**（如旧 Andante 与新 Go 同为 ¥49，但 Go 无 Kimi Code，绝不改名合并）。
 - **老套餐 `status: legacy`** + `availability: {new_purchase, existing_subscription_use, existing_subscription_renewal, legacy_upgrade_path}`，区别于 `deprecated`（停供）与 `discontinued`（彻底下线）；老套餐独立文件保留。
-- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin`：`official`（官方页面直出）/ `verified_public_report`（官方页暂缺、多份近期报道交叉核验，**待抓到官方页后只升级 origin、不改数值**）/ `derived`（×12 等计算）/ `unknown`。权益表内部相对倍率（如 Kimi 新版 `quota_multiplier: 2/4/14`）只存相对值，**不可反推绝对额度**。
+- **估算值与派生值必须标注来源**：厂商「约 N 个用量」存 `quota.agent_tasks_approx`（权益原文存 `benefits`，`approximate_*`），绝不存进 `requests`；价格每个周期带 `origin`：`official`（官方页面直出）/ `verified_public_report`（官方页暂缺、多份近期报道交叉核验，**待抓到官方页后只升级 origin、不改数值**）/ `derived`（×12 等计算）/ `unknown`。权益表内部相对倍率（如 Kimi 新版 `quota_multiplier: 2/4/14`）只存相对值，**不可反推绝对额度**。窗口额度换算成每模型 Token(M) 的社区/派生表存 Plan `estimated_window_tokens[]`（逐行带 `origin` + `confidence` + `source`，`model: null` = 与模型无关如 model_calls），**绝不反向覆盖 `quota.windows`**。
 - **字段级证据 `evidence`**：同一记录不同字段权威度不同时逐字段标 `authority: official|verified_public_report|community_reported|estimated|unknown` + `checked_at`，不要只写记录级 confidence。跨 Plan 的通用额度机制放 Provider 级 `quota_policies`（按 `generation: legacy/current` 维护，如旧体系有 7 日额度、新体系取消），Plan 自身 `quota` 块只写具体值（`weekly_quota_enabled: legacy→true / current→false`）。
 - **模型上限 ≠ 套餐生效上下文**：`context_window` 是模型上限；套餐封顶写 `availability[].effective_context_window`（如 K3 支持 1M，Moderato 只解锁 256K）。相对额度消耗用 `quota_relative_cost: {reference_model, approximate_ratio}`。**产品权益 ≠ 模型能力**：`benefits.long_conversation.million_token_support`（百万 Token 长对话权益）绝不写成模型 `context_window`。
 - **兼容七态**：`full / officially_supported / partial / unofficial / unsupported / unsupported_by_plan / unknown` + 备注差异。`officially_supported` = 官方文档明确支持并给出接入方法（未做全量核验）；`unsupported_by_plan` = 平台支持但本套餐不含该能力（如 Go 无 Kimi Code）；`full` 保留给经核验的完全兼容。
@@ -117,7 +117,7 @@ pytest
     enterprise_contract / beta_workspace` 均已出现；字节拆 `volcengine` / `byteplus`，**不建 bytedance**
 - **隐私按 scope 拆**：`consumer`（个人）/ `business`（团队不训练+隔离）/ `api`（不训练、ZDR unknown）；
   Training / Retention / ZDR 三字段独立；OpenCode 还有**模型级** privacy（`models.yaml` 的 `privacy`）
-- **数据机制已就绪并有测试覆盖（102 tests）**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席、credits vs tokens 防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）/ 估算 Token（`estimated_weekly_tokens`）/ 厂商并行旧口径（`quota.published_references`）三者分离
+- **数据机制已就绪并有测试覆盖**：变体拆分（region/market/audience/generation）、seat=数量、双地区双币种、`evidence_conflicts`（2 席 vs 5 席、credits vs tokens 防回改）、`record_kind` 分组、模型上限 vs 套餐生效上下文、origin 四态（official / verified_public_report / derived / unknown）、credit 制（`quota.windows` + `unit`）/ 估算 Token（`estimated_weekly_tokens`）/ 厂商并行旧口径（`quota.published_references`）三者分离、**窗口额度→每模型 Token(M) 换算表（`estimated_window_tokens` → 站点 `/windows` 页 + `site_data.json` 的 `window_tokens` 扁平表；515 行覆盖 13 家，CommandCode GOAT/Pro 与 OpenCode Go 为官方逐模型换算）**
 - **待办**：
   1. 补官方 URL → 各 Provider `sources.yaml`（**目前全部为注释空表**）+ 隐私字段 source（official 徽标）
   2. 等数据段：Kimi 海外个人 4 条 draft；BytePlus 精确 quota；LongCat Token Pack 规格与价格；

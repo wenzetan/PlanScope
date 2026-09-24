@@ -88,6 +88,55 @@ quota:
     模型系数 / 高峰非高峰 / MCP 积分成本见 provider.yaml 的 quota_policies.credit_system。
   checked_at: "2026-09-23T00:00:00+08:00"
 
+estimated_window_tokens:
+  - model: glm-5.3
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 28000
+    quota_unit: credits
+    minimum_million_tokens: 135.2
+    maximum_million_tokens: 270.4
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 140000
+    quota_unit: credits
+    minimum_million_tokens: 676
+    maximum_million_tokens: 1352
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3-flash
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 28000
+    quota_unit: credits
+    minimum_million_tokens: 409.4
+    maximum_million_tokens: 818.8
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
+  - model: glm-5.3-flash
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 140000
+    quota_unit: credits
+    minimum_million_tokens: 2047
+    maximum_million_tokens: 4094
+    origin: derived
+    confidence: high
+    source: official Zhipu Coding Plan credit quota + official weekly token estimate
+    note: 由官方周 Token 估算按窗口积分比例缩放（5h = 周 × 2000/10000）；95% 缓存命中假设，下限=全高峰、上限=全非高峰。
 token_rules:
   input: null
   output: null

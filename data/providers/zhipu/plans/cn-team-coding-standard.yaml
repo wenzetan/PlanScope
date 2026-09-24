@@ -141,6 +141,31 @@ extra_usage:                     # 团队版关键差异：可由管理员开启
   budget_control: true
   note: 官方团队页明确支持超额按量付费及预算控制；精确费率未公开（missing exact_overage_rate）
 
+estimated_window_tokens:
+  - model: null
+    window: 5 hours
+    duration_hours: 5
+    duration_days: null
+    quota_amount: 15000
+    quota_unit: credits
+    minimum_million_tokens: 60.0
+    maximum_million_tokens: 60.0
+    origin: official
+    confidence: medium
+    source: official Zhipu team plan page (quota.published_references)
+    note: 官方购买页并行展示的 Token 上限（每席位 60M/5h、300M/周）；canonical 为积分制（15,000 / 66,000 credits），旧 Token 口径标注 vendor_page_parallel_or_stale。
+  - model: null
+    window: 7 days
+    duration_hours: null
+    duration_days: 7
+    quota_amount: 66000
+    quota_unit: credits
+    minimum_million_tokens: 300.0
+    maximum_million_tokens: 300.0
+    origin: official
+    confidence: medium
+    source: official Zhipu team plan page (quota.published_references)
+    note: 官方购买页并行展示的 Token 上限（每席位 60M/5h、300M/周）；canonical 为积分制（15,000 / 66,000 credits），旧 Token 口径标注 vendor_page_parallel_or_stale。
 token_rules:
   input: null
   output: null

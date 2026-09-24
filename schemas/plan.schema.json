@@ -208,6 +208,33 @@
         "checked_at": { "$ref": "#/$defs/iso8601OrNull" }
       }
     },
+    "estimated_window_tokens": {
+      "type": ["array", "null"],
+      "description": "把每个窗口（5h / day / week / month）的硬额度按模型换算成 Token 的估算表（单位 M）。一行 = 一个模型 × 一个窗口。硬额度仍以 quota.windows 为准，本字段是换算/社区实测结果，必须标 origin + confidence + source，绝不反向覆盖 quota 或 estimated_weekly_tokens。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["window"],
+        "properties": {
+          "model": { "type": ["string", "null"], "description": "模型 id；null = 该套餐额度与模型无关（如 model_calls 请求数额度），无法做模型级拆分。" },
+          "window": { "type": "string", "minLength": 1, "description": "窗口标签，如 '5 hours' / '7 days' / 'monthly' / 'daily'。" },
+          "duration_hours": { "type": ["number", "null"], "minimum": 0 },
+          "duration_days": { "type": ["number", "null"], "minimum": 0 },
+          "quota_amount": { "$ref": "#/$defs/quotaValue" },
+          "quota_unit": { "type": ["string", "null"], "description": "原始计量单位：credits / usd_credits / model_calls / prompts / tokens。" },
+          "minimum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
+          "maximum_million_tokens": { "type": ["number", "null"], "minimum": 0 },
+          "origin": {
+            "type": ["string", "null"],
+            "enum": ["official", "verified_public_report", "community_reported", "derived", "estimated", "unknown", null],
+            "description": "换算依据来源。official=官方直接给出；community_reported=社区实测；derived=按官方系数推导；estimated=粗估。"
+          },
+          "confidence": { "type": ["string", "null"], "enum": ["high", "medium", "low", null] },
+          "source": { "type": ["string", "null"], "description": "社区来源 URL 或换算依据说明。" },
+          "note": { "type": ["string", "null"] }
+        }
+      }
+    },
     "estimated_requests": {
       "type": ["object", "null"],
       "additionalProperties": false,
